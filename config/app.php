@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
+use Popplestones\Quickbooks\Providers\QuickbooksHelperServiceProvider;
 
 return [
 
@@ -178,6 +179,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
+        QuickbooksHelperServiceProvider::class,
 
     ],
 

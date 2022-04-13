@@ -1,17 +1,7 @@
 <?php
 
+use App\Http\Controllers\InviteController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,7 +12,30 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+
+    Route::middleware(['can:list users'])->group(function() {
+       Route::view('users', 'users.index')->name('users.index');
+    });
+    Route::middleware(['can:view admin menu'])->group(function() {
+        Route::post('admin/toggle-menu', function() {
+
+            $adminMenu = session()->get('preferAdminMenu', false);
+            info('preferAdminMenu: ' . json_encode($adminMenu));
+            session()->put('preferAdminMenu', !$adminMenu);
+            info('preferAdminMenu: ' . json_encode(!$adminMenu));
+            return back();
+        })->name('admin.toggle');
+    });
+
+    Route::middleware(['can:list invites'])->group(function() {
+        Route::view('invites', 'invites.index')->name('invites.index');
+    });
 });
+
+
+// Route::controller(InviteController::class)->group(function() {
+//     Route::get('invite', 'invite')->name('invite');
+//     Route::post('invite', 'process')->name('process');
+//     Route::get('accept/{token}', 'accept')->name('accept');
+// });

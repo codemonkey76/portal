@@ -21,6 +21,13 @@
                 <x-jet-section-border />
             @endif
 
+            @can('connect quickbooks')
+            <div class="mt-10 sm:mt-0">
+                @livewire('profile.connect-quickbooks')
+            </div>
+            <x-jet-section-border />
+            @endcan
+
             @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
                 <div class="mt-10 sm:mt-0">
                     @livewire('profile.two-factor-authentication-form')

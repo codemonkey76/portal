@@ -20,24 +20,32 @@
     </head>
     <body class="font-sans antialiased">
         <x-jet-banner />
+        <x-notification />
 
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
-
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
+        <div class="min-h-screen h-screen bg-gray-100 flex flex-col">
 
             <!-- Page Content -->
-            <main>
-                {{ $slot }}
+            <main class="flex-1 flex h-screen">
+                <div class="flex flex-1">
+                    @livewire('sidebar')
+                    <div class="flex-1 overflow-auto">
+                        <!-- Page Heading -->
+                        @if (isset($header))
+                            <header class="bg-white shadow">
+                                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                                    {{ $header }}
+                                </div>
+                            </header>
+                        @endif
+
+                        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12 space-y-4">
+                            {{ $slot }}
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
+
 
         @stack('modals')
 
