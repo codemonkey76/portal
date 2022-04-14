@@ -14,7 +14,6 @@ class Index extends Component
 {
     use WithPerPagePagination, WithSorting, WithSearch;
 
-    public $showDeleteModal = false;
     public $showCreateModal = false;
     public $customers;
     public Invite $editing;
@@ -42,6 +41,7 @@ class Index extends Component
     {
         $this->validate();
         $this->editing->save();
+        $this->notify("Invitation has been queued and will be sent shortly!");
         $this->showCreateModal = false;
     }
     public function getRowsQueryProperty()
@@ -53,8 +53,11 @@ class Index extends Component
         return $this->applySorting($query);
     }
 
-    public function mount()
+    public function delete(Invite $invite)
     {
+        $invite->delete();
+        $this->notify("Invitation deleted successfully!");
+
     }
 
     public function getRowsProperty()

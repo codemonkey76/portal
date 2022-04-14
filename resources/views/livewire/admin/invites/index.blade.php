@@ -23,7 +23,7 @@
                 <x-table.heading>Email</x-table.heading>
                 <x-table.heading>Customer</x-table.heading>
                 <x-table.heading>Expiry</x-table.heading>
-                <x-table.heading><span class="sr-only">Edit</span></x-table.heading>
+                <x-table.heading>Actions</x-table.heading>
             </x-slot>
             <x-slot name="body">
                 @forelse ($invites as $invite)
@@ -32,7 +32,9 @@
                     <x-table.cell>{{ $invite->email }}</x-table.cell>
                     <x-table.cell>{{ $invite->customer?->company_name }}</x-table.cell>
                     <x-table.cell>{{ $invite->expiry }}</x-table.cell>
-                    <x-table.cell><a href="#" wire:click="edit({{ $invite->id }})" class="text-indigo-600 hover:text-indigo-900">Edit</a></x-table.cell>
+                    <x-table.cell>
+                        <x-small-button.danger wire:click="delete({{$invite}})">Delete</x-small-button.danger>
+                    </x-table.cell>
                 </x-table.row>
                 @empty
                     <x-table.row>
@@ -43,6 +45,10 @@
                 @endforelse
             </x-slot>
         </x-table>
+        <div class=" md:px-6 lg:px-8">
+            {{ $invites->links() }}
+        </div>
+
 
         <form wire:submit.prevent="save">
         <x-modal.dialog wire:model="showCreateModal">
@@ -62,15 +68,14 @@
                         <x-input.text wire:model="editing.email" name="email" :has-error="$errors->has('editing.email')"/>
                     </x-input.group>
 
-                    <x-input.group for="customer" label="Customer">
-                        <select name="customer_id" wire:model="editing.customer_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                    <x-input.group for="customer" label="Customer" :error="$errors->first('editing.customer_id')">
+                        <x-select name="customer_id" wire:model="editing.customer_id" :has-error="$errors->has('editing.customer_id')">
                             @foreach(App\Models\Customer::orderBy('company_name')->get() as $customer)
                                 <option value={{ $customer->id }}>{{ $customer->company_name }}</option>
                             @endforeach
-                        </select>
+                        </x-select>
                     </x-input.group>
                 </div>
-                @json($editing)
             </x-slot>
             <x-slot name="footer">
                 <div class="space-x-1">

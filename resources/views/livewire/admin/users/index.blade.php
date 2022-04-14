@@ -8,7 +8,6 @@
   <div class="mt-8 flex flex-col">
     <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
 
-    @json($editing->getKey())
         <div class="md:px-6 lg:px-8 py-2">
             <div class="flex justify-between">
                 <x-input.search wire:model="search" />

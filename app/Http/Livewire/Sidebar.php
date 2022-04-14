@@ -10,12 +10,12 @@ class Sidebar extends Component
 
     public function mount()
     {
-        //$this->admin = session()->get('preferAdminMenu', false);
+        $this->admin = session()->get('preferAdminMenu', false);
     }
 
     public function updatedAdmin()
     {
-        //session()->put('preferAdminMenu', $this->admin);
+        session()->put('preferAdminMenu', $this->admin);
     }
 
     public function render()

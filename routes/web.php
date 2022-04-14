@@ -33,9 +33,7 @@ Route::middleware([
     });
 });
 
-
-// Route::controller(InviteController::class)->group(function() {
-//     Route::get('invite', 'invite')->name('invite');
-//     Route::post('invite', 'process')->name('process');
-//     Route::get('accept/{token}', 'accept')->name('accept');
-// });
+Route::controller(InviteController::class)->group(function() {
+    Route::get('invites/accept/{token}', 'accept')->name('invites.accept');
+    Route::post('invites/process', 'process')->name('invites.process');
+});

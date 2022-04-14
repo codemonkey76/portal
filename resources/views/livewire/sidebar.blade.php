@@ -1,15 +1,16 @@
 <div x-data="{admin: @entangle('admin')}" class="flex flex-col min-h-0 bg-gray-800 p-4">
   <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
     <div class="flex items-center flex-shrink-0 px-4">
-      <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow">
+        <x-icon.logo />
     </div>
     <nav class="mt-5 flex-1 px-2 bg-gray-800 space-y-1 flex flex-col justify-between" aria-label="Sidebar">
       <div x-show="!admin" wire:key="mainMenu">
         @if (isset($mainMenu))
           @foreach ($mainMenu->items as $menuItem)
             <x-sidebar.link
-              route="{{ $menuItem->route }}"
-              label="{{ $menuItem->label }}">
+              route="{{ Route::has($menuItem->route) ? route($menuItem->route): '#' }}"
+              label="{{ $menuItem->label }}"
+              is-active="{{ Route::is($menuItem->route) }}">
               {!! $menuItem->icon !!}
             </x-sidebar.link>
           @endforeach
@@ -20,8 +21,9 @@
           @if (isset($adminMenu))
             @foreach ($adminMenu->items as $menuItem)
               <x-sidebar.link
-                route="{{ $menuItem->route }}"
-                label="{{ $menuItem->label }}">
+                route="{{ Route::has($menuItem->route) ? route($menuItem->route): '#' }}"
+                label="{{ $menuItem->label }}"
+                is-active="{{ Route::is($menuItem->route) }}">
                 {!! $menuItem->icon !!}
               </x-sidebar.link>
             @endforeach
@@ -31,6 +33,7 @@
     </nav>
 
     <div class="flex space-x-2 mx-auto items-center justify-between">
+    @can('view admin menu')
     <div class="flex items-center px-2 py-2 text-sm leading-5 font-medium focus:outline-none text-gray-300 hover:text-white space-x-2">
         <button @click="admin = !admin"
             type="button"
@@ -40,6 +43,7 @@
         </button>
         <span>Admin</span>
     </div>
+    @endcan
       <x-signout-button />
     </div>
   </div>

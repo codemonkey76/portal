@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('token', 64)->unique();
             $table->foreignIdFor(Customer::class);
+            $table->timestamp('expires_at');
             $table->timestamps();
         });
     }

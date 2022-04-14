@@ -6,6 +6,8 @@ use App\Models\Menu;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Schema;
+
 use Livewire\Component;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,8 +29,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::share('adminMenu', Menu::whereName('Admin')->with('items')->first());
-        View::share('mainMenu', Menu::whereName('Main')->with('items')->first());
+
+        if (Schema::hasTable('menus')) {
+            View::share('adminMenu', Menu::whereName('Admin')->with('items')->first());
+            View::share('mainMenu', Menu::whereName('Main')->with('items')->first());
+        }
         View::share('preferAdminMenu', session()->get('preferAdminMenu'), false);
         View::share('preferDarkMode', session()->get('preferDarkMode', false));
 
