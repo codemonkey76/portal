@@ -33,12 +33,16 @@ class PermissionSeeder extends Seeder
         $admin->givePermissionTo(Permission::create(['name' => 'delete customer']));
 
         $super->givePermissionTo(Permission::create(['name' => 'view servers']));
-        $super->givePermissionTo(Permission::create(['name' => 'view permissions']));
 
         $super->givePermissionTo(Permission::create(['name' => 'view menus']));
         $super->givePermissionTo(Permission::create(['name' => 'create menus']));
         $super->givePermissionTo(Permission::create(['name' => 'edit menus']));
         $super->givePermissionTo(Permission::create(['name' => 'delete menus']));
+
+        $super->givePermissionTo(Permission::create(['name' => 'view permissions']));
+        $super->givePermissionTo(Permission::create(['name' => 'create permissions']));
+        $super->givePermissionTo(Permission::create(['name' => 'edit permissions']));
+        $super->givePermissionTo(Permission::create(['name' => 'delete permissions']));
 
         $accounts->givePermissionTo(Permission::create(['name' => 'create payment']));
         $accounts->givePermissionTo(Permission::create(['name' => 'view admin menu']));
