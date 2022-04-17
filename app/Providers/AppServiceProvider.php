@@ -40,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
         Component::macro('notify', function ($message) {
             $this->dispatchBrowserEvent('notify', $message);
         });
+        
 
         Builder::macro('toCsv', function () {
             $results = $this->get();

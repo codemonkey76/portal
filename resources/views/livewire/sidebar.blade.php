@@ -20,12 +20,14 @@
         <div x-show="admin" wire:key="adminMenu">
           @if (isset($adminMenu))
             @foreach ($adminMenu->items as $menuItem)
+              @can($menuItem->permission_required)
               <x-sidebar.link
                 route="{{ Route::has($menuItem->route) ? route($menuItem->route): '#' }}"
                 label="{{ $menuItem->label }}"
                 is-active="{{ Route::is($menuItem->route) }}">
                 {!! $menuItem->icon !!}
               </x-sidebar.link>
+              @endcan
             @endforeach
           @endif
         </div>

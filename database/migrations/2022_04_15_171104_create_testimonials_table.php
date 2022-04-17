@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Menu;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('menu_items', function (Blueprint $table) {
+        Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Menu::class)->constrained();
-            $table->string('route');
-            $table->string('label');
-            $table->string('icon', 10000);
-            $table->string('permission_required')->nullable();
+            $table->string('name');
+            $table->string('position');
+            $table->string('image_url');
+            $table->text('text');
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menu_items');
+        Schema::dropIfExists('testimonials');
     }
 };

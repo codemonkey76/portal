@@ -28,8 +28,11 @@ class Index extends Component
         ];
     public function create()
     {
-        $this->editing = $this->makeBlankInvitation();
-        $this->showCreateModal = true;
+        if ($this->user->can('create invites'))
+        {
+            $this->editing = $this->makeBlankInvitation();
+            $this->showCreateModal = true;
+        }
     }
 
     protected function makeBlankInvitation()
@@ -39,11 +42,24 @@ class Index extends Component
 
     public function save()
     {
-        $this->validate();
-        $this->editing->save();
-        $this->notify("Invitation has been queued and will be sent shortly!");
-        $this->showCreateModal = false;
+        if ($this->user->can('create invites'))
+        {
+            $this->validate();
+            $this->editing->save();
+            $this->notify("Invitation has been queued and will be sent shortly!");
+            $this->showCreateModal = false;
+        }
     }
+
+    public function delete(Invite $invite)
+    {
+        if ($this->user->can('delete invites'))
+        {
+            $invite->delete();
+            $this->notify("Invitation deleted successfully!");
+        }
+    }
+
     public function getRowsQueryProperty()
     {
         $query = Invite::query()
@@ -52,14 +68,7 @@ class Index extends Component
 
         return $this->applySorting($query);
     }
-
-    public function delete(Invite $invite)
-    {
-        $invite->delete();
-        $this->notify("Invitation deleted successfully!");
-
-    }
-
+    
     public function getRowsProperty()
     {
         return $this->applyPagination($this->rowsQuery);

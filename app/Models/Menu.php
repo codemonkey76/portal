@@ -13,4 +13,12 @@ class Menu extends Model
     {
         return $this->hasMany(MenuItem::class);
     }
+    public function scopeAdmin($query)
+    {
+        return $query->whereName('Admin');
+    }
+    public function scopeMain($query)
+    {
+        return $query->whereName('Main');
+    }
 }

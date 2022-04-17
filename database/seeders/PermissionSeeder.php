@@ -30,28 +30,30 @@ class PermissionSeeder extends Seeder
 
         $user = Role::create(['name' => 'user']);
 
+        $admin->givePermissionTo(Permission::create(['name' => 'delete customer']));
 
-        $deleteCustomer = Permission::create(['name' => 'delete customer']);
-        $createMenu = Permission::create(['name' => 'create menu']);
-        $createPayment = Permission::create(['name' => 'create payment']);
-        $makePayment = Permission::create(['name' => 'make payment']);
+        $super->givePermissionTo(Permission::create(['name' => 'view servers']));
+        $super->givePermissionTo(Permission::create(['name' => 'view permissions']));
 
-        $viewAdminMenu = Permission::create(['name' => 'view admin menu']);
-        $connectQuickbooks = Permission::create(['name' => 'connect quickbooks']);
-        $listUsers = Permission::create(['name' => 'list users']);
-        $listInvites = Permission::create(['name' => 'list invites']);
+        $super->givePermissionTo(Permission::create(['name' => 'view menus']));
+        $super->givePermissionTo(Permission::create(['name' => 'create menus']));
+        $super->givePermissionTo(Permission::create(['name' => 'edit menus']));
+        $super->givePermissionTo(Permission::create(['name' => 'delete menus']));
 
-        $super->givePermissionTo($createMenu);
-        $admin->givePermissionTo($deleteCustomer);
+        $accounts->givePermissionTo(Permission::create(['name' => 'create payment']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'view admin menu']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'connect quickbooks']));
 
 
-        $accounts->givePermissionTo($createPayment);
-        $accounts->givePermissionTo($viewAdminMenu);
-        $accounts->givePermissionTo($connectQuickbooks);
-        $accounts->givePermissionTo($listUsers);
-        $accounts->givePermissionTo($listInvites);
+        $accounts->givePermissionTo(Permission::create(['name' => 'view admin dashboard']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'view customers']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'view transactions']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'view rate groups']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'view plan items']));
 
-        $user->givePermissionTo($makePayment);
-
+        $admin->givePermissionTo(Permission::create(['name' => 'view invites']));
+        $admin->givePermissionTo(Permission::create(['name' => 'delete invites']));
+        $admin->givePermissionTo(Permission::create(['name' => 'create invites']));
+        $admin->givePermissionTo(Permission::create(['name' => 'view users']));
     }
 }

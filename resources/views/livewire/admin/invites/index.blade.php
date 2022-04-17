@@ -12,7 +12,7 @@
                 <x-input.search wire:model="search" />
                 <div class="flex space-x-2">
                     <x-input.per-page :options="$perPageOptions" wire:model="perPage" />
-                    <x-button.primary wire:click="create">Invite User</x-button.primary>
+                    @can('create invites')<x-button.primary wire:click="create">Invite User</x-button.primary>@endcan
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                     <x-table.cell>{{ $invite->customer?->company_name }}</x-table.cell>
                     <x-table.cell>{{ $invite->expiry }}</x-table.cell>
                     <x-table.cell>
-                        <x-small-button.danger wire:click="delete({{$invite}})">Delete</x-small-button.danger>
+                        @can('delete invites')<x-small-button.danger wire:click="delete({{$invite}})">Delete</x-small-button.danger>@endcan
                     </x-table.cell>
                 </x-table.row>
                 @empty
