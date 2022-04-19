@@ -9,7 +9,7 @@ Route::get('/', function () {
 });
 
 Route::middleware([
-    'auth:sanctum',
+    'auth',
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
@@ -29,6 +29,10 @@ Route::middleware([
 
     Route::middleware(['can:view menus'])->group(function() {
         Route::view('menus', 'menus.index')->name('menus.index');
+    });
+
+    Route::middleware(['can:view permissions'])->group(function() {
+        Route::view('permissions', 'permissions.index')->name('permissions.index');
     });
 });
 

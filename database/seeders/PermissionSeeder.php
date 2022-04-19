@@ -24,7 +24,6 @@ class PermissionSeeder extends Seeder
 
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $super = Role::create(['name' => 'super']);
         $admin = Role::create(['name' => 'admin']);
         $accounts = Role::create(['name' => 'accounts']);
 
@@ -32,6 +31,7 @@ class PermissionSeeder extends Seeder
 
         $admin->givePermissionTo(Permission::create(['name' => 'delete customer']));
 
+        $super = Role::create(['name' => 'super']);
         $super->givePermissionTo(Permission::create(['name' => 'view servers']));
 
         $super->givePermissionTo(Permission::create(['name' => 'view menus']));
@@ -43,6 +43,11 @@ class PermissionSeeder extends Seeder
         $super->givePermissionTo(Permission::create(['name' => 'create permissions']));
         $super->givePermissionTo(Permission::create(['name' => 'edit permissions']));
         $super->givePermissionTo(Permission::create(['name' => 'delete permissions']));
+
+        $super->givePermissionTo(Permission::create(['name' => 'view roles']));
+        $super->givePermissionTo(Permission::create(['name' => 'create roles']));
+        $super->givePermissionTo(Permission::create(['name' => 'edit roles']));
+        $super->givePermissionTo(Permission::create(['name' => 'delete roles']));
 
         $accounts->givePermissionTo(Permission::create(['name' => 'create payment']));
         $accounts->givePermissionTo(Permission::create(['name' => 'view admin menu']));
