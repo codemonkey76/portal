@@ -21,7 +21,7 @@
         <x-table>
             <x-slot name="head">
                 <x-table.heading class="pl-4 sm:pl-6">Name</x-table.heading>
-                <x-table.heading>Title</x-table.heading>
+                <x-table.heading>Customer</x-table.heading>
                 <x-table.heading>Status</x-table.heading>
                 <x-table.heading>Role</x-table.heading>
                 <x-table.heading><span class="sr-only">Edit</span></x-table.heading>
@@ -41,18 +41,20 @@
                         </div>
                     </x-table.cell>
                     <x-table.cell>
-                        <div class="text-gray-900">{{ $user->customer?->name ?? 'No assigned customer' }}</div>
-                        <div class="text-gray-500">{{ $user->customer?->phone ?? '' }}</div>
+                        <div class="text-gray-900">{{ $user->primary_customer?->company_name ?? 'No assigned customer' }}</div>
+                        <div class="text-gray-500">{{ $user->primary_customer?->phone ?? '' }}</div>
                     </x-table.cell>
                     <x-table.cell>
-                        <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">Active</span>
+                        <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 {{ $user->active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">{{ $user->active ? 'Active' : 'Inactive' }}</span>
                     </x-table.cell>
                     <x-table.cell class="text-gray-500 space-x-1">
                         @foreach ($user->roles as $role)
                         <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">{{ $role->name }}</span>
                         @endforeach
                     </x-table.cell>
-                    <x-table.cell><a href="#" wire:click="edit({{ $user->id }})" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Lindsay Walton</span></a></x-table.cell>
+                    <x-table.cell>
+                        @can('edit users')<x-small-button.warning wire:click="edit({{$user->id}})">Edit</x-small-button.warning>@endcan
+                    </x-table.cell>
                 </x-table.row>
                 @empty
                     <x-table.row>
@@ -68,32 +70,9 @@
             <x-slot name="title">Edit User</x-slot>
             <x-slot name="content">
                 <div class="space-y-4">
-                    <x-input.group
-                        label="Name"
-                        for="name"
-                        :error="$errors->first('editing.name')">
-                        <x-input.text wire:model="editing.name" name="name" :has-error="$errors->has('editing.name')"/>
-                    </x-input.group>
-                    <x-input.group
-                        label="Email"
-                        for="email"
-                        :error="$errors->first('editing.email')">
-                        <x-input.text wire:model="editing.email" name="email" :has-error="$errors->has('editing.email')"/>
-                    </x-input.group>
+                    Customer can change their own name / email / password.
 
-                    <x-input.group
-                        label="Password"
-                        for="password"
-                        :errror="$errors->first('editing.password')">
-                        <x-input.text wire:model="editing.password" name="password" type="password" :has-error="$errors->has('editing.password')"/>
-                    </x-input.group>
-
-                    <x-input.group
-                        label="Confirm Password"
-                        for="password_confirmation"
-                        :error="$errors->first('editing.password_confirmation')">
-                        <x-input.text wire:model="editing.password_confirmation" name="password_confirmation" type="password" :has-error="$errors->has('editing.password_confirmation')"/>
-                    </x-input.group>
+                    Admin needs to be able to change assigned customer, and change roles, and activate/deactivate customer.
                 </div>
             </x-slot>
             <x-slot name="footer">

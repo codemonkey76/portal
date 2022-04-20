@@ -13,4 +13,9 @@ class Customer extends Model
     {
         return $this->hasMany(Invite::class);
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

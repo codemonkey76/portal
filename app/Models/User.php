@@ -34,7 +34,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'customer_id'
+        'customer_id',
+        'active'
     ];
 
     protected $searchable = ['name', 'email'];
@@ -72,5 +73,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmailQueued);
+    }
+
+    public function primary_customer()
+    {
+        return $this->belongsTo(Customer::class, 'primary_customer_id');
     }
 }

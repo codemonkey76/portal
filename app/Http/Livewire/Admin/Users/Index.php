@@ -92,7 +92,7 @@ class Index extends Component
     public function getRowsQueryProperty()
     {
         $query = User::query()
-            ->with('roles')
+            ->with(['roles', 'primary_customer'])
             ->search($this->search);
 
         return $this->applySorting($query);

@@ -53,14 +53,19 @@ class Index extends Component
 
     public function getAvailablePermissionsProperty()
     {
-        if (!$this->editing) return Permission::all();
+        $permissions = null;
+        if (!$this->editing)
+            $permissions = Permission::all();
+        else
+            $permissions = Permission::whereNotIn('name', $this->editing->permissions->pluck('name'))->get();
 
-        return Permission::whereNotIn('name', $this->editing->permissions->pluck('name'))->get();
+        return $permissions;
     }
 
     public function addPermissionsToRole()
     {
         $this->editing->givePermissionTo($this->permissionsToAdd);
+        info('PermissionsChanged');
         $this->permissionsToAdd = [];
         $this->emit('permissionChanged');
     }
@@ -74,14 +79,23 @@ class Index extends Component
 
     public function getAvailableUsersProperty()
     {
-        if (!$this->editing) return User::all();
+        info("Calling AvailableUsers property");
+        $users = null;
+        info($this->editing);
+        if (!$this->editing)
+            $users = User::all();
+        else
+            $users = User::whereNotIn('id', $this->editing->users->pluck('id'))->get();
 
-        return User::whereNotIn('id', $this->editing->users->pluck('id'))->get();
+        info(json_encode($users->pluck('name')));
+
+        return $users;
     }
 
     public function addUsersToRole()
     {
         collect($this->usersToAdd)->each(fn($userId) => User::find($userId)->assignRole($this->editing));
+        info('UsersChanged');
         $this->usersToAdd = [];
         $this->emit('usersChanged');
     }
@@ -89,6 +103,7 @@ class Index extends Component
     public function removeUsersFromRole()
     {
         collect($this->usersToRemove)->each(fn($userId) => User::find($userId)->removeRole($this->editing));
+        info('UsersChanged');
         $this->usersToRemove = [];
         $this->emit('usersChanged');
     }

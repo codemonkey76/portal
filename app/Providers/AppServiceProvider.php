@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Feature;
 use App\Models\Menu;
+use App\Models\Question;
+use App\Models\Testimonial;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
@@ -34,13 +37,28 @@ class AppServiceProvider extends ServiceProvider
             View::share('adminMenu', Menu::whereName('Admin')->with('items')->first());
             View::share('mainMenu', Menu::whereName('Main')->with('items')->first());
         }
+
+        if (Schema::hasTable('testimonials')) {
+            View::share('testimonial', Testimonial::inRandomOrder()->first());
+        }
+
+        if (Schema::hasTable('features')) {
+            View::share('features', Feature::all());
+        }
+
+        if (Schema::hasTable('questions')) {
+            View::share('questions', Question::all());
+        }
+
+
+
         View::share('preferAdminMenu', session()->get('preferAdminMenu'), false);
         View::share('preferDarkMode', session()->get('preferDarkMode', false));
 
         Component::macro('notify', function ($message) {
             $this->dispatchBrowserEvent('notify', $message);
         });
-        
+
 
         Builder::macro('toCsv', function () {
             $results = $this->get();

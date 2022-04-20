@@ -28,7 +28,7 @@ class Index extends Component
         ];
     public function create()
     {
-        if ($this->user->can('create invites'))
+        if (auth()->user()->can('create invites'))
         {
             $this->editing = $this->makeBlankInvitation();
             $this->showCreateModal = true;
@@ -42,7 +42,7 @@ class Index extends Component
 
     public function save()
     {
-        if ($this->user->can('create invites'))
+        if (auth()->user()->can('create invites'))
         {
             $this->validate();
             $this->editing->save();
@@ -53,7 +53,7 @@ class Index extends Component
 
     public function delete(Invite $invite)
     {
-        if ($this->user->can('delete invites'))
+        if (auth()->user()->can('delete invites'))
         {
             $invite->delete();
             $this->notify("Invitation deleted successfully!");
@@ -68,7 +68,7 @@ class Index extends Component
 
         return $this->applySorting($query);
     }
-    
+
     public function getRowsProperty()
     {
         return $this->applyPagination($this->rowsQuery);

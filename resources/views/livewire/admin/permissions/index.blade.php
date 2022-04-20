@@ -108,73 +108,77 @@
     <x-jet-dialog-modal wire:model="showEditModal">
         <x-slot name="title">Edit Role</x-slot>
         <x-slot name="content">
-            <x-input.group for="permissions" label="Permissions">
-                <div class="flex space-x-2">
-                    <x-select size="5" multiple :has-empty-option="false" wire:model="permissionsToAdd">
-                        @foreach($this->availablePermissions as $permission)
-                            <option>{{ $permission->name }}</option>
-                        @endforeach
-                    </x-select>
-                    <div class="flex flex-col space-y-2 items-center justify-center">
-                        <x-small-button.primary wire:click="addPermissionsToRole" :disabled="empty($this->permissionsToAdd)">
-                            <div class="flex space-x-2 items-center">
-                                <span>Add</span>
-                                <x-icon.right />
-                            </div>
-                        </x-small-button.primary>
-                        <x-small-button.primary wire:click="removePermissionsFromRole" :disabled="empty($this->permissionsToRemove)">
-                            <div class="flex space-x-2 items-center">
-                                <span>Remove</span>
-                                <x-icon.left />
-                            </div>
-                        </x-small-button.primary>
-                    </div>
-                    <x-select size="5" multiple :has-empty-option="false" wire:model="permissionsToRemove">
+            <div class="flex flex-col space-y-4">
+                <h1 class="text-xl font-semibold text-gray-900">Role: <span>{{ $this->editing?->name }}</h1>
+                <p class="mt-2 text-sm text-gray-700">Choose what permissions apply to this role and what users are assigned.</p>
+                <x-input.group for="permissions" label="Permissions">
+                    <div class="flex space-x-2">
+                        <x-select size="5" multiple :has-empty-option="false" wire:model="permissionsToAdd">
+                            @foreach($this->availablePermissions as $permission)
+                                <option>{{ $permission->name }}</option>
+                            @endforeach
+                        </x-select>
+                        <div class="flex flex-col space-y-2 items-center justify-center">
+                            <x-small-button.primary wire:click="addPermissionsToRole" :disabled="empty($this->permissionsToAdd)">
+                                <div class="flex space-x-2 items-center">
+                                    <span>Add</span>
+                                    <x-icon.right />
+                                </div>
+                            </x-small-button.primary>
+                            <x-small-button.primary wire:click="removePermissionsFromRole" :disabled="empty($this->permissionsToRemove)">
+                                <div class="flex space-x-2 items-center">
+                                    <span>Remove</span>
+                                    <x-icon.left />
+                                </div>
+                            </x-small-button.primary>
+                        </div>
+                        <x-select size="5" multiple :has-empty-option="false" wire:model="permissionsToRemove">
                             @if($editing)
                                 @foreach($editing->permissions as $permission)
                                     <option>{{ $permission->name }}</option>
                                 @endforeach
                             @endif
-                    </x-select>
-                </div>
-                <x-jet-action-message class="mr-3" on="permissionChanged">
-                    {{ __('Permission updated.') }}
-                </x-jet-action-message>
-            </x-input.group>
-
-            <x-input.group for="users" label="Users">
-                <div class="flex space-x-2">
-                    <x-select size="5" multiple :has-empty-option="false" wire:model="usersToAdd">
-                        @foreach($this->availableUsers as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }}</option>
-                        @endforeach
-                    </x-select>
-                    <div class="flex flex-col space-y-2 items-center justify-center">
-                        <x-small-button.primary wire:click="addUsersToRole" :disabled="empty($this->usersToAdd)">
-                            <div class="flex space-x-2 items-center">
-                                <span>Add</span>
-                                <x-icon.right />
-                            </div>
-                        </x-small-button.primary>
-                        <x-small-button.primary wire:click="removeUsersFromRole" :disabled="empty($this->usersToRemove)">
-                            <div class="flex space-x-2 items-center">
-                                <span>Remove</span>
-                                <x-icon.left />
-                            </div>
-                        </x-small-button.primary>
+                        </x-select>
                     </div>
-                    <x-select size="5" multiple :has-empty-option="false" wire:model="usersToRemove">
+                    <x-jet-action-message class="mr-3" on="permissionChanged">
+                        {{ __('Permission updated.') }}
+                    </x-jet-action-message>
+                </x-input.group>
+
+                <x-input.group for="users" label="Users">
+                    <div class="flex space-x-2">
+                        <x-select size="5" multiple :has-empty-option="false" wire:model="usersToAdd">
+                            @foreach($this->availableUsers as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
+                        </x-select>
+                        <div class="flex flex-col space-y-2 items-center justify-center">
+                            <x-small-button.primary wire:click="addUsersToRole" :disabled="empty($this->usersToAdd)">
+                                <div class="flex space-x-2 items-center">
+                                    <span>Add</span>
+                                    <x-icon.right />
+                                </div>
+                            </x-small-button.primary>
+                            <x-small-button.primary wire:click="removeUsersFromRole" :disabled="empty($this->usersToRemove)">
+                                <div class="flex space-x-2 items-center">
+                                    <span>Remove</span>
+                                    <x-icon.left />
+                                </div>
+                            </x-small-button.primary>
+                        </div>
+                        <x-select size="5" multiple :has-empty-option="false" wire:model="usersToRemove">
                             @if($editing)
                                 @foreach($editing->users as $user)
                                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                                 @endforeach
                             @endif
-                    </x-select>
-                </div>
-                <x-jet-action-message class="mr-3" on="usersChanged">
-                    {{ __('Users updated.') }}
-                </x-jet-action-message>
-            </x-input.group>
+                        </x-select>
+                    </div>
+                    <x-jet-action-message class="mr-3" on="usersChanged">
+                        {{ __('Users updated.') }}
+                    </x-jet-action-message>
+                </x-input.group>
+            </div>
         </x-slot>
         <x-slot name="footer">
             <x-button.primary wire:click="$set('showEditModal', false)">Close</x-button.primary>

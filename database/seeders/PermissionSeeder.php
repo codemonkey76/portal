@@ -64,5 +64,6 @@ class PermissionSeeder extends Seeder
         $admin->givePermissionTo(Permission::create(['name' => 'delete invites']));
         $admin->givePermissionTo(Permission::create(['name' => 'create invites']));
         $admin->givePermissionTo(Permission::create(['name' => 'view users']));
+        $admin->givePermissionTo(Permission::create(['name' => 'edit users']));
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminMenuController;
 use App\Http\Controllers\InviteController;
+use App\Http\Controllers\WebsiteContactController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -40,3 +41,6 @@ Route::controller(InviteController::class)->group(function() {
     Route::get('invites/accept/{token}', 'accept')->name('invites.accept');
     Route::post('invites/process', 'process')->name('invites.process');
 });
+
+Route::post('website_contact', [WebsiteContactController::class, 'store'])->name('website_contact.store');
+Route::post('newsletter_subscription', [NewsletterSubscriptionController::class, 'store'])->name('newsletter.subscribe');

@@ -1,54 +1,72 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
-        @livewireStyles
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
-        <!-- Scripts -->
-        <script src="{{ mix('js/app.js') }}" defer></script>
-    </head>
-    <body class="font-sans antialiased">
-        <x-jet-banner />
-        <x-notification />
+    @livewireStyles
 
-        <div class="min-h-screen h-screen bg-gray-100 flex flex-col">
+    <!-- Scripts -->
+    <script src="{{ mix('js/app.js') }}" defer></script>
+</head>
 
-            <!-- Page Content -->
-            <main class="flex-1 flex h-screen">
-                <div class="flex flex-1">
-                    @livewire('sidebar')
-                    <div class="flex-1 overflow-auto">
-                        <!-- Page Heading -->
-                        @if (isset($header))
-                            <header class="bg-white shadow">
-                                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                                    {{ $header }}
-                                </div>
-                            </header>
-                        @endif
+<body class="font-sans antialiased">
+    <x-jet-banner />
+    <x-notification />
 
-                        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12 space-y-4">
-                            {{ $slot }}
+    <div class="min-h-screen h-screen bg-gray-100 flex flex-col">
+
+        <!-- Page Content -->
+        <main class="flex-1 flex h-screen">
+            <div class="flex flex-1">
+                @livewire('sidebar')
+                <div class="flex-1 overflow-auto">
+                    <!-- Page Heading -->
+                    @if (isset($header))
+                    <header class="bg-white shadow">
+                        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                            {{ $header }}
                         </div>
+                    </header>
+                    @endif
+
+                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12 space-y-4">
+                        {{ $slot }}
                     </div>
                 </div>
-            </main>
-        </div>
+            </div>
+        </main>
+    </div>
 
 
-        @stack('modals')
+    @stack('modals')
 
-        @livewireScripts
-    </body>
+    @livewireScripts
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {},
+            Tawk_LoadStart = new Date();
+        (function() {
+            var s1 = document.createElement("script"),
+                s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/625f4b1b7b967b11798b8488/1g123qov7';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+
 </html>

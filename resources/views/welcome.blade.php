@@ -7,9 +7,9 @@
         </div>
     </main>
     <x-marketing.pricing />
-    <x-marketing.testimonials />
-    <x-marketing.features />
-    <x-marketing.faq />
+    <x-marketing.testimonials :testimonial="$testimonial ?? null" />
+    <x-marketing.features :features="$features ?? null" />
+    <x-marketing.faq :questions="$questions ?? null" />
     <x-marketing.contact />
     <x-marketing.footer />
 </x-guest-layout>
