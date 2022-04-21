@@ -13,21 +13,21 @@ class Index extends Component
 {
     use WithSorting, WithPerPagePagination;
 
-    protected $perPageVariable = 'rolesPerPage';
+    protected string $perPageVariable = 'rolesPerPage';
 
-    public $showDeleteDeniedModal = false;
-    public $showDeleteConfirmation = false;
-    public $showCreateModal = false;
-    public $showEditModal = false;
-    public $creating;
-    public $deleting;
-    public $editing;
-    public $permissionsToAdd = [];
-    public $permissionsToRemove = [];
-    public $usersToAdd = [];
-    public $usersToRemove = [];
+    public bool $showDeleteDeniedModal = false;
+    public bool $showDeleteConfirmation = false;
+    public bool $showCreateModal = false;
+    public bool $showEditModal = false;
+    public Role $creating;
+    public Role $deleting;
+    public Role $editing;
+    public array $permissionsToAdd = [];
+    public array $permissionsToRemove = [];
+    public array $usersToAdd = [];
+    public array $usersToRemove = [];
 
-    protected $rules = [
+    protected array $rules = [
         'creating.name' => 'required|unique:roles,name'
     ];
 
@@ -51,61 +51,52 @@ class Index extends Component
         }
     }
 
-    public function getAvailablePermissionsProperty()
+    public function getAvailablePermissionsProperty() : mixed
     {
-        $permissions = null;
-        if (!$this->editing)
-            $permissions = Permission::all();
-        else
-            $permissions = Permission::whereNotIn('name', $this->editing->permissions->pluck('name'))->get();
-
-        return $permissions;
+        return $this->editing ? Permission::whereNotIn('name', $this->editing->permissions->pluck('name'))->get() : Permission::all();
     }
 
     public function addPermissionsToRole()
     {
-        $this->editing->givePermissionTo($this->permissionsToAdd);
-        info('PermissionsChanged');
-        $this->permissionsToAdd = [];
-        $this->emit('permissionChanged');
+        if (auth()->user()->can('change role permission assignments')) {
+            $this->editing->givePermissionTo($this->permissionsToAdd);
+            $this->permissionsToAdd = [];
+            $this->emit('permissionChanged');
+        }
     }
 
     public function removePermissionsFromRole()
     {
-        $this->editing->revokePermissionsTo($this->permissionsToRemove);
-        $this->permissionsToRemove = [];
-        $this->emit('permissionChanged');
+        if (auth()->user()->can('change role permission assignments')) {
+            $this->editing->revokePermissionTo($this->permissionsToRemove);
+            $this->permissionsToRemove = [];
+            $this->emit('permissionChanged');
+        }
     }
 
     public function getAvailableUsersProperty()
     {
-        info("Calling AvailableUsers property");
-        $users = null;
-        info($this->editing);
-        if (!$this->editing)
-            $users = User::all();
-        else
-            $users = User::whereNotIn('id', $this->editing->users->pluck('id'))->get();
-
-        info(json_encode($users->pluck('name')));
-
-        return $users;
+        return User::whereNotIn('id', $this->editing->users->pluck('id'))->get();
     }
 
     public function addUsersToRole()
     {
-        collect($this->usersToAdd)->each(fn($userId) => User::find($userId)->assignRole($this->editing));
-        info('UsersChanged');
-        $this->usersToAdd = [];
-        $this->emit('usersChanged');
+        if (auth()->user()->can('change user role assignments')) {
+            collect($this->usersToAdd)->each(fn($userId) => User::find($userId)->assignRole($this->editing));
+            $this->editing->refresh();
+            $this->usersToAdd = [];
+            $this->emit('usersChanged');
+        }
     }
 
     public function removeUsersFromRole()
     {
-        collect($this->usersToRemove)->each(fn($userId) => User::find($userId)->removeRole($this->editing));
-        info('UsersChanged');
-        $this->usersToRemove = [];
-        $this->emit('usersChanged');
+        if (auth()->user()->can('change user role assignments')) {
+            collect($this->usersToRemove)->each(fn($userId) => User::find($userId)->removeRole($this->editing));
+            $this->editing->refresh();
+            $this->usersToRemove = [];
+            $this->emit('usersChanged');
+        }
     }
     public function delete()
     {

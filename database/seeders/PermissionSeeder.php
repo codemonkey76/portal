@@ -43,6 +43,7 @@ class PermissionSeeder extends Seeder
         $super->givePermissionTo(Permission::create(['name' => 'create permissions']));
         $super->givePermissionTo(Permission::create(['name' => 'edit permissions']));
         $super->givePermissionTo(Permission::create(['name' => 'delete permissions']));
+        $admin->givePermissionTo(Permission::create(['name' => 'change role permission assignments']));
 
         $super->givePermissionTo(Permission::create(['name' => 'view roles']));
         $super->givePermissionTo(Permission::create(['name' => 'create roles']));
@@ -65,5 +66,7 @@ class PermissionSeeder extends Seeder
         $admin->givePermissionTo(Permission::create(['name' => 'create invites']));
         $admin->givePermissionTo(Permission::create(['name' => 'view users']));
         $admin->givePermissionTo(Permission::create(['name' => 'edit users']));
+        $admin->givePermissionTo(Permission::create(['name' => 'change user role assignments']));
+        $admin->givePermissionTo(Permission::create(['name' => 'change user customer assignments']));
     }
 }

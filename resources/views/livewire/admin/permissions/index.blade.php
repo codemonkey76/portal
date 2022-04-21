@@ -86,6 +86,7 @@
     <!-- Delete Confirmation Modal -->
 
     <!-- Create Modal -->
+    @if($creating)
     <form wire:submit.prevent="save">
         <x-jet-dialog-modal wire:model="showCreateModal">
             <x-slot name="title">Create Role</x-slot>
@@ -102,14 +103,16 @@
             </x-slot>
         </x-jet-dialog-modal>
     </form>
+    @endif
     <!-- Create Modal -->
 
     <!-- Edit Modal -->
+    @if($editing)
     <x-jet-dialog-modal wire:model="showEditModal">
         <x-slot name="title">Edit Role</x-slot>
         <x-slot name="content">
             <div class="flex flex-col space-y-4">
-                <h1 class="text-xl font-semibold text-gray-900">Role: <span>{{ $this->editing?->name }}</h1>
+                <h1 class="text-xl font-semibold text-gray-900">Role: <span>{{ $this->editing->name }}</h1>
                 <p class="mt-2 text-sm text-gray-700">Choose what permissions apply to this role and what users are assigned.</p>
                 <x-input.group for="permissions" label="Permissions">
                     <div class="flex space-x-2">
@@ -133,11 +136,9 @@
                             </x-small-button.primary>
                         </div>
                         <x-select size="5" multiple :has-empty-option="false" wire:model="permissionsToRemove">
-                            @if($editing)
-                                @foreach($editing->permissions as $permission)
-                                    <option>{{ $permission->name }}</option>
-                                @endforeach
-                            @endif
+                            @foreach($editing->permissions as $permission)
+                                <option>{{ $permission->name }}</option>
+                            @endforeach
                         </x-select>
                     </div>
                     <x-jet-action-message class="mr-3" on="permissionChanged">
@@ -167,11 +168,9 @@
                             </x-small-button.primary>
                         </div>
                         <x-select size="5" multiple :has-empty-option="false" wire:model="usersToRemove">
-                            @if($editing)
-                                @foreach($editing->users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                @endforeach
-                            @endif
+                            @foreach($editing->users as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
                         </x-select>
                     </div>
                     <x-jet-action-message class="mr-3" on="usersChanged">
@@ -184,6 +183,7 @@
             <x-button.primary wire:click="$set('showEditModal', false)">Close</x-button.primary>
         </x-slot>
     </x-jet-dialog-modal>
+    @endif
     <!-- Edit Modal -->
 
 </div>

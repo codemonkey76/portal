@@ -16,6 +16,11 @@ class Customer extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class);
+    }
+
+    public function primary_users()
+    {
+        return $this->hasMany(User::class, 'primary_customer_id');
     }
 }

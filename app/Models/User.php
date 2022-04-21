@@ -79,4 +79,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Customer::class, 'primary_customer_id');
     }
+
+    public function  customers()
+    {
+        return $this->belongsToMany(Customer::class);
+    }
 }

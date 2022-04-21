@@ -20,9 +20,9 @@
 
         <x-table>
             <x-slot name="head">
-                <x-table.heading class="pl-4 sm:pl-6">Name</x-table.heading>
+                <x-table.heading sortable :direction="$sorts['name'] ?? null" wire:click="sortBy('name')" class="pl-4 sm:pl-6">Name</x-table.heading>
                 <x-table.heading>Customer</x-table.heading>
-                <x-table.heading>Status</x-table.heading>
+                <x-table.heading sortable :direction="$sorts['active'] ?? null" wire:click="sortBy('active')">Status</x-table.heading>
                 <x-table.heading>Role</x-table.heading>
                 <x-table.heading><span class="sr-only">Edit</span></x-table.heading>
             </x-slot>
@@ -65,14 +65,106 @@
                 @endforelse
             </x-slot>
         </x-table>
+
+        <!-- Edit Modal -->
+        @if($editing)
         <form wire:submit.prevent="save">
         <x-jet-dialog-modal wire:model="showEditModal">
             <x-slot name="title">Edit User</x-slot>
             <x-slot name="content">
-                <div class="space-y-4">
-                    Customer can change their own name / email / password.
+                <h3 class="text-lg font-semibold text-gray-900">User: {{ $editing->name }} ({{ $editing->email }})</h3>
+                <div class="space-y-4 divide-y divide-gray-300">
+                    <div>
+                        <p class="my-2 text-md text-gray-900">Select the users default customer.</p>
+                        <x-input.group for="primary_customer_id" label="Primary customer" :error="$errors->first('editing.primary_customer_id')">
+                            <x-select name="primary_customer_id" wire:model="editing.primary_customer_id" :has-error="$errors->has('editing.primary_customer_id')">
+                                @foreach($editing->customers as $customer)
+                                    <option value="{{ $customer->id }}">{{ $customer->company_name }}</option>
+                                @endforeach
+                            </x-select>
+                        </x-input.group>
+                    </div>
 
-                    Admin needs to be able to change assigned customer, and change roles, and activate/deactivate customer.
+                    <!-- Customer assignment controls -->
+                    <div>
+                        <p class="my-2 text-md text-gray-900">Assign the customers that this user needs to manage.</p>
+                        <div class="grid grid-cols-5 gap-4">
+                            <x-input.group for="customer_list" label="Customer list" class="col-span-2">
+                                <x-select name="customer_list" size="5" multiple :has-empty-option="false" wire:model="customersToAssign">
+                                    @foreach($this->availableCustomers as $customer)
+                                        <option value="{{ $customer->id }}">{{ $customer->company_name }}</option>
+                                    @endforeach
+                                </x-select>
+                            </x-input.group>
+
+                            <div class="flex flex-col space-y-2 items-center justify-center">
+                                <x-small-button.primary wire:click="assignCustomerToUser" :disabled="empty($this->customersToAssign)">
+                                    <div class="flex space-x-2 items-center">
+                                        <span>Add</span>
+                                        <x-icon.right />
+                                    </div>
+                                </x-small-button.primary>
+                                <x-small-button.primary wire:click="unassignCustomerFromUser" :disabled="empty($this->customersToUnassign)">
+                                    <div class="flex space-x-2 items-center">
+                                        <span>Remove</span>
+                                        <x-icon.left />
+                                    </div>
+                                </x-small-button.primary>
+                            </div>
+                            <x-input.group for="assigned_customers" label="Assigned customers" class="col-span-2">
+                                <x-select size="5" multiple :has-empty-option="false" wire:model="customersToUnassign">
+                                    @foreach($editing->customers as $customer)
+                                        <option value="{{ $customer->id }}">{{ $customer->company_name }}</option>
+                                    @endforeach
+                                </x-select>
+                            </x-input.group>
+                        </div>
+                        <x-jet-action-message class="mr-3" on="assignedCustomersChanged">
+                            {{ __('Assigned customers updated.') }}
+                        </x-jet-action-message>
+                    </div>
+                    <!-- Customer assignment controls -->
+
+                    <!-- Role assignment controls -->
+                    <div>
+                        <p class="my-2 text-md text-gray-900">Assign the roles required by this user.</p>
+
+                        <div class="grid grid-cols-5 gap-4">
+                            <x-input.group for="role_list" label="Available roles" class="col-span-2">
+                                <x-select name="role_list" size="5" multiple :has-empty-option="false" wire:model="rolesToAdd">
+                                    @foreach($this->availableRoles as $role)
+                                        <option>{{ $role->name }}</option>
+                                    @endforeach
+                                </x-select>
+                            </x-input.group>
+                            <div class="flex flex-col space-y-2 items-center justify-center">
+                                <x-small-button.primary wire:click="addRolesToUser" :disabled="empty($this->rolesToAdd)">
+                                    <div class="flex space-x-2 items-center">
+                                        <span>Add</span>
+                                        <x-icon.right />
+                                    </div>
+                                </x-small-button.primary>
+                                <x-small-button.primary wire:click="removeRolesFromUser" :disabled="empty($this->rolesToRemove)">
+                                    <div class="flex space-x-2 items-center">
+                                        <span>Remove</span>
+                                        <x-icon.left />
+                                    </div>
+                                </x-small-button.primary>
+                            </div>
+                            <x-input.group for="assigned_roles" label="Assigned roles" class="col-span-2">
+                                <x-select name="assigned_roles" size="5" multiple :has-empty-option="false" wire:model="rolesToRemove">
+                                    @foreach($this->editing->roles as $role)
+                                        <option>{{ $role->name }}</option>
+                                    @endforeach
+                                </x-select>
+                            </x-input.group>
+                        </div>
+                        <x-jet-action-message class="mr-3" on="assignedRolesChanged">
+                            {{ __('Assigned roles updated.') }}
+                        </x-jet-action-message>
+                    </div>
+                    <!-- Role assignment controls -->
+                    <x-input.toggle-icon />
                 </div>
             </x-slot>
             <x-slot name="footer">
@@ -83,6 +175,8 @@
             </x-slot>
         </x-jet-dialog-modal>
         </form>
+        @endif
+           <!-- Edit Modal -->
     </div>
   </div>
 </div>

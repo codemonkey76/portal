@@ -2,80 +2,119 @@
 
 namespace App\Http\Livewire\Admin\Users;
 
-use App\Actions\Fortify\PasswordValidationRules;
-use App\Http\Livewire\Traits\WithBulkActions;
-use App\Http\Livewire\Traits\WithCachedRows;
+use App\Actions\Users\CustomerAttacher;
 use App\Http\Livewire\Traits\WithPerPagePagination;
 use App\Http\Livewire\Traits\WithSearch;
-use App\Models\User;
 use App\Http\Livewire\Traits\WithSorting;
+use App\Models\Customer;
+use App\Models\User;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Spatie\Permission\Models\Role;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Index extends Component
 {
-    use WithPerPagePagination, WithSorting, WithBulkActions, WithSearch, WithCachedRows;
-    use PasswordValidationRules;
-    public $showDeleteModal = false;
-    public $showEditModal = false;
-    public $showFilters = false;
+    use WithPerPagePagination, WithSearch, WithSorting;
+
+    public bool $showDeleteModal = false;
+    public bool $showEditModal = false;
+
+    public array $customersToAssign = [];
+    public array $customersToUnassign = [];
+    public array $rolesToAdd = [];
+    public array $rolesToRemove = [];
 
     public User $editing;
-    protected $queryString = ['sorts'];
+
     protected $listeners = ['refreshUsers' => '$refresh'];
-    protected $perPageVariable = "usersPerPage";
+    protected string $perPageVariable = "usersPerPage";
+
 
     public function rules()
     {
-        return [
-            'editing.name' => 'required',
-            'editing.email' => 'required|email|unique',
-            'editing.password' => [$this->passwordRules(), 'confirmed'],
-            'editing.password_confirmation' => 'required'
+        $rules = [
+            'editing.primary_customer_id' => [
+                'exists:customers,id',
+                Rule::in($this->editing->customers()->pluck('customers.id')->toArray())
+            ]
         ];
+
+        if ($this->editing->customers()->count())
+            $rules['editing.primary_customer_id'][] = 'required';
+        else
+        {
+            $rules['editing.primary_customer_id'][] = 'nullable';
+            $this->editing->primary_customer_id = null;
+        }
+
+        return $rules;
     }
 
-    public function mount()
+    public function getAvailableCustomersProperty()
     {
-        $this->editing = $this->makeBlankUser();
-
-        info(json_encode($this->editing));
+        return $this->editing ? Customer::whereNotIn('id', $this->editing->customers->pluck('id'))->get() : Customer::all();
     }
 
-    public function exportSelected()
+    public function exportSelected(): StreamedResponse
     {
         return response()->streamDownload(function() {
             echo $this->selectedRowsQuery->toCsv();
         }, 'users.csv');
     }
 
-    public function deleteSelected()
+    public function assignCustomerToUser(CustomerAttacher $attacher)
     {
-        $deleteCount = $this->selectedRowsQuery->count();
+        if (auth()->user()->can('change user customer assignments')) {
+            $attacher->attach($this->editing, $this->customersToAssign);
 
-        $this->selectedRowsQuery->delete();
-        $this->showDeleteModal = false;
-        $this->notify('You\'ve deleted ' . $deleteCount . ' users');
+
+            $this->editing->refresh();
+            $this->customersToAssign = [];
+            $this->emit('assignedCustomersChanged');
+        }
     }
 
-    public function makeBlankUser()
+    public function unassignCustomerFromUser(CustomerAttacher $attacher)
     {
-        return User::make();
+        if (auth()->user()->can('change user customer assignments')) {
+            $attacher->detach($this->editing, $this->customersToUnassign);
+
+            $this->editing->refresh();
+            $this->customersToUnassign = [];
+            $this->emit('assignedCustomersChanged');
+        }
     }
 
-    public function create()
+    public function addRolesToUser()
     {
-        $this->useCachedRows();
+        if (auth()->user()->can('change user role assignments')) {
+            $this->editing->assignRole($this->rolesToAdd);
+            $this->editing->refresh();
+            $this->rolesToAdd = [];
+            $this->emit('assignedRolesChanged');
+        }
+    }
 
-        if ($this->editing->getKey()) $this->editing = $this->makeBlankUser();
+    public function removeRolesFromUser()
+    {
+        if (auth()->user()->can('change user role assignments')) {
+            $rolesToKeep = $this->editing->roles()->whereNotIn('name', $this->rolesToRemove)->pluck('name');
+            $this->editing->syncRoles($rolesToKeep);
+            $this->editing->refresh();
+            $this->rolesToRemove = [];
+            $this->emit('assignedRolesChanged');
+        }
+    }
 
-        $this->showEditModal = true;
+    public function getAvailableRolesProperty() : mixed
+    {
+        return $this->editing ? Role::whereNotIn('name', $this->editing->roles->pluck('name'))->get() : Role::all();
     }
 
     public function edit(User $user)
     {
-        $this->useCachedRows();
-
-        if ($this->editing->isNot($user)) $this->editing = $user;
+        $this->editing = $user;
 
         $this->showEditModal = true;
     }
@@ -92,7 +131,7 @@ class Index extends Component
     public function getRowsQueryProperty()
     {
         $query = User::query()
-            ->with(['roles', 'primary_customer'])
+            ->with(['roles', 'primary_customer', 'customers'])
             ->search($this->search);
 
         return $this->applySorting($query);
