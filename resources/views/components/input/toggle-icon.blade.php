@@ -1,9 +1,5 @@
-
-
-
 <button x-data="{
-    'enabled': false,
-
+    enabled: @entangle($attributes->wire('model'))
     }"
         type="button"
         @click="enabled = !enabled"
@@ -31,5 +27,5 @@
       </svg>
     </span>
   </span>
-    <input type="hidden" {{ $attributes->whereStartsWith('wire:model') }}>
+    <input type="hidden" :value="enabled" {{ $attributes }}>
 </button>

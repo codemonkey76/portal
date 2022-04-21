@@ -98,6 +98,7 @@
                             </x-input.group>
 
                             <div class="flex flex-col space-y-2 items-center justify-center">
+                                @can('change user customer assignments')
                                 <x-small-button.primary wire:click="assignCustomerToUser" :disabled="empty($this->customersToAssign)">
                                     <div class="flex space-x-2 items-center">
                                         <span>Add</span>
@@ -110,6 +111,7 @@
                                         <x-icon.left />
                                     </div>
                                 </x-small-button.primary>
+                                @endcan
                             </div>
                             <x-input.group for="assigned_customers" label="Assigned customers" class="col-span-2">
                                 <x-select size="5" multiple :has-empty-option="false" wire:model="customersToUnassign">
@@ -138,6 +140,7 @@
                                 </x-select>
                             </x-input.group>
                             <div class="flex flex-col space-y-2 items-center justify-center">
+                                @can('change user role assignments')
                                 <x-small-button.primary wire:click="addRolesToUser" :disabled="empty($this->rolesToAdd)">
                                     <div class="flex space-x-2 items-center">
                                         <span>Add</span>
@@ -150,6 +153,7 @@
                                         <x-icon.left />
                                     </div>
                                 </x-small-button.primary>
+                                @endcan
                             </div>
                             <x-input.group for="assigned_roles" label="Assigned roles" class="col-span-2">
                                 <x-select name="assigned_roles" size="5" multiple :has-empty-option="false" wire:model="rolesToRemove">
@@ -164,7 +168,12 @@
                         </x-jet-action-message>
                     </div>
                     <!-- Role assignment controls -->
-                    <x-input.toggle-icon />
+                    <div>
+                        <p class="my-2 text-md text-gray-900">Only active users can login.</p>
+                        <x-input.group for="active" label="Active?">
+                            <x-input.toggle-icon wire:model="editing.active" />
+                        </x-input.group>
+                    </div>
                 </div>
             </x-slot>
             <x-slot name="footer">

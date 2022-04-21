@@ -24,7 +24,6 @@ class Index extends Component
     public array $customersToUnassign = [];
     public array $rolesToAdd = [];
     public array $rolesToRemove = [];
-
     public User $editing;
 
     protected $listeners = ['refreshUsers' => '$refresh'];
@@ -37,7 +36,8 @@ class Index extends Component
             'editing.primary_customer_id' => [
                 'exists:customers,id',
                 Rule::in($this->editing->customers()->pluck('customers.id')->toArray())
-            ]
+            ],
+            'editing.active' => 'required|boolean'
         ];
 
         if ($this->editing->customers()->count())
@@ -67,7 +67,6 @@ class Index extends Component
     {
         if (auth()->user()->can('change user customer assignments')) {
             $attacher->attach($this->editing, $this->customersToAssign);
-
 
             $this->editing->refresh();
             $this->customersToAssign = [];
