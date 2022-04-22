@@ -2,12 +2,22 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
+
+    protected $searchable = ['company_name', 'phone', 'email'];
+
+    protected $casts = [
+        'status' => 'boolean',
+        'sync' => 'boolean'
+    ];
+
+    protected $guarded = [];
 
     public function invites()
     {

@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('display_name');
             $table->boolean('active')->default(true);
             $table->boolean('taxable')->default(true);
+            $table->integer('terms')->default(15);
+            $table->decimal('starting_balance')->default(0);
+            $table->decimal('credit_limit')->default(1000);
             $table->string('qb_customer_id')->nullable();
             $table->boolean('sync')->default(true);
             $table->integer('sync_failed')->default(0);

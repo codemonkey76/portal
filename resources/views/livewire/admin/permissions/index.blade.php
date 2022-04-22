@@ -122,6 +122,7 @@
                             @endforeach
                         </x-select>
                         <div class="flex flex-col space-y-2 items-center justify-center">
+                            @can('change role permission assignments')
                             <x-small-button.primary wire:click="addPermissionsToRole" :disabled="empty($this->permissionsToAdd)">
                                 <div class="flex space-x-2 items-center">
                                     <span>Add</span>
@@ -134,6 +135,7 @@
                                     <x-icon.left />
                                 </div>
                             </x-small-button.primary>
+                            @endcan
                         </div>
                         <x-select size="5" multiple :has-empty-option="false" wire:model="permissionsToRemove">
                             @foreach($editing->permissions as $permission)
@@ -154,6 +156,7 @@
                             @endforeach
                         </x-select>
                         <div class="flex flex-col space-y-2 items-center justify-center">
+                            @can('change user role assignments')
                             <x-small-button.primary wire:click="addUsersToRole" :disabled="empty($this->usersToAdd)">
                                 <div class="flex space-x-2 items-center">
                                     <span>Add</span>
@@ -166,6 +169,7 @@
                                     <x-icon.left />
                                 </div>
                             </x-small-button.primary>
+                            @endcan
                         </div>
                         <x-select size="5" multiple :has-empty-option="false" wire:model="usersToRemove">
                             @foreach($editing->users as $user)

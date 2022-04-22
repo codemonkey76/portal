@@ -29,7 +29,9 @@ class PermissionSeeder extends Seeder
 
         $user = Role::create(['name' => 'user']);
 
-        $admin->givePermissionTo(Permission::create(['name' => 'delete customer']));
+        $admin->givePermissionTo(Permission::create(['name' => 'create customers']));
+        $admin->givePermissionTo(Permission::create(['name' => 'edit customers']));
+        $admin->givePermissionTo(Permission::create(['name' => 'delete customers']));
 
         $super = Role::create(['name' => 'super']);
         $super->givePermissionTo(Permission::create(['name' => 'view servers']));
@@ -39,16 +41,23 @@ class PermissionSeeder extends Seeder
         $super->givePermissionTo(Permission::create(['name' => 'edit menus']));
         $super->givePermissionTo(Permission::create(['name' => 'delete menus']));
 
+
+
         $super->givePermissionTo(Permission::create(['name' => 'view permissions']));
         $super->givePermissionTo(Permission::create(['name' => 'create permissions']));
         $super->givePermissionTo(Permission::create(['name' => 'edit permissions']));
         $super->givePermissionTo(Permission::create(['name' => 'delete permissions']));
-        $admin->givePermissionTo(Permission::create(['name' => 'change role permission assignments']));
+
+        $super->givePermissionTo(Permission::create(['name' => 'create voip servers']));
+        $super->givePermissionTo(Permission::create(['name' => 'view voip servers']));
+        $super->givePermissionTo(Permission::create(['name' => 'edit voip servers']));
+        $super->givePermissionTo(Permission::create(['name' => 'delete voip servers']));
 
         $super->givePermissionTo(Permission::create(['name' => 'view roles']));
         $super->givePermissionTo(Permission::create(['name' => 'create roles']));
         $super->givePermissionTo(Permission::create(['name' => 'edit roles']));
         $super->givePermissionTo(Permission::create(['name' => 'delete roles']));
+        $super->givePermissionTo(Permission::create(['name' => 'change role permission assignments']));
 
         $accounts->givePermissionTo(Permission::create(['name' => 'create payment']));
         $accounts->givePermissionTo(Permission::create(['name' => 'view admin menu']));
@@ -66,6 +75,7 @@ class PermissionSeeder extends Seeder
         $admin->givePermissionTo(Permission::create(['name' => 'create invites']));
         $admin->givePermissionTo(Permission::create(['name' => 'view users']));
         $admin->givePermissionTo(Permission::create(['name' => 'edit users']));
+        $admin->givePermissionTo(Permission::create(['name' => 'delete users']));
         $admin->givePermissionTo(Permission::create(['name' => 'change user role assignments']));
         $admin->givePermissionTo(Permission::create(['name' => 'change user customer assignments']));
     }

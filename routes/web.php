@@ -20,6 +20,10 @@ Route::middleware([
        Route::view('users', 'users.index')->name('users.index');
     });
 
+    Route::middleware(['can:view customers'])->group(function() {
+        Route::view('customers', 'customers.index')->name('customers.index');
+    });
+
     Route::middleware(['can:view admin menu'])->group(function() {
         Route::post('admin/toggle-menu', [AdminMenuController::class])->name('admin.toggle');
     });
@@ -35,6 +39,11 @@ Route::middleware([
     Route::middleware(['can:view permissions'])->group(function() {
         Route::view('permissions', 'permissions.index')->name('permissions.index');
     });
+
+    Route::middleware(['can:view voip servers'])->group(function() {
+        Route::view('voip_servers', 'voip_servers.index')->name('voip_servers.index');
+    });
+    
 });
 
 Route::controller(InviteController::class)->group(function() {

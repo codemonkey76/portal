@@ -25,6 +25,7 @@ class Index extends Component
     public array $rolesToAdd = [];
     public array $rolesToRemove = [];
     public User $editing;
+    public User $deleting;
 
     protected $listeners = ['refreshUsers' => '$refresh'];
     protected string $perPageVariable = "usersPerPage";
@@ -113,18 +114,45 @@ class Index extends Component
 
     public function edit(User $user)
     {
-        $this->editing = $user;
+        if (auth()->user()->can('edit users'))
+        {
+            $this->editing = $user;
 
-        $this->showEditModal = true;
+            $this->showEditModal = true;
+        }
+    }
+
+    public function confirmDelete(User $user)
+    {
+        if (auth()->user()->can('delete users'))
+        {
+            $this->deleting = $user;
+            $this->showDeleteModal = true;
+        }
+    }
+
+    public function delete()
+    {
+        if (auth()->user()->can('delete users') && $this->deleting)
+        {
+            $this->deleting->delete();
+            $this->notify("User deleted successfully!");
+            $this->showDeleteModal = false;
+        }
     }
 
     public function save()
     {
-        $this->validate();
+        if (auth()->user()->can('edit users'))
+        {
+            $this->validate();
 
-        $this->editing->save();
+            $this->editing->save();
 
-        $this->showEditModal = false;
+            $this->notify("User updated successfully!");
+
+            $this->showEditModal = false;
+        }
     }
 
     public function getRowsQueryProperty()
@@ -139,6 +167,11 @@ class Index extends Component
     public function getRowsProperty()
     {
         return $this->applyPagination($this->rowsQuery);
+    }
+
+    public function mount()
+    {
+        $this->editing = User::make();
     }
 
     public function render()
