@@ -22,6 +22,7 @@
                     <x-table.heading>Label</x-table.heading>
                     <x-table.heading>Route</x-table.heading>
                     <x-table.heading>Permission</x-table.heading>
+                    <x-table.heading>Order</x-table.heading>
                     <x-table.heading>Actions</x-table.heading>
                 </x-slot>
                 <x-slot name="body">
@@ -39,6 +40,7 @@
                             <x-table.cell class="text-gray-900">{{ $item->label }}</x-table.cell>
                             <x-table.cell class="text-gray-900">{{ $item->route }}</x-table.cell>
                             <x-table.cell class="text-gray-900">{{ $item->permission_required }}</x-table.cell>
+                            <x-table.cell><x-spinner /></x-table.cell>
                             <x-table.cell>
                                 @can('edit menus')<x-small-button.warning wire:click="edit({{$item}})">Edit</x-small-button.warning>@endcan
                                 @can('delete menus')<x-small-button.danger wire:click="delete({{$item}})">Delete</x-small-button.danger>@endcan
