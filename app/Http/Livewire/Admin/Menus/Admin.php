@@ -15,15 +15,14 @@ use Spatie\Permission\Models\Permission;
 
 class Admin extends Component
 {
-    use WithSearch, WithPerPagePagination, WithSorting, WithEditsMenus;
+    use WithSearch, WithPerPagePagination, WithEditsMenus;
 
     public function getRowsQueryProperty()
     {
-        $query = MenuItem::query()
+        return MenuItem::query()
             ->search($this->search)
-            ->admin();
-
-        return $this->applySorting($query);
+            ->admin()
+            ->orderBy('order', 'asc');
     }
 
     public function mount()

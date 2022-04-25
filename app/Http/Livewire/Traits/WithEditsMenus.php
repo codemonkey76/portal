@@ -26,6 +26,16 @@ trait WithEditsMenus
         ];
     }
 
+    public function increment(MenuItem $item): void
+    {
+        $item->incrementOrder();
+    }
+
+    public function decrement(MenuItem $item): void
+    {
+        $item->decrementOrder();
+    }
+
     public function edit(MenuItem $item)
     {
         if (auth()->user()->cannot('edit menus')) return;

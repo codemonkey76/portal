@@ -17,11 +17,10 @@ class Main extends Component
 
     public function getRowsQueryProperty()
     {
-        $query = MenuItem::query()
+        return MenuItem::query()
             ->search($this->search)
-            ->main();
-
-        return $this->applySorting($query);
+            ->main()
+            ->orderBy('order', 'asc');
     }
 
     public function mount()

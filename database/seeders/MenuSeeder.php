@@ -26,22 +26,26 @@ class MenuSeeder extends Seeder
         $main->items()->create([
             'label' => 'Dashboard',
             'route' => 'dashboard',
+            'permission_required' => 'view dashboard',
             'icon' => '<svg class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>'
         ]);
         $main->items()->create([
             'label' => 'Billing',
             'route' => 'billing',
+            'permission_required' => 'view billing',
             'icon' => '<svg class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="svg-inline--fa fa-money-check-alt fa-w-20 w-5 h-5" data-icon="money-check-alt" data-prefix="fas" viewBox="0 0 640 512"><path fill="currentColor" d="M608 32H32C14.33 32 0 46.33 0 64v384c0 17.67 14.33 32 32 32h576c17.67 0 32-14.33 32-32V64c0-17.67-14.33-32-32-32zM176 327.88V344c0 4.42-3.58 8-8 8h-16c-4.42 0-8-3.58-8-8v-16.29c-11.29-.58-22.27-4.52-31.37-11.35-3.9-2.93-4.1-8.77-.57-12.14l11.75-11.21c2.77-2.64 6.89-2.76 10.13-.73 3.87 2.42 8.26 3.72 12.82 3.72h28.11c6.5 0 11.8-5.92 11.8-13.19 0-5.95-3.61-11.19-8.77-12.73l-45-13.5c-18.59-5.58-31.58-23.42-31.58-43.39 0-24.52 19.05-44.44 42.67-45.07V152c0-4.42 3.58-8 8-8h16c4.42 0 8 3.58 8 8v16.29c11.29.58 22.27 4.51 31.37 11.35 3.9 2.93 4.1 8.77.57 12.14l-11.75 11.21c-2.77 2.64-6.89 2.76-10.13.73-3.87-2.43-8.26-3.72-12.82-3.72h-28.11c-6.5 0-11.8 5.92-11.8 13.19 0 5.95 3.61 11.19 8.77 12.73l45 13.5c18.59 5.58 31.58 23.42 31.58 43.39 0 24.53-19.05 44.44-42.67 45.07zM416 312c0 4.42-3.58 8-8 8H296c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h112c4.42 0 8 3.58 8 8v16zm160 0c0 4.42-3.58 8-8 8h-80c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h80c4.42 0 8 3.58 8 8v16zm0-96c0 4.42-3.58 8-8 8H296c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h272c4.42 0 8 3.58 8 8v16z"></path></svg></svg>'
         ]);
         $main->items()->create([
             'label' => 'Calls',
             'route' => 'cdrs',
+            'permission_required' => 'view calls',
             'icon' => '<svg class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><svg aria-hidden="true" data-prefix="fas" data-icon="phone-square-alt" class="svg-inline--fa fa-phone-square-alt fa-w-14 w-5 h-5 mr-2" viewBox="0 0 448 512"><path fill="currentColor" d="M400 32H48A48 48 0 000 80v352a48 48 0 0048 48h352a48 48 0 0048-48V80a48 48 0 00-48-48zm-16.39 307.37l-15 65A15 15 0 01354 416C194 416 64 286.29 64 126a15.7 15.7 0 0111.63-14.61l65-15A18.23 18.23 0 01144 96a16.27 16.27 0 0113.79 9.09l30 70A17.9 17.9 0 01189 181a17 17 0 01-5.5 11.61l-37.89 31a231.91 231.91 0 00110.78 110.78l31-37.89A17 17 0 01299 291a17.85 17.85 0 015.91 1.21l70 30A16.25 16.25 0 01384 336a17.41 17.41 0 01-.39 3.37z"></path></svg></svg>'
         ]);
 
         $main->items()->create([
             'label' => 'SMS',
             'route' => 'sms',
+            'permission_required' => 'view sms',
             'icon' => '<svg class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M416 256V63.1C416 28.75 387.3 0 352 0H64C28.75 0 0 28.75 0 63.1v192C0 291.2 28.75 320 64 320l32 .0106v54.25c0 7.998 9.125 12.62 15.5 7.875l82.75-62.12L352 319.9C387.3 320 416 291.2 416 256zM576 128H448v128c0 52.87-43.13 95.99-96 95.99l-96 .0013v31.98c0 35.25 28.75 63.1 63.1 63.1l125.8-.0073l82.75 62.12C534.9 514.8 544 510.2 544 502.2v-54.24h32c35.25 0 64-28.75 64-63.1V191.1C640 156.7 611.3 128 576 128z"></path></svg></svg>'
         ]);
 
