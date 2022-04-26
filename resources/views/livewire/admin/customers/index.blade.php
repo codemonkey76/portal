@@ -33,8 +33,9 @@
                         <x-table.cell>{{ $customer->phone }}</x-table.cell>
                         <x-table.cell>{{ $customer->email }}</x-table.cell>
                         <x-table.cell><x-active :value="$customer->active" /></x-table.cell>
-                        <x-table.cell><x-active :value="$customer->status" /></x-table.cell>
+                        <x-table.cell><x-active :value="$customer->sync" /></x-table.cell>
                         <x-table.cell>
+                            <x-small-button.primary wire:click="show({{$customer->id}})">View</x-small-button.primary>
                             @can('edit customers')<x-small-button.warning wire:click="edit({{$customer->id}})">Edit</x-small-button.warning>@endcan
                             @can('delete customers')<x-small-button.danger wire:click="confirmDelete({{$customer->id}})">Delete</x-small-button.danger>@endcan
                         </x-table.cell>
@@ -59,26 +60,26 @@
                 <x-slot name="title">Edit Customer</x-slot>
                 <x-slot name="content">
                     <div class="space-y-4">
-                        <x-input.group for="company_name" label="Company name">
-                            <x-input.text wire:model="editing.company_name" placeholder="Company name" />
+                        <x-input.group for="company_name" label="Company name" :error="$errors->first('editing.company_name')">
+                            <x-input.text wire:model="editing.company_name" placeholder="Company name" :has-error="$errors->has('editing.company_name')" />
                         </x-input.group>
-                        <x-input.group for="fully_qualified_name" label="Fully qualified name">
-                            <x-input.text wire:model="editing.fully_qualified_name" placeholder="Fully qualified name" />
+                        <x-input.group for="fully_qualified_name" label="Fully qualified name" :error="$errors->first('editing.fully_qualified_name')">
+                            <x-input.text wire:model="editing.fully_qualified_name" placeholder="Fully qualified name" :has-error="$errors->has('editing.fully_qualified_name')"/>
                         </x-input.group>
-                        <x-input.group for="display_name" label="Display name">
-                            <x-input.text wire:model="editing.display_name" placeholder="Display name" />
+                        <x-input.group for="display_name" label="Display name" :error="$errors->first('editing.display_name')">
+                            <x-input.text wire:model="editing.display_name" placeholder="Display name" :has-error="$errors->has('editing.display_name')"/>
                         </x-input.group>
-                        <x-input.group for="first_name" label="Accounts Contact">
+                        <x-input.group for="first_name" label="Accounts Contact" :error="$errors->first('editing.first_name') . ' ' . $errors->first('editing.last_name')">
                             <div class="flex space-x-2">
-                                <x-input.text name="first_name" wire:model="editing.first_name" placeholder="First name" />
-                                <x-input.text name="first_name" wire:model="editing.last_name" placeholder="Last name" />
+                                <x-input.text name="first_name" wire:model="editing.first_name" placeholder="First name" :has-error="$errors->has('editing.first_name')"/>
+                                <x-input.text name="first_name" wire:model="editing.last_name" placeholder="Last name" :has-error="$errors->has('editing.last_name')" />
                             </div>
                         </x-input.group>
-                        <x-input.group for="phone" label="Phone">
-                            <x-input.text wire:model="editing.phone" placeholder="Phone" />
+                        <x-input.group for="phone" label="Phone" :error="$errors->first('editing.phone')">
+                            <x-input.text wire:model="editing.phone" placeholder="Phone" :has-error="$errors->has('editing.phone')"/>
                         </x-input.group>
-                        <x-input.group for="email" label="Email">
-                            <x-input.text wire:model="editing.email" placeholder="Email" />
+                        <x-input.group for="email" label="Email" :error="$errors->first('editing.email')">
+                            <x-input.text wire:model="editing.email" placeholder="Email" :has-error="$errors->has('editing.email')"/>
                         </x-input.group>
                         <div class="flex space-x-4">
                             <x-input.group for="active" label="Active">
@@ -88,6 +89,7 @@
                                 <x-input.toggle-icon wire:model="editing.sync" />
                             </x-input.group>
                         </div>
+                        <x-jet-validation-errors class="mb-4" />
                     </div>
                 </x-slot>
                 <x-slot name="footer">

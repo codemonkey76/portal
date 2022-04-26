@@ -22,6 +22,15 @@ Route::middleware([
 
     Route::middleware(['can:view customers'])->group(function() {
         Route::view('customers', 'customers.index')->name('customers.index');
+        Route::view('customers/{customer}', 'customers.show')->name('customers.show');
+    });
+
+    Route::middleware(['can:view service agreements'])->group(function() {
+       Route::view('service_agreements', 'service_agreements.index')->name('service_agreements.index');
+    });
+
+    Route::middleware(['can:create service agreements'])->group(function() {
+        Route::view('service_agreements/create', 'service_agreements.create')->name('service_agreements.create');
     });
 
     Route::middleware(['can:view admin menu'])->group(function() {
@@ -43,7 +52,7 @@ Route::middleware([
     Route::middleware(['can:view voip servers'])->group(function() {
         Route::view('voip_servers', 'voip_servers.index')->name('voip_servers.index');
     });
-    
+
 });
 
 Route::controller(InviteController::class)->group(function() {

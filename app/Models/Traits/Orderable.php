@@ -2,10 +2,7 @@
 
 namespace App\Models\Traits;
 
-
-use App\Models\MenuItem;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 trait Orderable
 {

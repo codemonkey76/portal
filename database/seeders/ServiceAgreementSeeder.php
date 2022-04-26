@@ -3,10 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Customer;
+use App\Models\ServiceAgreement;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CustomerSeeder extends Seeder
+class ServiceAgreementSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +16,9 @@ class CustomerSeeder extends Seeder
      */
     public function run()
     {
-        Customer::factory(50)->create();
+        Customer::each(function($customer) {
+            if (mt_rand(0,5) === 5)
+                ServiceAgreement::factory()->create(['customer_id' => $customer]);
+        });
     }
 }

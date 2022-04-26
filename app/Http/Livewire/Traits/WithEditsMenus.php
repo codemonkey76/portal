@@ -71,11 +71,11 @@ trait WithEditsMenus
 
     public function save()
     {
-        $editing = !!$this->editing->getKey();
+        $isEditing = !!$this->editing->getKey();
 
-        if ($editing && auth()->user()->cannot('edit menus')) return;
+        if ($isEditing && auth()->user()->cannot('edit menus')) return;
 
-        if (!$editing && auth()->user()->cannot('create menus')) return;
+        if (!$isEditing && auth()->user()->cannot('create menus')) return;
 
         $this->validate();
         $this->editing->save();

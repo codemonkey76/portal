@@ -41,8 +41,6 @@ class PermissionSeeder extends Seeder
         $super->givePermissionTo(Permission::create(['name' => 'edit menus']));
         $super->givePermissionTo(Permission::create(['name' => 'delete menus']));
 
-
-
         $super->givePermissionTo(Permission::create(['name' => 'view permissions']));
         $super->givePermissionTo(Permission::create(['name' => 'create permissions']));
         $super->givePermissionTo(Permission::create(['name' => 'edit permissions']));
@@ -62,6 +60,8 @@ class PermissionSeeder extends Seeder
         $accounts->givePermissionTo(Permission::create(['name' => 'create payment']));
         $accounts->givePermissionTo(Permission::create(['name' => 'view admin menu']));
         $accounts->givePermissionTo(Permission::create(['name' => 'connect quickbooks']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'view service agreements']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'create service agreements']));
 
 
         $accounts->givePermissionTo(Permission::create(['name' => 'view admin dashboard']));
