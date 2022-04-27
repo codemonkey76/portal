@@ -16,43 +16,22 @@ Route::middleware([
 ])->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
 
-    Route::middleware(['can:view users'])->group(function() {
-       Route::view('users', 'users.index')->name('users.index');
-    });
+
+    Route::view('users', 'users.index')->middleware('can:view users')->name('users.index');
 
     Route::middleware(['can:view customers'])->group(function() {
         Route::view('customers', 'customers.index')->name('customers.index');
         Route::view('customers/{customer}', 'customers.show')->name('customers.show');
     });
 
-    Route::middleware(['can:view service agreements'])->group(function() {
-       Route::view('service_agreements', 'service_agreements.index')->name('service_agreements.index');
-    });
-
-    Route::middleware(['can:create service agreements'])->group(function() {
-        Route::view('service_agreements/create', 'service_agreements.create')->name('service_agreements.create');
-    });
-
-    Route::middleware(['can:view admin menu'])->group(function() {
-        Route::post('admin/toggle-menu', [AdminMenuController::class])->name('admin.toggle');
-    });
-
-    Route::middleware(['can:view invites'])->group(function() {
-        Route::view('invites', 'invites.index')->name('invites.index');
-    });
-
-    Route::middleware(['can:view menus'])->group(function() {
-        Route::view('menus', 'menus.index')->name('menus.index');
-    });
-
-    Route::middleware(['can:view permissions'])->group(function() {
-        Route::view('permissions', 'permissions.index')->name('permissions.index');
-    });
-
-    Route::middleware(['can:view voip servers'])->group(function() {
-        Route::view('voip_servers', 'voip_servers.index')->name('voip_servers.index');
-    });
-
+    Route::view('service_agreements', 'service_agreements.index')->middleware('can:view service agreements')->name('service_agreements.index');
+    Route::view('service_agreements/create', 'service_agreements.create')->middleware('can:create service agreements')->name('service_agreements.create');
+    Route::post('admin/toggle-menu', [AdminMenuController::class])->middleware('can:view admin menu')->name('admin.toggle');
+    Route::view('invites', 'invites.index')->middleware('can:view invites')->name('invites.index');
+    Route::view('menus', 'menus.index')->middleware('can:view menus')->name('menus.index');
+    Route::view('permissions', 'permissions.index')->middleware('can:view permissions')->name('permissions.index');
+    Route::view('voip_servers', 'voip_servers.index')->middleware('can:view voip servers')->name('voip_servers.index');
+    Route::view('service_providers', 'service_providers.index')->middleware('can:view service providers')->name('service_providers.index');
 });
 
 Route::controller(InviteController::class)->group(function() {

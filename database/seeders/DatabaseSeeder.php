@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\NetworkService;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -23,5 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(QuestionSeeder::class);
         $this->call(VoipServerSeeder::class);
         $this->call(ServiceAgreementSeeder::class);
+        $this->call(ServiceProviderSeeder::class);
+        $this->call(NetworkServiceSeeder::class);
     }
 }

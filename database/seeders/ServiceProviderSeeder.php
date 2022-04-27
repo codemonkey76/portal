@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\ServiceProvider;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class NetworkServiceTypesSeeder extends Seeder
+class ServiceProviderSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +15,6 @@ class NetworkServiceTypesSeeder extends Seeder
      */
     public function run()
     {
-        //
+        ServiceProvider::factory(5)->create();
     }
 }

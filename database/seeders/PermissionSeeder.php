@@ -63,12 +63,12 @@ class PermissionSeeder extends Seeder
         $accounts->givePermissionTo(Permission::create(['name' => 'view service agreements']));
         $accounts->givePermissionTo(Permission::create(['name' => 'create service agreements']));
 
-
         $accounts->givePermissionTo(Permission::create(['name' => 'view admin dashboard']));
         $accounts->givePermissionTo(Permission::create(['name' => 'view customers']));
         $accounts->givePermissionTo(Permission::create(['name' => 'view transactions']));
         $accounts->givePermissionTo(Permission::create(['name' => 'view rate groups']));
         $accounts->givePermissionTo(Permission::create(['name' => 'view plan items']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'view service providers']));
 
         $admin->givePermissionTo(Permission::create(['name' => 'view invites']));
         $admin->givePermissionTo(Permission::create(['name' => 'delete invites']));
@@ -78,5 +78,8 @@ class PermissionSeeder extends Seeder
         $admin->givePermissionTo(Permission::create(['name' => 'delete users']));
         $admin->givePermissionTo(Permission::create(['name' => 'change user role assignments']));
         $admin->givePermissionTo(Permission::create(['name' => 'change user customer assignments']));
+
+        $admin->givePermissionTo(Permission::create(['name' => 'create service providers']));
+        $admin->givePermissionTo(Permission::create(['name' => 'edit service providers']));
     }
 }
