@@ -12,7 +12,7 @@
                 <x-input.search wire:model="search" />
                 <div class="flex space-x-2">
                     <x-input.per-page :options="$perPageOptions" wire:model="perPage" />
-                    @can('create service agreements')<x-button.primary wire:click="create">Create Agreement</x-button.primary>@endcan
+                    @can('service-agreements.create')<x-button.primary wire:click="create">Create Agreement</x-button.primary>@endcan
                 </div>
             </div>
         </div>

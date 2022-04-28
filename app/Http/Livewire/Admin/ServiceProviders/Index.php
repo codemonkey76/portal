@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\ServiceProviders;
 
+use App\Http\Livewire\Traits\WithAuthorizationMessage;
 use App\Http\Livewire\Traits\WithPerPagePagination;
 use App\Http\Livewire\Traits\WithSearch;
 use App\Http\Livewire\Traits\WithSorting;
@@ -10,30 +11,35 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    use WithSearch, WithSorting, WithPerPagePagination;
+    use WithSearch, WithSorting, WithPerPagePagination, WithAuthorizationMessage;
 
-    protected $perPageVariable="providersPerPage";
+    protected string $perPageVariable="providersPerPage";
 
-    public $showEditModal = false;
-    public $showDeleteModal = false;
+    public bool $showEditModal = false;
+    public bool $showDeleteModal = false;
     public ServiceProvider $editing;
 
 
     public function create()
     {
-        if (auth()->user()->can('create service providers'))
-        {
-            if ($this->editing->getKey()) $this->editing = $this->makeBlankProvider();
-            $this->showEditModal = true;
-        }
+        if (auth()->user()->cannot('create service providers'))
+            return $this->denied();
+
+        if ($this->editing->getKey())
+            $this->editing = $this->makeBlankProvider();
+
+        $this->showEditModal = true;
     }
 
     public function save()
     {
         $isEditing = !!$this->editing->getKey();
 
-        if ($isEditing && auth()->user()->cannot('edit service providers')) return;
-        if (!$isEditing && auth()->user()->cannot('create service providers')) return;
+        if ($isEditing && auth()->user()->cannot('edit service providers'))
+            return $this->denied();
+
+        if (!$isEditing && auth()->user()->cannot('create service providers'))
+            return $this->denied();
 
         $this->validate();
         $this->editing->save();
@@ -43,21 +49,25 @@ class Index extends Component
 
     public function edit(ServiceProvider $provider)
     {
-        if (auth()->user()->can('edit service providers'))
-        {
-            if ($this->editing->isNot($provider)) $this->editing = $provider;
+        if (auth()->user()->cannot('edit service providers'))
+            return $this->denied();
 
-            $this->showEditModal = true;
-        }
+        if ($this->editing->isNot($provider))
+            $this->editing = $provider;
+
+        $this->showEditModal = true;
     }
 
     public function confirmDelete(ServiceProvider $provider)
     {
-        if (auth()->user()->can('delete service provider'))
-        {
-            if $this->provider->
-        }
+        if (auth()->user()->cannot('delete service providers'))
+            return $this->denied();
 
+        if ($provider->network_services()->count() ||
+            $provider->mobile_services()->count())
+            return $this->denied("This provider is being used by existing services, cannot delete.");
+
+        $this->showDeleteModal = true;
     }
 
     public function delete()

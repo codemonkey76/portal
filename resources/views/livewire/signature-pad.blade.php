@@ -1,7 +1,9 @@
-<div  class="relative shadow-xl bg-white rounded-lg p-6 flex flex-col gap-4">
-    <form wire:submit.prevent="submit">
+<form wire:submit.prevent="submit">
+    <div class="flex flex-col space-y-2">
         <x-signature-pad wire:model.defer="signature" />
-        <x-button.danger wire:click="clear">Clear</x-button.danger>
-        <x-button.primary type="submit">Submit</x-button.primary>
-    </form>
-</div>
+        <div class="space-x-2 flex">
+            <x-small-button.danger wire:click="clear">Clear</x-small-button.danger>
+            <x-small-button.primary type="submit">Submit</x-small-button.primary>
+        </div>
+    </div>
+</form>

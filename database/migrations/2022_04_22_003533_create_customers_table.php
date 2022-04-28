@@ -19,8 +19,14 @@ return new class extends Migration
             $table->string('last_name')->nullable();
             $table->string('fully_qualified_name');
             $table->string('company_name')->nullable();
+            $table->string('abn')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->string('billing_address')->nullable();
+            $table->string('billing_suburb')->nullable();
+            $table->string('billing_state')->nullable();
+            $table->string('billing_postcode')->nullable();
+            $table->string('billing_country')->nullable();
             $table->string('display_name');
             $table->boolean('active')->default(true);
             $table->boolean('taxable')->default(true);

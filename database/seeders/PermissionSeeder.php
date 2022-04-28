@@ -29,57 +29,57 @@ class PermissionSeeder extends Seeder
 
         $user = Role::create(['name' => 'user']);
 
-        $admin->givePermissionTo(Permission::create(['name' => 'create customers']));
-        $admin->givePermissionTo(Permission::create(['name' => 'edit customers']));
-        $admin->givePermissionTo(Permission::create(['name' => 'delete customers']));
+        $admin->givePermissionTo(Permission::create(['name' => 'customers.create']));
+        $admin->givePermissionTo(Permission::create(['name' => 'customers.update']));
+        $admin->givePermissionTo(Permission::create(['name' => 'customers.destroy']));
 
         $super = Role::create(['name' => 'super']);
-        $super->givePermissionTo(Permission::create(['name' => 'view servers']));
 
-        $super->givePermissionTo(Permission::create(['name' => 'view menus']));
-        $super->givePermissionTo(Permission::create(['name' => 'create menus']));
-        $super->givePermissionTo(Permission::create(['name' => 'edit menus']));
-        $super->givePermissionTo(Permission::create(['name' => 'delete menus']));
+        $super->givePermissionTo(Permission::create(['name' => 'menus.index']));
+        $super->givePermissionTo(Permission::create(['name' => 'menus.create']));
+        $super->givePermissionTo(Permission::create(['name' => 'menus.update']));
+        $super->givePermissionTo(Permission::create(['name' => 'menus.destroy']));
 
-        $super->givePermissionTo(Permission::create(['name' => 'view permissions']));
-        $super->givePermissionTo(Permission::create(['name' => 'create permissions']));
-        $super->givePermissionTo(Permission::create(['name' => 'edit permissions']));
-        $super->givePermissionTo(Permission::create(['name' => 'delete permissions']));
+        $super->givePermissionTo(Permission::create(['name' => 'permissions.index']));
+        $super->givePermissionTo(Permission::create(['name' => 'permissions.create']));
+        $super->givePermissionTo(Permission::create(['name' => 'permissions.update']));
+        $super->givePermissionTo(Permission::create(['name' => 'permissions.destroy']));
 
-        $super->givePermissionTo(Permission::create(['name' => 'create voip servers']));
-        $super->givePermissionTo(Permission::create(['name' => 'view voip servers']));
-        $super->givePermissionTo(Permission::create(['name' => 'edit voip servers']));
-        $super->givePermissionTo(Permission::create(['name' => 'delete voip servers']));
+        $super->givePermissionTo(Permission::create(['name' => 'voip-servers.create']));
+        $super->givePermissionTo(Permission::create(['name' => 'voip-servers.index']));
+        $super->givePermissionTo(Permission::create(['name' => 'voip-servers.update']));
+        $super->givePermissionTo(Permission::create(['name' => 'voip-servers.destroy']));
 
-        $super->givePermissionTo(Permission::create(['name' => 'view roles']));
-        $super->givePermissionTo(Permission::create(['name' => 'create roles']));
-        $super->givePermissionTo(Permission::create(['name' => 'edit roles']));
-        $super->givePermissionTo(Permission::create(['name' => 'delete roles']));
+        $super->givePermissionTo(Permission::create(['name' => 'roles.index']));
+        $super->givePermissionTo(Permission::create(['name' => 'roles.create']));
+        $super->givePermissionTo(Permission::create(['name' => 'roles.update']));
+        $super->givePermissionTo(Permission::create(['name' => 'roles.destroy']));
         $super->givePermissionTo(Permission::create(['name' => 'change role permission assignments']));
 
-        $accounts->givePermissionTo(Permission::create(['name' => 'create payment']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'payments.create']));
         $accounts->givePermissionTo(Permission::create(['name' => 'view admin menu']));
         $accounts->givePermissionTo(Permission::create(['name' => 'connect quickbooks']));
-        $accounts->givePermissionTo(Permission::create(['name' => 'view service agreements']));
-        $accounts->givePermissionTo(Permission::create(['name' => 'create service agreements']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'service-agreements.index']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'service-agreements.create']));
 
         $accounts->givePermissionTo(Permission::create(['name' => 'view admin dashboard']));
-        $accounts->givePermissionTo(Permission::create(['name' => 'view customers']));
-        $accounts->givePermissionTo(Permission::create(['name' => 'view transactions']));
-        $accounts->givePermissionTo(Permission::create(['name' => 'view rate groups']));
-        $accounts->givePermissionTo(Permission::create(['name' => 'view plan items']));
-        $accounts->givePermissionTo(Permission::create(['name' => 'view service providers']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'customers.index']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'transactions.index']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'rate-groups.index']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'plan-items.index']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'service-providers.index']));
 
-        $admin->givePermissionTo(Permission::create(['name' => 'view invites']));
-        $admin->givePermissionTo(Permission::create(['name' => 'delete invites']));
-        $admin->givePermissionTo(Permission::create(['name' => 'create invites']));
-        $admin->givePermissionTo(Permission::create(['name' => 'view users']));
-        $admin->givePermissionTo(Permission::create(['name' => 'edit users']));
-        $admin->givePermissionTo(Permission::create(['name' => 'delete users']));
+        $admin->givePermissionTo(Permission::create(['name' => 'invites.index']));
+        $admin->givePermissionTo(Permission::create(['name' => 'invites.destroy']));
+        $admin->givePermissionTo(Permission::create(['name' => 'invites.create']));
+        $admin->givePermissionTo(Permission::create(['name' => 'users.index']));
+        $admin->givePermissionTo(Permission::create(['name' => 'users.update']));
+        $admin->givePermissionTo(Permission::create(['name' => 'users.destroy']));
         $admin->givePermissionTo(Permission::create(['name' => 'change user role assignments']));
         $admin->givePermissionTo(Permission::create(['name' => 'change user customer assignments']));
 
-        $admin->givePermissionTo(Permission::create(['name' => 'create service providers']));
-        $admin->givePermissionTo(Permission::create(['name' => 'edit service providers']));
+        $admin->givePermissionTo(Permission::create(['name' => 'service-providers.create']));
+        $admin->givePermissionTo(Permission::create(['name' => 'service-providers.update']));
+        $admin->givePermissionTo(Permission::create(['name' => 'service-providers.destroy']));
     }
 }

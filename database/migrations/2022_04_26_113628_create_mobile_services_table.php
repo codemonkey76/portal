@@ -19,7 +19,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(ServiceAgreement::class)->constrained();
             $table->string('mobile_number');
-            $table->foreignIdFor(ServiceProvider::class)->contrained();
+            $table->foreignIdFor(ServiceProvider::class)->constrained();
             $table->timestamps();
         });
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\ServiceAgreement;
+use App\Models\ServiceProvider;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->string('end_user')->nullable();
             $table->string('site_name')->nullable();
             $table->string('site_address')->nullable();
+            $table->foreignIdFor(ServiceProvider::class)->constrained();
             $table->timestamps();
         });
     }

@@ -54,7 +54,6 @@ class ServiceAgreement extends Model
         );
     }
 
-
     public function network_services(): HasMany
     {
         return $this->hasMany(NetworkService::class);

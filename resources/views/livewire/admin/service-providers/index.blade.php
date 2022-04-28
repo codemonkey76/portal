@@ -29,8 +29,8 @@
                             <x-table.cell>{{ $provider->name }}</x-table.cell>
                             <x-table.cell>{{ $provider->type }}</x-table.cell>
                             <x-table.cell>
-                                <x-small-button.warning>Edit</x-small-button.warning>
-                                <x-small-button.danger>Delete</x-small-button.danger>
+                                @can('edit service providers')<x-small-button.warning>Edit</x-small-button.warning>@endcan
+                                @can('delete service providers')<x-small-button.danger wire:click="confirmDelete({{ $provider->id }})">Delete</x-small-button.danger>@endcan
                             </x-table.cell>
                         </x-table.row>
                     @empty
