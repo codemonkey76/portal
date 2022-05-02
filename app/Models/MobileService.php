@@ -10,9 +10,15 @@ class MobileService extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
 
     public function service_agreement(): BelongsTo
     {
         return $this->belongsTo(ServiceAgreement::class);
+    }
+
+    public function service_provider(): BelongsTo
+    {
+        return $this->belongsTo(ServiceProvider::class);
     }
 }

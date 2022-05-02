@@ -61,6 +61,7 @@ class PermissionSeeder extends Seeder
         $accounts->givePermissionTo(Permission::create(['name' => 'connect quickbooks']));
         $accounts->givePermissionTo(Permission::create(['name' => 'service-agreements.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'service-agreements.create']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'service-agreements.update']));
 
         $accounts->givePermissionTo(Permission::create(['name' => 'view admin dashboard']));
         $accounts->givePermissionTo(Permission::create(['name' => 'customers.index']));

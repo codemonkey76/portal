@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ServiceAgreementSeeder::class);
         $this->call(ServiceProviderSeeder::class);
         $this->call(NetworkServiceSeeder::class);
+        $this->call(MobileServiceSeeder::class);
         $this->call(GlobalSettingSeeder::class);
     }
 }

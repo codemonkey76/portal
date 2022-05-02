@@ -18,6 +18,8 @@ return new class extends Migration
         Schema::create('network_services', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(ServiceAgreement::class)->constrained();
+            $table->string('description')->nullable();
+            $table->string('speed')->nullable();
             $table->string('service_id')->nullable();
             $table->string('service_type')->nullable();
             $table->string('carrier')->nullable();

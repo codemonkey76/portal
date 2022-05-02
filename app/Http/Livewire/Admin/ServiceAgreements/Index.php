@@ -31,7 +31,12 @@ class Index extends Component
 
     public function create()
     {
-        return redirect()->route('service_agreements.create');
+        return redirect()->route('service-agreements.create');
+    }
+
+    public function edit(ServiceAgreement $agreement)
+    {
+        return redirect()->route('service-agreements.edit', $agreement->id);
     }
 
     public function render()

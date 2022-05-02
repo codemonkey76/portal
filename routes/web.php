@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminMenuController;
 use App\Http\Controllers\InviteController;
+use App\Http\Controllers\NewsletterSubscriptionController;
 use App\Http\Controllers\ServiceAgreementController;
 use App\Http\Controllers\WebsiteContactController;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +28,7 @@ Route::middleware([
         Route::view('customers/{customer}', 'customers.show')->name('customers.show');
     });
 
-    Route::resource('service_agreements', ServiceAgreementController::class);
+    Route::resource('service-agreements', ServiceAgreementController::class);
 
     Route::post('admin/toggle-menu', [AdminMenuController::class])
          ->middleware('can:view admin menu')

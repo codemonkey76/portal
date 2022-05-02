@@ -67,7 +67,7 @@ class Create extends Component
 
         $this->validate();
         $this->agreement->save();
-        redirect()->route('service-agreements.edit');
+        return redirect()->route('service-agreements.edit', $this->agreement->id);
     }
 
     public function mount()

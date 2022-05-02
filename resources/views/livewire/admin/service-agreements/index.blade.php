@@ -37,8 +37,8 @@
                         <x-table.cell>{{ $agreement->amountString }}</x-table.cell>
                         <x-table.cell><x-active :value="true" /></x-table.cell>
                         <x-table.cell>
-                            <x-small-button.primary>Show</x-small-button.primary>
-                            <x-small-button.warning>Edit</x-small-button.warning>
+                            <x-small-button.primary wire:click="show({{ $agreement->id }})">Show</x-small-button.primary>
+                            <x-small-button.warning wire:click="edit({{ $agreement->id }})">Edit</x-small-button.warning>
                             <x-small-button.danger>Delete</x-small-button.danger>
                         </x-table.cell>
                     </x-table.row>
