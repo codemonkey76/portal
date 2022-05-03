@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 
 trait MigrateFreshAndSeedOnce
 {
-    protected static $setUpHasRunOnce = false;
+    protected static bool $setUpHasRunOnce = false;
 
     public function setUp(): void
     {

@@ -12,7 +12,7 @@
                     <x-input.search wire:model="search" />
                     <div class="flex space-x-2">
                         <x-input.per-page :options="$perPageOptions" wire:model="perPage" />
-                        @can('create service providers')<x-button.primary wire:click="create">New Provider</x-button.primary>@endcan
+                        @can('service-providers.create')<x-button.primary wire:click="create">New Provider</x-button.primary>@endcan
                     </div>
                 </div>
             </div>
@@ -29,8 +29,8 @@
                             <x-table.cell>{{ $provider->name }}</x-table.cell>
                             <x-table.cell>{{ $provider->type }}</x-table.cell>
                             <x-table.cell>
-                                @can('edit service providers')<x-small-button.warning>Edit</x-small-button.warning>@endcan
-                                @can('delete service providers')<x-small-button.danger wire:click="confirmDelete({{ $provider->id }})">Delete</x-small-button.danger>@endcan
+                                @can('service-providers.update')<x-small-button.warning>Edit</x-small-button.warning>@endcan
+                                @can('service-providers.destroy')<x-small-button.danger wire:click="confirmDelete({{ $provider->id }})">Delete</x-small-button.danger>@endcan
                             </x-table.cell>
                         </x-table.row>
                     @empty

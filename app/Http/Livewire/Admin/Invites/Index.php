@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Invites;
 
+use App\Http\Livewire\Traits\WithAuthorizationMessage;
 use App\Http\Livewire\Traits\WithCachedRows;
 use App\Http\Livewire\Traits\WithPerPagePagination;
 use App\Http\Livewire\Traits\WithSearch;
@@ -12,7 +13,7 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    use WithPerPagePagination, WithSorting, WithSearch;
+    use WithPerPagePagination, WithSorting, WithSearch, WithAuthorizationMessage;
 
     public $showCreateModal = false;
     public $customers;
@@ -28,11 +29,11 @@ class Index extends Component
         ];
     public function create()
     {
-        if (auth()->user()->can('create invites'))
-        {
-            $this->editing = $this->makeBlankInvitation();
-            $this->showCreateModal = true;
-        }
+        if (auth()->user()->cannot('invites.create'))
+            return $this->denied();
+
+        $this->editing = $this->makeBlankInvitation();
+        $this->showCreateModal = true;
     }
 
     protected function makeBlankInvitation()
@@ -42,22 +43,22 @@ class Index extends Component
 
     public function save()
     {
-        if (auth()->user()->can('create invites'))
-        {
-            $this->validate();
-            $this->editing->save();
-            $this->notify("Invitation has been queued and will be sent shortly!");
-            $this->showCreateModal = false;
-        }
+        if (auth()->user()->cannot('invites.create'))
+            return $this->denied();
+
+        $this->validate();
+        $this->editing->save();
+        $this->notify("Invitation has been queued and will be sent shortly!");
+        $this->showCreateModal = false;
     }
 
     public function delete(Invite $invite)
     {
-        if (auth()->user()->can('delete invites'))
-        {
-            $invite->delete();
-            $this->notify("Invitation deleted successfully!");
-        }
+        if (auth()->user()->cannot('invites.destroy'))
+            return $this->denied();
+
+        $invite->delete();
+        $this->notify("Invitation deleted successfully!");
     }
 
     public function getRowsQueryProperty()

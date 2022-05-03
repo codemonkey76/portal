@@ -10,7 +10,7 @@
                     </div>
                     <div class="flex space-x-2">
                         <x-input.per-page :options="$perPageOptions" wire:model="perPage" />
-                        @can('create menus')<x-button.primary wire:click="create">Create</x-button.primary>@endcan
+                        @can('menus.create')<!-- CreateMainMenuButton --><x-button.primary wire:click="create">Create</x-button.primary>@endcan
                     </div>
                 </div>
             </div>
@@ -45,8 +45,8 @@
                                 <x-tiny-button :disabled="$loop->last" wire:click="increment({{$item}})"><x-icon.caret-down /></x-tiny-button>
                             </x-table.cell>
                             <x-table.cell>
-                                @can('edit menus')<x-small-button.warning wire:click="edit({{$item}})">Edit</x-small-button.warning>@endcan
-                                @can('delete menus')<x-small-button.danger wire:click="delete({{$item}})">Delete</x-small-button.danger>@endcan
+                                @can('menus.update')<!-- EditMainMenuButton --><x-small-button.warning wire:click="edit({{$item}})">Edit</x-small-button.warning>@endcan
+                                @can('menus.destroy')<!-- DeleteMainMenuButton --><x-small-button.danger wire:click="delete({{$item}})">Delete</x-small-button.danger>@endcan
                             </x-table.cell>
                         </x-table.row>
                     @empty

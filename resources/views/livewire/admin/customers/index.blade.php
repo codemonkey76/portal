@@ -12,7 +12,7 @@
                 <x-input.search wire:model="search" />
                 <div class="flex space-x-2">
                     <x-input.per-page :options="$perPageOptions" wire:model="perPage" />
-                    @can('create customers')<x-button.primary wire:click="create">Create Customer</x-button.primary>@endcan
+                    @can('customers.create')<!-- CreateCustomerButton --><x-button.primary wire:click="create">Create Customer</x-button.primary>@endcan
                 </div>
             </div>
         </div>
@@ -36,8 +36,8 @@
                         <x-table.cell><x-active :value="$customer->sync" /></x-table.cell>
                         <x-table.cell>
                             <x-small-button.primary wire:click="show({{$customer->id}})">View</x-small-button.primary>
-                            @can('edit customers')<x-small-button.warning wire:click="edit({{$customer->id}})">Edit</x-small-button.warning>@endcan
-                            @can('delete customers')<x-small-button.danger wire:click="confirmDelete({{$customer->id}})">Delete</x-small-button.danger>@endcan
+                            @can('customers.update')<!-- EditCustomerButton --><x-small-button.warning wire:click="edit({{$customer->id}})">Edit</x-small-button.warning>@endcan
+                            @can('customers.destroy')<!-- DeleteCustomerButton --><x-small-button.danger wire:click="confirmDelete({{$customer->id}})">Delete</x-small-button.danger>@endcan
                         </x-table.cell>
                     </x-table.row>
                 @empty
@@ -101,14 +101,6 @@
             </x-jet-dialog-modal>
         </form>
         <!-- Create Modal -->
-
-        <!-- Edit Modal -->
-
-        <!-- Edit Modal -->
-
-        <!-- Delete Modal -->
-
-        <!-- Delete Modal -->
     </div>
   </div>
 </div>

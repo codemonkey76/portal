@@ -22,7 +22,7 @@ class Index extends Component
 
     public function create()
     {
-        if (auth()->user()->cannot('create service providers'))
+        if (auth()->user()->cannot('service-providers.create'))
             return $this->denied();
 
         if ($this->editing->getKey())
@@ -35,10 +35,10 @@ class Index extends Component
     {
         $isEditing = !!$this->editing->getKey();
 
-        if ($isEditing && auth()->user()->cannot('edit service providers'))
+        if ($isEditing && auth()->user()->cannot('service-providers.update'))
             return $this->denied();
 
-        if (!$isEditing && auth()->user()->cannot('create service providers'))
+        if (!$isEditing && auth()->user()->cannot('service-providers.create'))
             return $this->denied();
 
         $this->validate();
@@ -49,7 +49,7 @@ class Index extends Component
 
     public function edit(ServiceProvider $provider)
     {
-        if (auth()->user()->cannot('edit service providers'))
+        if (auth()->user()->cannot('service-providers.update'))
             return $this->denied();
 
         if ($this->editing->isNot($provider))
@@ -60,7 +60,7 @@ class Index extends Component
 
     public function confirmDelete(ServiceProvider $provider)
     {
-        if (auth()->user()->cannot('delete service providers'))
+        if (auth()->user()->cannot('service-providers.destroy'))
             return $this->denied();
 
         if ($provider->network_services()->count() ||

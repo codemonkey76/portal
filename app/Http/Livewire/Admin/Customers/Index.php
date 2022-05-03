@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Customers;
 
+use App\Http\Livewire\Traits\WithAuthorizationMessage;
 use App\Http\Livewire\Traits\WithPerPagePagination;
 use App\Http\Livewire\Traits\WithSearch;
 use App\Http\Livewire\Traits\WithSorting;
@@ -11,7 +12,7 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    use WithPerPagePagination, WithSearch, WithSorting;
+    use WithPerPagePagination, WithSearch, WithSorting, WithAuthorizationMessage;
 
     public $perPageVariable = "customersPerPage";
 
@@ -41,28 +42,30 @@ class Index extends Component
     }
     public function create()
     {
-        if (auth()->user()->can('create customers')) {
-            if ($this->editing->getKey()) $this->editing = $this->makeBlankCustomer();
+        if (auth()->user()->cannot('customers.create'))
+            return $this->denied();
 
-            $this->showEditModal = true;
-        }
+        if ($this->editing->getKey()) $this->editing = $this->makeBlankCustomer();
+        $this->showEditModal = true;
     }
 
     public function edit(Customer $customer)
     {
-        if (auth()->user()->can('edit customers')) {
-            if ($this->editing->isNot($customer)) $this->editing = $customer;
+        if (auth()->user()->cannot('customers.update'))
+            return $this->denied();
 
-            $this->showEditModal = true;
-        }
+
+        if ($this->editing->isNot($customer)) $this->editing = $customer;
+        $this->showEditModal = true;
     }
 
     public function save()
     {
         $isEditing = !!$this->editing->getKey();
 
-        if ($isEditing && auth()->user()->cannot('edit customers')) return;
-        if (!$isEditing && auth()->user()->cannot('create customers')) return;
+        if ($isEditing && auth()->user()->cannot('customers.update')) return $this->denied();
+        if (!$isEditing && auth()->user()->cannot('customers.create')) return $this->denied();
+
 
         $this->validate();
         $this->editing->save();

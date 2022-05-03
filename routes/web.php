@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::middleware([
     'auth',
@@ -43,15 +43,15 @@ Route::middleware([
          ->name('menus.index');
 
     Route::view('permissions', 'permissions.index')
-         ->middleware('can:view permissions')
+         ->middleware('can:permissions.index')
          ->name('permissions.index');
 
     Route::view('voip_servers', 'voip_servers.index')
-         ->middleware('can:view voip servers')
+         ->middleware('can:voip-servers.index')
          ->name('voip_servers.index');
 
     Route::view('service_providers', 'service_providers.index')
-         ->middleware('can:view service providers')
+         ->middleware('can:service-providers.index')
          ->name('service_providers.index');
 });
 

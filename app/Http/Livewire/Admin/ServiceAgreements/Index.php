@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\ServiceAgreements;
 
+use App\Http\Livewire\Traits\WithAuthorizationMessage;
 use App\Http\Livewire\Traits\WithPerPagePagination;
 use App\Http\Livewire\Traits\WithSearch;
 use App\Http\Livewire\Traits\WithSorting;
@@ -10,7 +11,7 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    use WithPerPagePagination, WithSorting, WithSearch;
+    use WithPerPagePagination, WithSorting, WithSearch, WithAuthorizationMessage;
 
     protected string $perPageVariable="agreementsPerPage";
 
@@ -31,11 +32,17 @@ class Index extends Component
 
     public function create()
     {
+        if (auth()->user()->cannot('service-agreements.create'))
+            return $this->denied();
+
         return redirect()->route('service-agreements.create');
     }
 
     public function edit(ServiceAgreement $agreement)
     {
+        if (auth()->user()->cannot('service-agreements.update'))
+            return $this->denied();
+
         return redirect()->route('service-agreements.edit', $agreement->id);
     }
 

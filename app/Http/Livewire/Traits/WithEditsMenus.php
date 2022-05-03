@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 trait WithEditsMenus
 {
+    use WithAuthorizationMessage;
+
     protected $perPageVariable = "menusPerPage";
     public $showEditModal = false;
     public $routes = [];
@@ -21,7 +23,7 @@ trait WithEditsMenus
             'editing.menu_id' => Rule::in($this->menu_id),
             'editing.label' => 'required|string|max:25',
             'editing.route' => Rule::in($this->routes),
-            'editing.permission_required' => Rule::in($this->permissions),
+            'editing.permission_required' => ['nullable', Rule::in($this->permissions)],
             'editing.icon' => 'required|string'
         ];
     }
@@ -38,7 +40,7 @@ trait WithEditsMenus
 
     public function edit(MenuItem $item)
     {
-        if (auth()->user()->cannot('edit menus')) return;
+        if (auth()->user()->cannot('menus.update')) return$this->denied();
 
         if ($this->editing->isNot($item)) $this->editing = $item;
 
@@ -47,7 +49,7 @@ trait WithEditsMenus
 
     public function create()
     {
-        if (auth()->user()->cannot('create menus')) return;
+        if (auth()->user()->cannot('menus.create')) return $this->denied();
 
         if ($this->editing->getKey()) $this->editing = $this->makeBlankMenuItem();
 
@@ -56,7 +58,7 @@ trait WithEditsMenus
 
     public function delete(MenuItem $item)
     {
-        if (auth()->user()->cannot('delete menus')) return;
+        if (auth()->user()->cannot('menus.destroy')) return $this->denied();
 
         if ($item->route === 'menus.index')
         {
@@ -73,10 +75,11 @@ trait WithEditsMenus
     {
         $isEditing = !!$this->editing->getKey();
 
-        if ($isEditing && auth()->user()->cannot('edit menus')) return;
+        if ($isEditing && auth()->user()->cannot('menus.update')) return $this->denied();
 
-        if (!$isEditing && auth()->user()->cannot('create menus')) return;
+        if (!$isEditing && auth()->user()->cannot('menus.create')) return $this->denied();
 
+        info(json_encode($this->editing));
         $this->validate();
         $this->editing->save();
         $this->notify("Menu item saved successfully!");

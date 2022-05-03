@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Permissions;
 
+use App\Http\Livewire\Traits\WithAuthorizationMessage;
 use App\Http\Livewire\Traits\WithPerPagePagination;
 use App\Http\Livewire\Traits\WithSorting;
 use App\Models\User;
@@ -11,7 +12,7 @@ use Spatie\Permission\Models\Role;
 
 class Index extends Component
 {
-    use WithSorting, WithPerPagePagination;
+    use WithSorting, WithPerPagePagination, WithAuthorizationMessage;
 
     protected string $perPageVariable = 'rolesPerPage';
 
@@ -33,6 +34,9 @@ class Index extends Component
 
     public function confirmDelete(Role $role)
     {
+        if (auth()->user()->cannot('roles.destroy'))
+            return $this->denied();
+
         if ($role->users->count()) {
             $this->showDeleteDeniedModal = true;
             return;
@@ -44,11 +48,12 @@ class Index extends Component
 
     public function edit(Role $role)
     {
-        if (auth()->user()->can('edit roles')) {
-            $this->editing = $role;
-            $this->forgetComputed('availablePermissions');
-            $this->showEditModal = true;
-        }
+        if (auth()->user()->cannot('roles.update'))
+            return $this->denied();
+
+        $this->editing = $role;
+        $this->forgetComputed('availablePermissions');
+        $this->showEditModal = true;
     }
 
     public function getAvailablePermissionsProperty() : mixed
@@ -58,20 +63,22 @@ class Index extends Component
 
     public function addPermissionsToRole()
     {
-        if (auth()->user()->can('change role permission assignments')) {
-            $this->editing->givePermissionTo($this->permissionsToAdd);
-            $this->permissionsToAdd = [];
-            $this->emit('permissionChanged');
-        }
+        if (auth()->user()->cannot('change role permission assignments'))
+            return $this->denied();
+
+        $this->editing->givePermissionTo($this->permissionsToAdd);
+        $this->permissionsToAdd = [];
+        $this->emit('permissionChanged');
     }
 
     public function removePermissionsFromRole()
     {
-        if (auth()->user()->can('change role permission assignments')) {
-            $this->editing->revokePermissionTo($this->permissionsToRemove);
-            $this->permissionsToRemove = [];
-            $this->emit('permissionChanged');
-        }
+        if (auth()->user()->cannot('change role permission assignments'))
+            return $this->denied();
+
+        $this->editing->revokePermissionTo($this->permissionsToRemove);
+        $this->permissionsToRemove = [];
+        $this->emit('permissionChanged');
     }
 
     public function getAvailableUsersProperty()
@@ -81,48 +88,54 @@ class Index extends Component
 
     public function addUsersToRole()
     {
-        if (auth()->user()->can('change user role assignments')) {
-            collect($this->usersToAdd)->each(fn($userId) => User::find($userId)->assignRole($this->editing));
-            $this->editing->refresh();
-            $this->usersToAdd = [];
-            $this->emit('usersChanged');
-        }
+        if (auth()->user()->cannot('change user role assignments'))
+            return $this->denied();
+
+        collect($this->usersToAdd)->each(fn($userId) => User::find($userId)->assignRole($this->editing));
+        $this->editing->refresh();
+        $this->usersToAdd = [];
+        $this->emit('usersChanged');
     }
 
     public function removeUsersFromRole()
     {
-        if (auth()->user()->can('change user role assignments')) {
-            collect($this->usersToRemove)->each(fn($userId) => User::find($userId)->removeRole($this->editing));
-            $this->editing->refresh();
-            $this->usersToRemove = [];
-            $this->emit('usersChanged');
-        }
+        if (auth()->user()->cannot('change user role assignments'))
+            return $this->denied();
+
+        collect($this->usersToRemove)->each(fn($userId) => User::find($userId)->removeRole($this->editing));
+        $this->editing->refresh();
+        $this->usersToRemove = [];
+        $this->emit('usersChanged');
     }
+
     public function delete()
     {
-        if (auth()->user()->can('delete roles')) {
-            $this->deleting->delete();
-            $this->showDeleteConfirmation = false;
-            $this->notify("Role deleted successfully!");
-        }
+        if (auth()->user()->cannot('roles.destroy'))
+            return $this->denied();
+
+        $this->deleting->delete();
+        $this->showDeleteConfirmation = false;
+        $this->notify("Role deleted successfully!");
     }
 
     public function create()
     {
-        if (auth()->user()->can('create roles')) {
-            $this->creating = Role::make();
-            $this->showCreateModal = true;
-        }
+        if (auth()->user()->cannot('roles.create'))
+            return $this->denied();
+
+        $this->creating = Role::make();
+        $this->showCreateModal = true;
     }
 
     public function save()
     {
-        if (auth()->user()->can('create roles')) {
-            $this->validate();
-            $this->creating->save();
-            $this->showCreateModal = false;
-            $this->notify("Role created successfully!");
-        }
+        if (auth()->user()->cannot('roles.create'))
+            $this->denied();
+
+        $this->validate();
+        $this->creating->save();
+        $this->showCreateModal = false;
+        $this->notify("Role created successfully!");
     }
 
     public function getRowsQueryProperty()
@@ -140,7 +153,6 @@ class Index extends Component
 
     public function render()
     {
-
         return view('livewire.admin.permissions.index', ['roles' => $this->rows]);
     }
 }

@@ -2,7 +2,7 @@
   <div class="sm:flex sm:items-center">
     <div class="sm:flex-auto">
       <h1 class="text-xl font-semibold text-gray-900">Invitations</h1>
-      <p class="mt-2 text-sm text-gray-700">A list of all the invitations pending in the sytem.</p>
+      <p class="mt-2 text-sm text-gray-700">A list of all the invitations pending in the system.</p>
     </div>
   </div>
   <div class="mt-8 flex flex-col">
@@ -12,7 +12,7 @@
                 <x-input.search wire:model="search" />
                 <div class="flex space-x-2">
                     <x-input.per-page :options="$perPageOptions" wire:model="perPage" />
-                    @can('create invites')<x-button.primary wire:click="create">Invite User</x-button.primary>@endcan
+                    @can('invites.create')<!-- CreateInviteButton --><x-button.primary wire:click="create">Invite User</x-button.primary>@endcan
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                     <x-table.cell>{{ $invite->customer?->company_name }}</x-table.cell>
                     <x-table.cell>{{ $invite->expiry }}</x-table.cell>
                     <x-table.cell>
-                        @can('delete invites')<x-small-button.danger wire:click="delete({{$invite}})">Delete</x-small-button.danger>@endcan
+                        @can('invites.destroy')<!-- DeleteInviteButton --><x-small-button.danger wire:click="delete({{$invite}})">Delete</x-small-button.danger>@endcan
                     </x-table.cell>
                 </x-table.row>
                 @empty
@@ -48,7 +48,6 @@
         <div class=" md:px-6 lg:px-8">
             {{ $invites->links() }}
         </div>
-
 
         <form wire:submit.prevent="save">
         <x-modal.dialog wire:model="showCreateModal">
