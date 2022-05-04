@@ -75,7 +75,7 @@ class Index extends Component
 
     public function confirmDelete(Customer $customer)
     {
-
+        //Only can delete if there are no transactions
 
     }
 

@@ -44,6 +44,14 @@ class CustomerTest extends TestCase
                 ->assertSet('showEditModal', true);
     }
 
+    public function test_blank_customer_is_active_and_sync_disabled()
+    {
+        $this->asAdmin();
+        Livewire::test(Index::class)
+            ->assertSet('editing.active', true)
+            ->assertSet('editing.sync', false);
+    }
+
     public function test_admin_can_edit_customer()
     {
         $this->asAdmin();
@@ -57,7 +65,7 @@ class CustomerTest extends TestCase
                 ->set('editing.company_name', 'bar')
                 ->call('save');
 
-        $this->assertTrue($customer->refresh()->first_name === 'bar');
+        $this->assertTrue($customer->refresh()->company_name === 'bar');
     }
 
     public function test_admin_can_delete_customer()
