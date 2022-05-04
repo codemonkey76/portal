@@ -6,12 +6,14 @@ use App\Models\Traits\Searchable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Customer extends Model
 {
     use HasFactory, Searchable;
 
-    protected $searchable = ['company_name', 'phone', 'email'];
+    protected array $searchable = ['company_name', 'phone', 'email'];
 
     protected $casts = [
         'status' => 'boolean',
@@ -20,20 +22,36 @@ class Customer extends Model
 
     protected $guarded = [];
 
-    public function invites()
+    public function invites(): HasMany
     {
         return $this->hasMany(Invite::class);
     }
 
-    public function users()
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }
 
-    public function primary_users()
+    public function primary_users(): HasMany
     {
         return $this->hasMany(User::class, 'primary_customer_id');
     }
+
+    public function service_agreements(): HasMany
+    {
+        return $this->hasMany(ServiceAgreement::class);
+    }
+
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
 
     public function billingAddressString(): Attribute
     {

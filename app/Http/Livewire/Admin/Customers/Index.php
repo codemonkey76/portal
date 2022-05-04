@@ -20,6 +20,7 @@ class Index extends Component
     public bool $showDeleteModal = false;
 
     public Customer $editing;
+    public $deleting = null;
 
     public function rules()
     {
@@ -75,13 +76,31 @@ class Index extends Component
 
     public function confirmDelete(Customer $customer)
     {
-        //Only can delete if there are no transactions
+        if ($this->checkIfCanDelete($customer))
+        {
+            $this->deleting = $customer;
+            $this->showDeleteModal = true;
+        }
+    }
 
+    public function checkIfCanDelete(Customer $customer)
+    {
+        if (auth()->user()->cannot('customers.destroy')) return $this->denied();
+
+        if ($customer->invoices()->count() + $customer->payments()->count() > 0) return $this->denied("Cannot delete customer that has transactions");
+
+        if ($customer->service_agreements()->count() > 0) return $this->denied("Cannot delete customer that has service agreements");
+
+        return true;
     }
 
     public function delete()
     {
+        if (!$this->deleting) return;
+        if (!$this->checkIfCanDelete($this->deleting)) return;
 
+        $this->deleting->delete();
+        $this->notify("Customer has been deleted successfully!");
     }
 
     public function getRowsQueryProperty()

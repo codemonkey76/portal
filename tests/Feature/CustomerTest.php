@@ -75,7 +75,9 @@ class CustomerTest extends TestCase
         $customer = Customer::factory()->create();
         Livewire::test(Index::class)
                 ->assertSee('DeleteCustomerButton')
-                ->call('delete', $customer->id);
+                ->call('confirmDelete', $customer->id)
+                ->assertSet('showDeleteModal', true)
+                ->call('delete');
 
         $this->assertNull(Customer::find($customer->id));
     }
@@ -109,8 +111,15 @@ class CustomerTest extends TestCase
         $this->assertTrue(Customer::whereCompanyName('foo')->count() === 1);
     }
 
-    public function admin_can_search_for_customer()
+    public function test_admin_can_search_for_customer()
     {
+        $this->asAdmin();
 
+        Customer::factory()->create(['company_name' => 'foo', 'email' => 'foo@example.com']);
+
+        Livewire::test(Index::class)
+            ->assertSee('CustomerSearchButton')
+            ->set('search', 'foo')
+            ->assertSee('foo@example.com');
     }
 }
