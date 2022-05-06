@@ -16,12 +16,12 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['billing', 'shipping']);
-            $table->foreignIdFor(Customer::class)->nullable();
+            $table->string('name')->nullable();
+            $table->foreignIdFor(Customer::class);
             $table->string('line1')->nullable();
             $table->string('line2')->nullable();
             $table->string('city')->nullable();
-            $table->string('country')->nullable();
+            $table->string('country')->nullable()->default('Australia');
             $table->string('state')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('lat')->nullable();

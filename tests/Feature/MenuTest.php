@@ -11,10 +11,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
 use Tests\TestCase;
+use Tests\Traits\RolesAndPermissions;
 
 class MenuTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, RolesAndPermissions;
 
     protected function shouldSeed() : bool
     {
@@ -40,16 +41,6 @@ class MenuTest extends TestCase
              ->assertSeeLivewire(MainIndex::class);
     }
 
-
-    protected function asRegular()
-    {
-        $this->actingAs(User::whereName('Regular User')->first());
-    }
-
-    protected function asSuper()
-    {
-        $this->actingAs(User::whereName('Super User')->first());
-    }
 
     public function test_admin_can_create_admin_menu()
     {

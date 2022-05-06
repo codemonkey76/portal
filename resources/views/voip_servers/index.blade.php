@@ -1,3 +1,3 @@
 <x-app-layout>
-    @livewire('admin.voip-servers.index')
+    <livewire:admin.voip-servers.index />
 </x-app-layout>

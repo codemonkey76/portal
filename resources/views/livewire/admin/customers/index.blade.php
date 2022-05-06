@@ -65,11 +65,17 @@
                         <x-input.group for="company_name" label="Company name" :error="$errors->first('editing.company_name')">
                             <x-input.text wire:model="editing.company_name" placeholder="Company name" :has-error="$errors->has('editing.company_name')" />
                         </x-input.group>
-                        <x-input.group for="fully_qualified_name" label="Fully qualified name" :error="$errors->first('editing.fully_qualified_name')">
-                            <x-input.text wire:model="editing.fully_qualified_name" placeholder="Fully qualified name" :has-error="$errors->has('editing.fully_qualified_name')"/>
-                        </x-input.group>
-                        <x-input.group for="display_name" label="Display name" :error="$errors->first('editing.display_name')">
-                            <x-input.text wire:model="editing.display_name" placeholder="Display name" :has-error="$errors->has('editing.display_name')"/>
+                        <x-input.group for="billing_address" label="Billing Address" :error="$errors->first('editing.billing_address')">
+                            <div class="flex flex-col space-y-1">
+                                <x-input.text name="address" placeholder="Street Address" />
+                                <div class="grid grid-cols-5 gap-x-1">
+                                    <div class="col-span-3">
+                                        <x-input.text name="suburb" placeholder="Suburb" />
+                                    </div>
+                                    <x-input.text name="state" placeholder="State" />
+                                    <x-input.text name="postcode" placeholder="Postcode" />
+                                </div>
+                            </div>
                         </x-input.group>
                         <x-input.group for="first_name" label="Accounts Contact" :error="$errors->first('editing.first_name') . ' ' . $errors->first('editing.last_name')">
                             <div class="flex space-x-2">

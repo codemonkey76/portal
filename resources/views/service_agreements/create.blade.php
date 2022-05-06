@@ -1,3 +1,3 @@
 <x-app-layout>
-    @livewire('admin.service-agreements.create')
+    <livewire:admin.service-agreements.create />
 </x-app-layout>

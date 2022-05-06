@@ -38,6 +38,14 @@ Route::middleware([
          ->middleware('can:invites.index')
          ->name('invites.index');
 
+    Route::view('products', 'products.index')
+        ->middleware('can:products.index')
+        ->name('products.index');
+
+    Route::view('accounts', 'accounts.index')
+         ->middleware('can:accounts.index')
+         ->name('accounts.index');
+
     Route::view('menus', 'menus.index')
          ->middleware('can:menus.index')
          ->name('menus.index');

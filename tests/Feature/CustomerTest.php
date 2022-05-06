@@ -8,24 +8,15 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
+use Tests\Traits\RolesAndPermissions;
 
 class CustomerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, RolesAndPermissions;
 
     protected function shouldSeed() : bool
     {
         return true;
-    }
-
-    protected function asAdmin()
-    {
-        $this->actingAs(User::whereName('Admin User')->first());
-    }
-
-    protected function asRegular()
-    {
-        $this->actingAs(User::whereName('Regular User')->first());
     }
 
     public function test_admin_can_see_customers()
@@ -33,15 +24,6 @@ class CustomerTest extends TestCase
         $this->asAdmin();
 
         $this->get(route('customers.index'))->assertSeeLivewire(Index::class);
-    }
-    public function test_admin_can_create_customer()
-    {
-        $this->asAdmin();
-
-        Livewire::test(Index::class)
-                ->assertSee('CreateCustomerButton')
-                ->call('create')
-                ->assertSet('showEditModal', true);
     }
 
     public function test_blank_customer_is_active_and_sync_disabled()
@@ -120,6 +102,8 @@ class CustomerTest extends TestCase
         Livewire::test(Index::class)
             ->assertSee('CustomerSearchButton')
             ->set('search', 'foo')
-            ->assertSee('foo@example.com');
+            ->assertSee('foo@example.com')
+            ->set('search', 'bar')
+            ->assertDontSee('foo@example.com');
     }
 }

@@ -1,3 +1,3 @@
 <x-app-layout>
-    @livewire('admin.invites.index')
+    <livewire:admin.invites.index />
 </x-app-layout>

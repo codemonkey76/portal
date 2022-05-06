@@ -17,7 +17,14 @@ class AddressFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->word(),
+            'line1' => $this->faker->streetAddress(),
+            'city' => $this->faker->city(),
+            'state' => $this->faker->randomElement(['QLD', 'NSW', 'ACT', 'VIC', 'TAS', 'NT', 'SA', 'WA']),
+            'postal_code' => strval(mt_rand(1000,9999)),
+            'lat' => $this->faker->latitude(),
+            'long' => $this->faker->longitude(),
+            'note' => $this->faker->paragraph(),
         ];
     }
 }

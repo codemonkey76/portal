@@ -1,3 +1,3 @@
 <x-app-layout>
-    @livewire('admin.menus.index')
+    <livewire:admin.menus.index />
 </x-app-layout>

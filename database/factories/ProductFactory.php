@@ -17,7 +17,20 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name'                  => $this->faker->word(),
+            'description'           => $this->faker->sentence(),
+            'fully_qualified_name'  => '',
+            'taxable'               => true,
+            'sales_tax_included'    => false,
+            'unit_price'            => mt_rand(1,500),
+            'type'                  => '',
+            'income_account_ref'    => '',
+            'purchase_tax_included' => false,
+            'purchase_cost'         => '',
+            'expense_account_ref'   => '',
+            'sales_tax_code_ref'    => '',
+            'purchase_tax_code_ref' => '',
+            'sync'                  => false,
         ];
     }
 }

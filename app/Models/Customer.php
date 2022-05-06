@@ -52,6 +52,11 @@ class Customer extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class);
+    }
+
 
     public function billingAddressString(): Attribute
     {

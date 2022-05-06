@@ -11,10 +11,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 use Tests\TestCase;
+use Tests\Traits\RolesAndPermissions;
 
 class InvitationTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, RolesAndPermissions;
 
     protected function shouldSeed() : bool
     {
@@ -23,21 +24,21 @@ class InvitationTest extends TestCase
 
     public function test_regular_user_cannot_see_invitations()
     {
-        $this->actingAs(User::whereName('Regular User')->first());
+        $this->asRegular();
 
         $this->get(route('invites.index'))->assertDontSeeLivewire(Index::class);
     }
 
     public function test_admin_user_can_see_invitations()
     {
-        $this->actingAs(User::whereName('Admin User')->first());
+        $this->asAdmin();
 
         $this->get(route('invites.index'))->assertSeeLivewire(Index::class);
     }
 
     public function test_admin_user_can_create_invitation()
     {
-        $this->actingAs(User::whereName('Admin User')->first());
+        $this->asAdmin();
 
         Livewire::test(Index::class)
                 ->assertSee('CreateInviteButton')
@@ -49,7 +50,7 @@ class InvitationTest extends TestCase
     {
         Notification::fake();
 
-        $this->actingAs(User::whereName('Admin User')->first());
+        $this->asAdmin();
 
         $customer = Customer::factory()->create();
 
@@ -68,7 +69,7 @@ class InvitationTest extends TestCase
 
     public function test_admin_can_delete_invitation()
     {
-        $this->actingAs(User::whereName('Admin User')->first());
+        $this->asAdmin();
         $customer = Customer::factory()->create();
         $invite = Invite::factory()->create(['customer_id' => $customer->id]);
 
@@ -81,7 +82,7 @@ class InvitationTest extends TestCase
 
     public function test_regular_user_cannot_delete_invitation()
     {
-        $this->actingAs(User::whereName('Regular User')->first());
+        $this->asRegular();
         $customer = Customer::factory()->create();
         $invite = Invite::factory()->create(['customer_id' => $customer->id]);
 
