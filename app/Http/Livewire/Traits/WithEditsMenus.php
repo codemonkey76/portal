@@ -66,6 +66,7 @@ trait WithEditsMenus
             return;
         }
 
+        if ($this->editing->is($item)) $this->editing = $this->makeBlankMenuItem();
         $item->delete();
         $this->resetPage();
         $this->notify("Deleted successfully");

@@ -57,6 +57,7 @@ class Index extends Component
         if (auth()->user()->cannot('invites.destroy'))
             return $this->denied();
 
+        if ($this->editing->is($this->deleting)) $this->editing = $this->makeBlankInvitation();
         $invite->delete();
         $this->notify("Invitation deleted successfully!");
     }

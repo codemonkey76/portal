@@ -137,6 +137,18 @@
             <!-- ProductEditModal -->
 
             <!-- ProductDeleteModal -->
+            <form wire:submit.prevent="delete">
+                <x-jet-confirmation-modal wire:model="showDeleteModal">
+                    <x-slot name="title">Delete product</x-slot>
+                    <x-slot name="content">Are you sure you want to delete this product, this action is irreversible.</x-slot>
+                    <x-slot name="footer">
+                        <div class="flex space-x-2">
+                            <x-button.secondary wire:click="cancelDelete">Cancel</x-button.secondary>
+                            <x-button.danger type="submit">Delete</x-button.danger>
+                        </div>
+                    </x-slot>
+                </x-jet-confirmation-modal>
+            </form>
             <!-- ProductDeleteModal -->
         </div>
     </div>

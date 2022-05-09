@@ -62,7 +62,7 @@ class ProductTest extends TestCase
                 ->set('editing.name', 'bar')
                 ->call('save');
 
-        $this->assertTrue($product->refresh()->name === 'bar');
+        $this->assertTrue($product->fresh()->name === 'bar');
     }
 
     public function test_admin_can_delete_product()

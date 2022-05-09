@@ -16,6 +16,9 @@ class Index extends Component
 
     protected string $perPageVariable = 'rolesPerPage';
 
+
+
+
     public bool $showDeleteDeniedModal = false;
     public bool $showDeleteConfirmation = false;
     public bool $showCreateModal = false;

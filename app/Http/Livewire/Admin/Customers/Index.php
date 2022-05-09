@@ -67,7 +67,6 @@ class Index extends Component
         if ($isEditing && auth()->user()->cannot('customers.update')) return $this->denied();
         if (!$isEditing && auth()->user()->cannot('customers.create')) return $this->denied();
 
-
         $this->validate();
         $this->editing->save();
         $this->notify("Customer saved successfully!");
@@ -98,6 +97,8 @@ class Index extends Component
     {
         if (!$this->deleting) return;
         if (!$this->checkIfCanDelete($this->deleting)) return;
+
+        if ($this->editing->is($this->deleting)) $this->editing = $this->makeBlankCustomer();
 
         $this->deleting->delete();
         $this->notify("Customer has been deleted successfully!");

@@ -16,7 +16,11 @@
                     <x-input.search wire:model="search" />
                     <div class="flex space-x-2">
                         <x-input.per-page :options="$perPageOptions" wire:model="perPage" />
-                        @can('create roles')<x-button.primary wire:click="create">Create</x-button.primary>@endcan
+                        @can('roles.create')
+                            <!-- CreateRoleButton -->
+                            <x-button.primary wire:click="create">Create</x-button.primary>
+                            <!-- CreateRoleButton -->
+                        @endcan
                     </div>
                 </div>
             </div>
@@ -39,8 +43,16 @@
                         <x-table.cell class="text-gray-900">{{ $role->users_count }}</x-table.cell>
                         <x-table.cell class="text-gray-900">{{ $role->permissions_count }}</x-table.cell>
                         <x-table.cell>
-                            @can('edit roles')<x-small-button.warning wire:click="edit({{$role}})">Edit</x-small-button.warning>@endcan
-                            @can('delete roles')<x-small-button.danger wire:click="confirmDelete({{$role}})">Delete</x-small-button.danger>@endcan
+                            @can('roles.update')
+                                <!-- EditRoleButton -->
+                                <x-small-button.warning wire:click="edit({{$role}})">Edit</x-small-button.warning>
+                                <!-- EditRoleButton -->
+                            @endcan
+                            @can('roles.destroy')
+                                <!-- DeleteRoleButton -->
+                                    <x-small-button.danger wire:click="confirmDelete({{$role}})">Delete</x-small-button.danger>
+                                <!-- DeleteRoleButton -->
+                            @endcan
                         </x-table.cell>
                     </x-table.row>
                     @empty

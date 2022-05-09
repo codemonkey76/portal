@@ -23,7 +23,7 @@ class ProductFactory extends Factory
             'taxable'               => true,
             'sales_tax_included'    => false,
             'unit_price'            => mt_rand(1,500),
-            'type'                  => '',
+            'type'                  => $this->faker->randomElement(['Category', 'Inventory', 'NonInventory', 'Service']),
             'income_account_ref'    => '',
             'purchase_tax_included' => false,
             'purchase_cost'         => '',

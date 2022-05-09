@@ -66,18 +66,28 @@ class Index extends Component
         if ($isEditing && auth()->user()->cannot('products.update')) {
             return $this->denied();
         }
+
         if (!$isEditing && auth()->user()->cannot('products.create')) {
             return $this->denied();
         }
 
         $this->validate();
+
         $this->editing->save();
+
         $this->notify("Product saved successfully.");
+
         $this->showEditModal = false;
     }
 
-    public function edit(Product $product)
+    public function edit($productId)
     {
+        $product = Product::findOr($productId, function() {
+           $this->notify("Can't find product");
+        });
+
+        if (!$product) return;
+
         if (auth()->user()->cannot('products.update')) {
             return $this->denied();
         }
@@ -85,11 +95,18 @@ class Index extends Component
         if ($this->editing->isNot($product)) {
             $this->editing = $product;
         }
+
         $this->showEditModal = true;
     }
 
-    public function confirmDelete(Product $product)
+    public function confirmDelete($productId)
     {
+        $product = Product::findOr($productId, function() {
+            $this->notify("Can't find product");
+        })->first();
+
+        if (!$product) return;
+
         if ($this->checkIfCanDelete($product)) {
             $this->deleting = $product;
             $this->showDeleteModal = true;
@@ -98,22 +115,21 @@ class Index extends Component
 
     public function delete()
     {
-        if (!$this->deleting) {
-            return;
-        }
-        if (!$this->checkIfCanDelete($this->deleting)) {
-            return;
-        }
+        if (!$this->deleting) return;
+
+        if (!$this->checkIfCanDelete($this->deleting)) return;
+
+        if ($this->editing->is($this->deleting)) $this->editing = $this->makeBlankProduct();
 
         $this->deleting->delete();
+
+        $this->showDeleteModal = false;
         $this->notify("Product has been deleted successfully!");
     }
 
     public function checkIfCanDelete(Product $product)
     {
-        if (auth()->user()->cannot('products.destroy')) {
-            return $this->denied();
-        }
+        if (auth()->user()->cannot('products.destroy')) return $this->denied();
 
         return true;
     }
