@@ -33,19 +33,23 @@
                 <x-slot name="head">
                     <x-table.heading sortable multi-column :direction="$sorts['qb_account_id'] ?? null" wire:click="sortBy('qb_account_id')" class="pl-4 sm:pl-6">ID</x-table.heading>
                     <x-table.heading sortable multi-column :direction="$sorts['name'] ?? null" wire:click="sortBy('name')" class="pl-4 sm:pl-6">Name</x-table.heading>
-                    <x-table.heading sortable multi-column :direction="$sorts['classification'] ?? null" wire:click="sortBy('classification')">Classification</x-table.heading>
+{{--                    <x-table.heading sortable multi-column :direction="$sorts['classification'] ?? null" wire:click="sortBy('classification')">Classification</x-table.heading>--}}
                     <x-table.heading sortable multi-column :direction="$sorts['account_type'] ?? null" wire:click="sortBy('account_type')">Type</x-table.heading>
                     <x-table.heading sortable multi-column :direction="$sorts['account_sub_type'] ?? null" wire:click="sortBy('account_sub_type')">Sub Type</x-table.heading>
+                    <x-table.heading sortable multi-column :direction="$sorts['active'] ?? null" wire:click="sortBy('active')">Active</x-table.heading>
+                    <x-table.heading sortable multi-column :direction="$sorts['sync'] ?? null" wire:click="sortBy('sync')">Sync</x-table.heading>
                     <x-table.heading>Actions</x-table.heading>
                 </x-slot>
                 <x-slot name="body">
                     @forelse ($accounts as $account)
                         <x-table.row>
                             <x-table.cell class="pl-4 sm:pl-6 text-gray-900">{{ $account->qb_account_id }}</x-table.cell>
-                            <x-table.cell class="text-gray-900">{{ $account->name }}</x-table.cell>
-                            <x-table.cell class="text-gray-900">{{ $account->classification }}</x-table.cell>
-                            <x-table.cell class="text-gray-900">{{ $account->account_type }}</x-table.cell>
-                            <x-table.cell class="text-gray-900">{{ $account->account_sub_type }}</x-table.cell>
+                            <x-table.cell class="text-gray-900">{{ Str::of($account->name)->limit(30) }}</x-table.cell>
+{{--                            <x-table.cell class="text-gray-900">{{ Str::of($account->classification)->limit(30) }}</x-table.cell>--}}
+                            <x-table.cell class="text-gray-900">{{ Str::of($account->account_type)->limit(30) }}</x-table.cell>
+                            <x-table.cell class="text-gray-900">{{ Str::of($account->account_sub_type)->limit(30) }}</x-table.cell>
+                            <x-table.cell class="text-gray-900"><x-active :value="$account->active" /></x-table.cell>
+                            <x-table.cell class="text-gray-900"><x-active :value="$account->sync" /></x-table.cell>
                             <x-table.cell>
                                 @can('accounts.update')
                                     <!-- EditAccountButton -->
@@ -61,7 +65,7 @@
                         </x-table.row>
                     @empty
                         <x-table.row>
-                            <x-table.cell colspan="4" class="text-gray-500 text-center italic text-md">
+                            <x-table.cell colspan="6" class="text-gray-500 text-center italic text-md">
                                 No accounts found
                             </x-table.cell>
                         </x-table.row>
@@ -86,41 +90,32 @@
                             <x-input.group for="description" label="Description" :error="$errors->first('editing.description')">
                                 <x-input.text wire:model="editing.description" placeholder="Description" :has-error="$errors->has('editing.description')" />
                             </x-input.group>
-                            <x-input.group for="account_type" label="Type" :error="$errors->first('editing.account_type')">
-                                <x-select wire:model="editing.account_type" :has-error="$errors->has('editing.account_type')">
-                                    @foreach($types as $type)
-                                        <option>{{ $type }}</option>
-                                    @endforeach
+                            <x-input.group for="account_classification" label="Classification">
+                                <label class="flex-1 min-w-0 block w-full px-3 py-2 sm:text-sm rounded-md border border-gray-300 bg-gray-100">{{ $classification }}</label>
+                            </x-input.group>
+                            <x-input.group for="account_type" label="Type" :error="$errors->first('account_type')">
+                                <x-select wire:model="account_type" :has-error="$errors->has('account_type')">
+                                    @forelse($types as $type)
+                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                    @empty
+                                    @endforelse
                                 </x-select>
                             </x-input.group>
 
-
+                            <x-input.group for="account_sub_type" label="Sub Type" :error="$errors->first('account_sub_type')">
+                                <x-select wire:model="account_sub_type" :has-error="$errors->has('account_sub_type')">
+                                    @forelse($sub_types as $type)
+                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                    @empty
+                                    @endforelse
+                                </x-select>
+                            </x-input.group>
                             <div class="flex space-x-4">
                                 <x-input.group for="active" label="Active">
-                                    <x-input.toggle-icon name="active" wire:model="editing.active" />
-                                </x-input.group>
-                                <x-input.group for="taxable" label="Taxable">
-                                    <x-input.toggle-icon name="taxable" wire:model="editing.taxable" />
+                                    <x-input.toggle-icon wire:model="editing.active" />
                                 </x-input.group>
                                 <x-input.group for="sync" label="Sync">
-                                    <x-input.toggle-icon name="sync" wire:model="editing.sync" />
-                                </x-input.group>
-                            </div>
-
-                            <div class="flex space-x-4">
-                                <x-input.group for="unit_price" label="Unit Price">
-                                    <x-input.text name="unit_price" wire:model="editing.unit_price" />
-                                </x-input.group>
-                                <x-input.group for="sales_tax_included" label="Tax inc.">
-                                    <x-input.toggle-icon name="sales_tax_included" wire:model="editing.sales_tax_included" />
-                                </x-input.group>
-                            </div>
-                            <div class="flex space-x-4">
-                                <x-input.group for="qty_on_hand" label="On Hand">
-                                    <x-input.text name="qty_on_hand" wire:model="editing.qty_on_hand" />
-                                </x-input.group>
-                                <x-input.group for="track_qty" label="Track Qty">
-                                    <x-input.toggle-icon name="track_qty" wire:model="editing.track_qty_on_hand" />
+                                    <x-input.toggle-icon wire:model="editing.sync" />
                                 </x-input.group>
                             </div>
                         </div>
@@ -140,7 +135,7 @@
 
             <!-- ProductDeleteModal -->
             <form wire:submit.prevent="delete">
-                <x-jet-confirmation-modal wire:model="showDeleteModal">
+                <x-jet-confirmation-modal wire:model="showDeleteConfirmation">
                     <x-slot name="title">Delete product</x-slot>
                     <x-slot name="content">Are you sure you want to delete this product, this action is irreversible.</x-slot>
                     <x-slot name="footer">

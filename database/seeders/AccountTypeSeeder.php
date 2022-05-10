@@ -145,7 +145,7 @@ class AccountTypeSeeder extends Seeder
     private function seedReceivable($asset)
     {
         $type = $asset->accountTypes()->create(['name' => 'Accounts Receivable']);
-        $default = $type->accountSubTypes()->create(['name' => 'Accounts Receivable']);
+        $default = $type->accountSubTypes()->create(['name' => 'AccountsReceivable']);
         $type->update(['default_account_subtype_id' => $default->id]);
     }
 
@@ -293,7 +293,7 @@ class AccountTypeSeeder extends Seeder
     private function seedAp($liability)
     {
         $type = $liability->accountTypes()->create(['name' => 'Accounts Payable']);
-        $default = $type->accountSubTypes()->create(['name' => 'Accounts Payable']);
+        $default = $type->accountSubTypes()->create(['name' => 'AccountsPayable']);
         $type->update(['default_account_subtype_id' => $default->id]);
         $type->accountSubTypes()->create(['name' => 'OutstandingDuesMicroSmallEnterprise']);
         $type->accountSubTypes()->create(['name' => 'OutstandingDuesOtherThanMicroSmallEnterprise']);

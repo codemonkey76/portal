@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Account;
 use App\Models\Feature;
 use App\Models\Menu;
 use App\Models\Question;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Schema;
 
 use Livewire\Component;
+use Popplestones\Quickbooks\Facades\CallbackManager;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -79,5 +81,11 @@ class AppServiceProvider extends ServiceProvider
 
             return $values->implode("\n");
         });
+
+        // Quickbooks Stuff
+        CallbackManager::registerAccounts(
+            fn () => Account::query(),
+            fn ($q) => $q->whereNull('qb_account_id')->whereSync(true)
+        );
     }
 }

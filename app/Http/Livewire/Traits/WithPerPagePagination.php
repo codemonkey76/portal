@@ -29,6 +29,7 @@ public function updatingPerPage()
     public function updatedPerPage($value)
     {
         session()->put($this->perPageVariable, $value);
+        $this->resetPage();
     }
 
     public function applyPagination($query)

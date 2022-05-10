@@ -33,6 +33,9 @@ trait WithEditsModels
 
         if ($this->editing->isNot($toEdit)) $this->editing = $toEdit;
 
+        if (method_exists($this, 'beforeEdit')) {
+            $this->beforeEdit();
+        }
         $this->showEditModal = true;
     }
 
@@ -46,7 +49,7 @@ trait WithEditsModels
 
         $this->deleting->delete();
 
-        $this->showDeleteModal = false;
+        $this->showDeleteConfirmation = false;
 
         $this->notify("{$this->shortModelName} has been deleted successfully!");
     }
