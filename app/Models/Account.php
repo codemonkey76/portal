@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
+
+    protected array $searchable = ['name', 'description', 'classification', 'account_sub_type', 'qb_account_id', 'account_type'];
     protected $guarded = [];
     public $timestamps = false;
 }
