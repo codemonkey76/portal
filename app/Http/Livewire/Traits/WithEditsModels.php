@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Traits;
 
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 trait WithEditsModels
@@ -18,9 +20,11 @@ trait WithEditsModels
 
     public function create()
     {
-        if (auth()->user()->cannot($this->permissionPrefix . '.create')) return $this->denied();
+        if (Gate::denies('create', $this->modelName)) return $this->denied();
 
         if ($this->editing->getKey()) $this->editing = $this->makeBlankModel();
+
+        if (method_exists($this, 'beforeCreate'))  $this->beforeCreate();
 
         $this->showEditModal = true;
     }
@@ -29,13 +33,12 @@ trait WithEditsModels
     {
         $toEdit = $this->modelName::find($id);
 
-        if (auth()->user()->cannot($this->permissionPrefix . '.update')) return $this->denied();
+        if (Gate::denies('update', $toEdit)) return $this->denied();
 
         if ($this->editing->isNot($toEdit)) $this->editing = $toEdit;
 
-        if (method_exists($this, 'beforeEdit')) {
-            $this->beforeEdit();
-        }
+        if (method_exists($this, 'beforeEdit')) $this->beforeEdit();
+
         $this->showEditModal = true;
     }
 
@@ -43,7 +46,7 @@ trait WithEditsModels
     {
         if (!$this->deleting) return;
 
-        if (auth()->user()->cannot($this->permissionPrefix . '.destroy')) return $this->denied();
+        if (Gate::denies('destroy', $this->deleting)) return $this->denied();
 
         if ($this->editing->is($this->deleting)) $this->editing = $this->makeBlankModel();
 
@@ -58,7 +61,7 @@ trait WithEditsModels
     {
         $toDelete = $this->modelName::find($id);
 
-        if (auth()->user()->cannot($this->permissionPrefix . '.destroy')) return $this->denied();
+        if (Gate::denies('destroy', $toDelete)) return $this->denied();
 
         $this->deleting = $toDelete;
 
@@ -69,11 +72,11 @@ trait WithEditsModels
     {
         $isEditing = !!$this->editing->getKey();
 
-        if ($isEditing && auth()->user()->cannot("{$this->permissionPrefix}.update")) {
+        if ($isEditing && Gate::denies('update', $this->editing)) {
             return $this->denied();
         }
 
-        if (!$isEditing && auth()->user()->cannot("{$this->permissionPrefix}.create")) {
+        if (!$isEditing && Gate::denies('create', $this->modelName)) {
             return $this->denied();
         }
 

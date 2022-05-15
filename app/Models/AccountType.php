@@ -12,6 +12,8 @@ class AccountType extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    protected $guarded = [];
+
     public function accountSubTypes(): HasMany
     {
         return $this->hasMany(AccountSubType::class);

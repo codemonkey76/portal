@@ -19,9 +19,9 @@
                     <div class="flex space-x-2">
                         <x-input.per-page :options="$perPageOptions" wire:model="perPage" />
                         @can('accounts.create')
-                            <!-- CreateAccountsButton -->
+                            <!-- CreateAccountButton -->
                             <x-button.primary wire:click="create">Create</x-button.primary>
-                            <!-- CreateAccountsButton -->
+                            <!-- CreateAccountButton -->
                         @endcan
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                         </x-table.row>
                     @empty
                         <x-table.row>
-                            <x-table.cell colspan="6" class="text-gray-500 text-center italic text-md">
+                            <x-table.cell colspan="7" class="text-gray-500 text-center italic text-md">
                                 No accounts found
                             </x-table.cell>
                         </x-table.row>

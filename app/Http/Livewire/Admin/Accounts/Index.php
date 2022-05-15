@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Accounts;
 
+use App\Http\Livewire\Traits\WithAuthorizationMessage;
 use App\Http\Livewire\Traits\WithEditsModels;
 use App\Http\Livewire\Traits\WithPerPagePagination;
 use App\Http\Livewire\Traits\WithSearch;
@@ -9,11 +10,12 @@ use App\Http\Livewire\Traits\WithSorting;
 use App\Models\Account;
 use App\Models\AccountSubType;
 use App\Models\AccountType;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
 class Index extends Component
 {
-    use WithEditsModels, WithPerPagePagination, WithSearch, WithSorting;
+    use WithEditsModels, WithPerPagePagination, WithSearch, WithSorting, AuthorizesRequests, WithAuthorizationMessage;
 
     public string $perPageVariable = "accountsPerPage";
     private string $modelName = Account::class;
@@ -39,17 +41,28 @@ class Index extends Component
             'editing.name' => 'required',
             'editing.description' => '',
             'editing.active' => '',
-            'editing.sync' => ''
+            'editing.sync' => '',
+            'editing.account_type' => '',
+            'editing.account_sub_type' => ''
         ];
     }
 
     public function beforeEdit()
     {
+        $this->updateAccountVariables();
+    }
+
+    public function beforeCreate()
+    {
+        $this->updateAccountVariables();
+    }
+
+    public function updateAccountVariables()
+    {
         $this->account_type = AccountType::whereName($this->editing->account_type)->first()->id;
         $this->updatedAccountType();
         $this->account_sub_type = AccountSubType::whereName($this->editing->account_sub_type)->first()->id;
     }
-
 
     public function updatedAccountType()
     {
@@ -62,7 +75,12 @@ class Index extends Component
 
     public function makeBlankModel()
     {
-        return Account::make();
+        return Account::make([
+            'account_type' => 'Income',
+            'account_sub_type' => 'OtherPrimaryIncome',
+            'active' => true,
+            'sync' => false
+        ]);
     }
 
     public function mount()

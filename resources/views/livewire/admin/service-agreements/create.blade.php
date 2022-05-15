@@ -72,7 +72,5 @@
 
         <x-button.primary class="mt-4" wire:click="createServiceAgreement">Create Service Agreement</x-button.primary>
     @endif
-
-    @json($errors)
 </div>
 

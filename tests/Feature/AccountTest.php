@@ -84,14 +84,14 @@ class AccountTest extends TestCase
     {
         $this->asAdmin();
 
-        Account::factory()->create(['name' => 'foo', 'description' => 'foo description']);
+        Account::factory()->create(['name' => 'foo', 'account_type' => 'foo type']);
 
         Livewire::test(Index::class)
                 ->assertSee('AccountSearchButton')
                 ->set('search', 'foo')
-                ->assertSee('foo description')
+                ->assertSee('foo type')
                 ->set('search', 'bar')
-                ->assertDontSee('foo description');
+                ->assertDontSee('foo type');
     }
 
 }

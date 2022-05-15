@@ -18,8 +18,7 @@ class NetworkServiceSeeder extends Seeder
     public function run()
     {
         ServiceAgreement::each(function($agreement) {
-            $serviceProviderId = ServiceProvider::inRandomOrder()->first()->id;
-            NetworkService::factory()->create(['service_agreement_id' => $agreement->id, 'service_provider_id' => $serviceProviderId]);
+            NetworkService::factory()->create(['service_agreement_id' => $agreement->id]);
         });
     }
 }

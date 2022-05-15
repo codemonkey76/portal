@@ -29,7 +29,6 @@ return new class extends Migration
             $table->string('end_user')->nullable();
             $table->string('site_name')->nullable();
             $table->string('site_address')->nullable();
-            $table->foreignIdFor(ServiceProvider::class)->constrained();
             $table->timestamps();
         });
     }
