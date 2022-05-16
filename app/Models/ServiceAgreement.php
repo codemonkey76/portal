@@ -18,6 +18,8 @@ class ServiceAgreement extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public $searchable = ['address'];
+
     public $casts = [
         'created_at' => 'date',
         'starts_at' => 'date',

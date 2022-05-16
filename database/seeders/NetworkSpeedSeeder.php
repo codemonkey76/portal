@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\NetworkSpeed;
+use App\Models\ServiceType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,59 +16,73 @@ class NetworkSpeedSeeder extends Seeder
      */
     public function run()
     {
-        NetworkSpeed::create([
+
+        $nbn = ServiceType::create(['name' => 'NBN']);
+
+
+        $nbn->speeds()->create([
             'name' => '12Mbps/1Mbps',
             'download' => 12,
-            'upload' => 1
+            'upload' => 1,
+            'price' => 49
         ]);
 
-        NetworkSpeed::create([
+        $nbn->speeds()->create([
             'name' => '25Mbps/5Mbps',
             'download' => 25,
-            'upload' => 5
+            'upload' => 5,
+            'price' => 59
         ]);
 
-        NetworkSpeed::create([
+        $nbn->speeds()->create([
             'name' => '50Mbps/20Mbps',
             'download' => 50,
-            'upload' => 20
+            'upload' => 20,
+            'price' => 69
         ]);
 
-        NetworkSpeed::create([
+        $nbn->speeds()->create([
             'name' => '100Mbps/40Mbps',
             'download' => 100,
-            'upload' => 40
+            'upload' => 40,
+            'price' => 79
         ]);
 
-        NetworkSpeed::create([
+        $nbn->speeds()->create([
             'name' => '100Mbps/20Mbps',
             'download' => 100,
-            'upload' => 20
+            'upload' => 20,
+            'price' => 74
         ]);
 
-        NetworkSpeed::create([
+        $nbn->speeds()->create([
             'name' => '250Mbps/20Mbps',
             'download' => 250,
-            'upload' => 20
+            'upload' => 20,
+            'price' => 85
         ]);
 
-        NetworkSpeed::create([
+        $fibre = ServiceType::create(['name' => 'E-Line']);
+
+        $fibre->speeds()->create([
             'name' => 'Fibre 100Mbps',
             'download' => 100,
-            'upload' => 100
+            'upload' => 100,
+            'price' => 100
         ]);
 
-        NetworkSpeed::create([
+        $fibre->speeds()->create([
             'name' => 'Fibre 400Mbps',
             'download' => 400,
-            'upload' => 400
+            'upload' => 400,
+            'price' => 150
         ]);
 
-        NetworkSpeed::create([
+        $fibre->speeds()->create([
             'name' => 'Fibre 1000Mbps',
             'download' => 1000,
-            'upload' => 1000
+            'upload' => 1000,
+            'price' => 250
         ]);
-
     }
 }

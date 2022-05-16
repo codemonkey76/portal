@@ -16,6 +16,7 @@
                 </div>
             </div>
         </div>
+        <x-button.primary wire:click="getColumnList">Get Column List</x-button.primary>
 
         <x-table>
                 <x-slot name="head">

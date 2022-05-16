@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\ServiceType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('network_speeds', function (Blueprint $table) {
+        Schema::create('payment_frequencies', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(ServiceType::class);
             $table->string('name');
-            $table->integer('upload');
-            $table->integer('download');
-            $table->decimal('price')->default(0);
-            $table->timestamps();
+            $table->integer('value');
         });
     }
 
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('network_speeds');
+        Schema::dropIfExists('payment_frequencies');
     }
 };

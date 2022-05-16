@@ -30,6 +30,8 @@ class Edit extends Component
     public $network_service_providers;
     public $service_type;
 
+    protected $listeners = ['networkServiceCreated' => '$refresh'];
+
 
 //    protected function rules(): array
 //    {
@@ -40,20 +42,6 @@ class Edit extends Component
 //        ];
 //    }
 
-    protected array $rules = [
-        'network.description' => 'required',
-        'network.speed' => '',
-        'network.service_id' => '',
-        'network.service_type' => '',
-        'network.carrier' => '',
-        'network.username' => '',
-        'network.password' => '',
-        'network.ip_address' => '',
-        'network.end_user' => '',
-        'network.site_name' => '',
-        'network.site_address' => ''
-    ];
-
     public function mount()
     {
         $this->mobile_service_providers = ServiceProvider::whereType('mobile')->orderBy('name')->get();
@@ -61,24 +49,8 @@ class Edit extends Component
         $this->mobile_service = $this->makeBlankMobileService();
 
         $this->network_service_providers = ServiceProvider::whereType('network')->orderBy('name')->get();
-
-        $this->network = $this->makeBlankNetworkService();
-
-        $this->network_speeds = NetworkSpeed::pluck('name')->toArray();
-        $this->service_types = ServiceType::pluck('name')->toArray();
-        $this->carriers = NetworkCarrier::pluck('name')->toArray();
     }
 
-
-    public function makeBlankNetworkService()
-    {
-        return NetworkService::make([
-            'service_agreement_id' => $this->agreement->id,
-            'carrier' => 'Superloop',
-            'service_type' => 'NBN',
-            'speed' => '50Mbps/20Mbps'
-        ]);
-    }
 
     public function makeBlankMobileService()
     {
@@ -93,9 +65,14 @@ class Edit extends Component
                 $this->showAddMobileServiceModal = true;
                 break;
             case "network":
-                $this->showAddNetworkServiceModal = true;
+                $this->emit('showCreateNetworkService');
                 break;
         }
+    }
+
+    public function saveNetworkService()
+    {
+        //$this->validate
     }
 
     public function saveMobileService()
