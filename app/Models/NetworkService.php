@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Akaunting\Money\Money;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,5 +22,12 @@ class NetworkService extends Model
     public function service_provider(): BelongsTo
     {
         return $this->belongsTo(ServiceProvider::class);
+    }
+
+    public function priceString(): Attribute
+    {
+        return new Attribute(
+            get: fn() => Money::AUD($this->price*100)->format()
+        );
     }
 }

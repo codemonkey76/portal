@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Admin\ServiceAgreements;
 use App\Http\Livewire\Traits\WithAuthorizationMessage;
 use App\Models\Customer;
 use App\Models\MobileService;
+use App\Models\PaymentFrequency;
 use App\Models\ServiceAgreement;
 use App\Models\ServiceProvider;
 use Livewire\Component;
@@ -21,6 +22,8 @@ class Create extends Component
     public $startsAtDate;
     public $endsAtDate;
 
+    public $frequencies;
+
     public $terms = [
         1 => 'Monthly',
         6 => '6 Months',
@@ -35,19 +38,20 @@ class Create extends Component
             'agreement.created_at' => 'required|date',
             'agreement.starts_at' => 'required|date',
             'agreement.ends_at' => 'required|date',
-            'contract_term' => 'required|in:1,6,12,24,36,48'
+            'agreement.frequency' => 'required|numeric',
+            'agreement.term' => 'required|in:1,6,12,24,36,48'
         ];
     }
 
-    public function updatedContractTerm()
+    public function updatedAgreementTerm()
     {
         $this->updateEndsAtDate();
     }
 
     public function updateEndsAtDate()
     {
-        if ($this->agreement->starts_at && $this->contract_term) {
-            $this->agreement->ends_at = $this->agreement->starts_at->addMonths($this->contract_term);
+        if ($this->agreement->starts_at && $this->agreement->term) {
+            $this->agreement->ends_at = $this->agreement->starts_at->addMonths($this->agreement->term);
             $this->endsAtDate = $this->agreement->ends_at->format('Y-m-d');
         }
     }
@@ -75,6 +79,9 @@ class Create extends Component
         $this->created_date = now()->format('Y-m-d');
         $this->agreement = $this->makeBlankAgreement();
         $this->customers = Customer::orderBy('company_name')->get();
+        $this->frequencies = PaymentFrequency::all();
+        $this->startsAtDate = today()->format('Y-m-d');
+        $this->updateEndsAtDate();
     }
 
     public function updatedCreatedDate()
@@ -84,7 +91,12 @@ class Create extends Component
 
     public function makeBlankAgreement()
     {
-        return ServiceAgreement::make(['created_at' => $this->created_date]);
+        return ServiceAgreement::make([
+            'created_at' => $this->created_date,
+            'starts_at' => today(),
+            'frequency' => 12,
+            'term' => 12,
+        ]);
     }
     public function render()
     {

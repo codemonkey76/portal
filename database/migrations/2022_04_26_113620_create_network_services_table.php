@@ -29,7 +29,6 @@ return new class extends Migration
             $table->string('end_user')->nullable();
             $table->string('site_name')->nullable();
             $table->string('site_address')->nullable();
-            $table->integer('frequency')->default(12);
             $table->decimal('price')->default(0);
             $table->timestamps();
         });

@@ -16,11 +16,11 @@ class Create extends Component
 
     public NetworkService $network;
 
-    public $network_speeds = [];
-    public $service_types = [];
+    public $network_speeds;
+    public $service_types;
     public $carriers;
-    public $frequencies;
     public $showModal = false;
+    public $speed;
 
     protected $listeners = ['showCreateNetworkService' => 'show'];
 
@@ -35,7 +35,7 @@ class Create extends Component
 
         $this->network->save();
 
-        $this->emitUp('networkServiceCreated');
+        $this->emitUp('refreshServiceAgreement');
 
         $this->showModal = false;
     }
@@ -47,7 +47,6 @@ class Create extends Component
             'carrier' => 'Superloop',
             'service_type' => 'NBN',
             'speed' => '50Mbps/20Mbps',
-            'frequency' => 12
         ]);
     }
 
@@ -65,7 +64,7 @@ class Create extends Component
         'network.site_name' => '',
         'network.site_address' => '',
         'network.price' => 'required|numeric',
-        'network.frequency' => 'required'
+        'speed' => ''
     ];
 
     public function mount()
@@ -73,10 +72,7 @@ class Create extends Component
         $this->service_types = ServiceType::pluck('name')->toArray();
         $this->carriers = NetworkCarrier::pluck('name')->toArray();
         $this->network = $this->makeBlankNetworkService();
-        $this->frequencies = PaymentFrequency::all();
         $this->network_speeds = ServiceType::whereName($this->network->service_type)->first()->speeds;
-        info($this->network->carrier);
-        info(ServiceType::whereName($this->network->service_type)->first()->speeds);
     }
 
     public function updatedNetworkServiceType()
@@ -84,9 +80,16 @@ class Create extends Component
         $this->network_speeds = ServiceType::whereName($this->network->service_type)->first()->speeds;
     }
 
-    public function updatedNetworkSpeed()
+    public function updated($propertyName)
     {
-        $this->network->price = NetworkSpeed::find($this->network->speed)->priceString;
+        $this->validateOnly($propertyName);
+    }
+
+    public function updatedSpeed()
+    {
+        $speed = NetworkSpeed::find($this->speed);
+        $this->network->price = $speed->price;
+        $this->network->speed = $speed->shortSpeedString;
     }
 
 

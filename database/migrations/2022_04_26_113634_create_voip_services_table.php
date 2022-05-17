@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::create('voip_services', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(ServiceAgreement::class)->constrained();
+            $table->decimal('price')->default(0);
             $table->timestamps();
         });
     }

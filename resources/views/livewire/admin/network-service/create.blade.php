@@ -34,7 +34,7 @@
                     </x-input.group>
 
                     <x-input.group for="speed" label="Speed">
-                        <x-select name="speed" wire:model="network.speed">
+                        <x-select name="speed" wire:model="speed">
                             @foreach ($network_speeds as $speed)
                                 <option value="{{ $speed->id }}">{{ $speed->name }} ({{ $speed->priceString }})</option>
                             @endforeach
@@ -66,18 +66,9 @@
                     <x-input.text name="site_address" wire:model="network.site_address" />
                 </x-input.group>
 
-                <div class="grid grid-cols-2 gap-x-2">
-                    <x-input.group for="frequency" label="Frequency">
-                        <x-select name="terms" wire:model="network.frequency">
-                            @foreach ($frequencies as $frequency)
-                                <option value="{{ $frequency->value }}">{{ $frequency->name }}</option>
-                            @endforeach
-                        </x-select>
-                    </x-input.group>
-                    <x-input.group for="price" label="Price (ex GST)">
-                        <x-input.text name="price" wire:model="network.price" />
-                    </x-input.group>
-                </div>
+                <x-input.group for="price" label="Price (ex GST)">
+                    <x-input.text leading-add-on="$" name="price" wire:model="network.price" />
+                </x-input.group>
             </div>
 
             <x-jet-validation-errors />

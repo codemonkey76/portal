@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Akaunting\Money\Money;
 use App\Models\Traits\DisablesTimestamps;
 use App\Models\Traits\Searchable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -75,4 +76,37 @@ class ServiceAgreement extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    // Attributes
+    public function total() : Attribute
+    {
+        return new Attribute(
+            get: fn() =>
+            ($this->network_services()->sum('price') +
+                $this->mobile_services()->sum('price') +
+                $this->voip_services()->sum('price')) * $this->term
+        );
+    }
+
+    public function gstString(): Attribute
+    {
+        return new Attribute(
+            get: fn() => Money::AUD($this->total*10)->format()
+        );
+    }
+
+    public function grandTotalString(): Attribute
+    {
+        return new Attribute(
+            get: fn() => Money::AUD($this->total * 110)->format()
+        );
+    }
+
+    public function totalString(): Attribute
+    {
+        return new Attribute(
+            get: fn() => Money::AUD($this->total * 100)->format()
+        );
+    }
+
 }

@@ -75,47 +75,8 @@
         </x-input.group>
     </div>
 
-    @if($agreement->mobile_services()->count())
-    <x-table>
-        <x-slot name="head">
-            <x-table.heading>Service Number</x-table.heading>
-            <x-table.heading>Provider</x-table.heading>
-            <x-table.heading>Billing Type</x-table.heading>
-            <x-table.heading>Sub Total (Ex GST)</x-table.heading>
-        </x-slot>
-        <x-slot name="body">
-            @foreach($agreement->mobile_services as $mobile_service)
-            <x-table.row>
-                <x-table.cell>{{ $mobile_service->mobile_number }}</x-table.cell>
-                <x-table.cell>{{ $mobile_service->service_provider->name }}</x-table.cell>
-                <x-table.cell>Monthly</x-table.cell>
-                <x-table.cell>$105.00</x-table.cell>
-            </x-table.row>
-            @endforeach
-        </x-slot>
-    </x-table>
-    @endif
-
-    @if($agreement->network_services()->count())
-    <x-table>
-        <x-slot name="head">
-            <x-table.heading>Service Description</x-table.heading>
-            <x-table.heading>*Speed</x-table.heading>
-            <x-table.heading>Billing Type</x-table.heading>
-            <x-table.heading>Sub Total (Ex GST)</x-table.heading>
-        </x-slot>
-        <x-slot name="body">
-            @foreach($agreement->network_services as $network_service)
-            <x-table.row>
-                <x-table.cell>{{ $network_service->description }}</x-table.cell>
-                <x-table.cell>{{ $network_service->speed }}</x-table.cell>
-                <x-table.cell>Monthly</x-table.cell>
-                <x-table.cell>{{ $network_service->priceString }}</x-table.cell>
-            </x-table.row>
-            @endforeach
-        </x-slot>
-    </x-table>
-    @endif
+    <livewire:admin.mobile-service.index :agreement="$agreement" />
+    <livewire:admin.network-service.index :agreement="$agreement" />
 
     <div class="grid grid-cols-3 gap-2 md:px-6 lg:px-8">
         <div class="col-span-2 bg-white md:rounded-lg shadow ring-1 ring-black text-gray-900 ring-opacity-5 p-2 text-sm flex items-center justify-center">
@@ -126,17 +87,17 @@
         </div>
         <div class="grid grid-cols-2 gap-x-2 bg-white md:rounded-lg shadow ring-1 ring-black text-gray-900 ring-opacity-5 p-2 text-sm">
             <span class="font-bold">Total (Ex GST)</span>
-            <span class="text-right text-gray-500">$105.00</span>
+            <span class="text-right text-gray-500">{{ $agreement->totalString }}</span>
             <span class="font-bold">GST Amount</span>
-            <span class="text-right text-gray-500">$10.50</span>
+            <span class="text-right text-gray-500">{{ $agreement->gstString }}</span>
             <span class="font-bold">Total (Inc GST)</span>
-            <span class="text-right text-gray-500">$115.50</span>
+            <span class="text-right text-gray-500">{{ $agreement->grandTotalString }}</span>
         </div>
     </div>
 
     <div class="py-2 md:px-6 lg:px-8 flex justify-end items-center space-x-2">
         <span class="text-right font-bold">** Service agreement term: </span>
-        <span class="bg-white md:rounded-lg shadow ring-1 ring-black text-gray-900 ring-opacity-5 p-2 text-sm">24 Months</span>
+        <span class="bg-white md:rounded-lg shadow ring-1 ring-black text-gray-900 ring-opacity-5 p-2 text-sm">{{ $agreement->termString }}</span>
     </div>
 
     <span class="text-xs">** The agreement start date is the date that the service is active at the above address, and will run for the agreement term above.</span>
@@ -213,31 +174,8 @@
     </div>
     <!-- Customer Declaration -->
 
-    <form wire:submit.prevent="saveMobileService">
-        <x-modal.dialog wire:model="showAddMobileServiceModal">
-            <x-slot name="title">Edit Mobile Service</x-slot>
-            <x-slot name="content">
-                <x-input.group for="mobile_number" label="Mobile Number">
-                    <x-input.text name="mobile_number" wire:model="mobile_service.mobile_number" />
-                </x-input.group>
+    <livewire:admin.mobile-service.create :agreement="$agreement" />
 
-                <x-input.group for="mobile_provider" label="Mobile Provider">
-                    <x-select wire:model="mobile_service.service_provider_id">
-                        @foreach ($mobile_service_providers as $provider)
-                            <option value="{{ $provider->id }}">{{ $provider->name }}</option>
-                        @endforeach
-                    </x-select>
-                </x-input.group>
-                @json($errors)
-            </x-slot>
-            <x-slot name="footer">
-                <div class="flex space-x-2">
-                    <x-button.secondary wire:click="$set('showAddMobileServiceModal', false)">Cancel</x-button.secondary>
-                    <x-button.primary type="submit">Save</x-button.primary>
-                </div>
-            </x-slot>
-        </x-modal.dialog>
-    </form>
 
     <livewire:admin.network-service.create :agreement="$agreement"/>
 </div>
