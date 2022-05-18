@@ -38,9 +38,9 @@ Route::middleware([
          ->middleware('can:invites.index')
          ->name('invites.index');
 
-    Route::view('products', 'products.index')
-        ->middleware('can:products.index')
-        ->name('products.index');
+    Route::view('items', 'items.index')
+        ->middleware('can:items.index')
+        ->name('items.index');
 
     Route::view('accounts', 'accounts.index')
          ->middleware('can:accounts.index')

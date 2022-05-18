@@ -62,10 +62,10 @@ return [
         ]
     ],
     'item' => [
-        'model' => 'App\Models\Product',
+        'model' => 'App\Models\Item',
         'attributeMap' => [
             'id' => 'id',
-            'qb_id' => 'qb_product_id',
+            'qb_id' => 'qb_item_id',
             'name' => 'name',
             'description' => 'description',
             'active' => 'active',

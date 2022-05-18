@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Products;
+namespace App\Http\Livewire\Admin\Items;
 
 use App\Http\Livewire\Traits\WithAuthorizationMessage;
 use App\Http\Livewire\Traits\WithPerPagePagination;
 use App\Http\Livewire\Traits\WithSearch;
 use App\Http\Livewire\Traits\WithSorting;
 use App\Models\Account;
-use App\Models\Product;
+use App\Models\Item;
 use Livewire\Component;
 
 class Index extends Component
 {
     use WithPerPagePagination, WithSearch, WithSorting, WithAuthorizationMessage;
 
-    public string $perPageVariable = "productsPerPage";
+    public string $perPageVariable = "itemsPerPage";
 
     public bool $showEditModal = false;
     public bool $showDeleteModal = false;
 
-    public Product $editing;
+    public Item $editing;
     public $deleting = null;
     public array $types = ['Category', 'Inventory', 'NonInventory', 'Service'];
 
@@ -48,7 +48,7 @@ class Index extends Component
 
     public function create()
     {
-        if (auth()->user()->cannot('products.create')) {
+        if (auth()->user()->cannot('items.create')) {
             return $this->denied();
         }
 
@@ -63,11 +63,11 @@ class Index extends Component
     {
         $isEditing = !!$this->editing->getKey();
 
-        if ($isEditing && auth()->user()->cannot('products.update')) {
+        if ($isEditing && auth()->user()->cannot('items.update')) {
             return $this->denied();
         }
 
-        if (!$isEditing && auth()->user()->cannot('products.create')) {
+        if (!$isEditing && auth()->user()->cannot('items.create')) {
             return $this->denied();
         }
 
@@ -82,13 +82,13 @@ class Index extends Component
 
     public function edit($productId)
     {
-        $product = Product::findOr($productId, function() {
+        $product = Item::findOr($productId, function() {
            $this->notify("Can't find product");
         });
 
         if (!$product) return;
 
-        if (auth()->user()->cannot('products.update')) {
+        if (auth()->user()->cannot('items.update')) {
             return $this->denied();
         }
 
@@ -101,7 +101,7 @@ class Index extends Component
 
     public function confirmDelete($productId)
     {
-        $product = Product::findOr($productId, function() {
+        $product = Item::findOr($productId, function() {
             $this->notify("Can't find product");
         })->first();
 
@@ -127,9 +127,9 @@ class Index extends Component
         $this->notify("Product has been deleted successfully!");
     }
 
-    public function checkIfCanDelete(Product $product)
+    public function checkIfCanDelete(Item $product)
     {
-        if (auth()->user()->cannot('products.destroy')) return $this->denied();
+        if (auth()->user()->cannot('items.destroy')) return $this->denied();
 
         return true;
     }
@@ -142,7 +142,7 @@ class Index extends Component
 
     public function makeBlankProduct()
     {
-        return Product::make([
+        return Item::make([
             'active'                => true,
             'taxable'               => true,
             'sales_tax_included'    => false,
@@ -157,8 +157,8 @@ class Index extends Component
 
     public function getRowsQueryProperty()
     {
-        $query = Product::query()
-                        ->search($this->search);
+        $query = Item::query()
+                     ->search($this->search);
 
         return $this->applySorting($query);
     }
@@ -171,6 +171,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.admin.products.index', ['products' => $this->rows]);
+        return view('livewire.admin.items.index', ['items' => $this->rows]);
     }
 }

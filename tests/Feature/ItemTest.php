@@ -2,15 +2,15 @@
 
 namespace Tests\Feature;
 
-use App\Http\Livewire\Admin\Products\Index;
-use App\Models\Product;
+use App\Http\Livewire\Admin\Items\Index;
+use App\Models\Item;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
 use Tests\TestCase;
 use Tests\Traits\RolesAndPermissions;
 
-class ProductTest extends TestCase
+class ItemTest extends TestCase
 {
     use RefreshDatabase, RolesAndPermissions;
 
@@ -23,16 +23,16 @@ class ProductTest extends TestCase
     {
         $this->asRegular();
 
-        $this->get(route('products.index'))
+        $this->get(route('items.index'))
              ->assertDontSeeLivewire(Index::class)
              ->assertStatus(403);
     }
 
-    public function test_admin_can_see_products()
+    public function test_admin_can_see_items()
     {
         $this->asAdmin();
 
-        $this->get(route('products.index'))->assertSeeLivewire(Index::class);
+        $this->get(route('items.index'))->assertSeeLivewire(Index::class);
     }
 
     public function test_admin_can_create_product()
@@ -40,23 +40,23 @@ class ProductTest extends TestCase
         $this->asAdmin();
 
         Livewire::test(Index::class)
-                ->assertSee('CreateProductButton')
+                ->assertSee('CreateItemButton')
                 ->call('create')
                 ->assertSet('showEditModal', true)
                 ->set('editing.name', 'foo')
                 ->call('save');
 
-        $this->assertTrue(Product::whereName('foo')->count() === 1);
+        $this->assertTrue(Item::whereName('foo')->count() === 1);
     }
 
     public function test_admin_can_edit_product()
     {
         $this->asAdmin();
 
-        $product = Product::factory()->create(['name' => 'foo']);
+        $product = Item::factory()->create(['name' => 'foo']);
 
         Livewire::test(Index::class)
-                ->assertSee('EditProductButton')
+                ->assertSee('EditItemButton')
                 ->call('edit', $product->id)
                 ->assertSet('showEditModal', true)
                 ->set('editing.name', 'bar')
@@ -69,14 +69,14 @@ class ProductTest extends TestCase
     {
         $this->asAdmin();
 
-        $product = Product::factory()->create();
+        $product = Item::factory()->create();
 
         Livewire::test(Index::class)
-            ->assertSee('DeleteProductButton')
+            ->assertSee('DeleteItemButton')
             ->call('confirmDelete', $product->id)
             ->call('delete');
 
-        $this->assertNull(Product::first());
+        $this->assertNull(Item::first());
 
     }
 
@@ -84,10 +84,10 @@ class ProductTest extends TestCase
     {
         $this->asAdmin();
 
-        Product::factory()->create(['name' => 'foo', 'description' => 'foo description']);
+        Item::factory()->create(['name' => 'foo', 'description' => 'foo description']);
 
         Livewire::test(Index::class)
-                ->assertSee('ProductSearchButton')
+                ->assertSee('ItemSearchButton')
                 ->set('search', 'foo')
                 ->assertSee('foo description')
                 ->set('search', 'bar')

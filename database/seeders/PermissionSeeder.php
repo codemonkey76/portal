@@ -69,10 +69,10 @@ class PermissionSeeder extends Seeder
         $accounts->givePermissionTo(Permission::create(['name' => 'rate-groups.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'plan-items.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'service-providers.index']));
-        $accounts->givePermissionTo(Permission::create(['name' => 'products.index']));
-        $accounts->givePermissionTo(Permission::create(['name' => 'products.update']));
-        $accounts->givePermissionTo(Permission::create(['name' => 'products.destroy']));
-        $accounts->givePermissionTo(Permission::create(['name' => 'products.create']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'items.index']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'items.update']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'items.destroy']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'items.create']));
         $accounts->givePermissionTo(Permission::create(['name' => 'accounts.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'accounts.update']));
         $accounts->givePermissionTo(Permission::create(['name' => 'accounts.destroy']));

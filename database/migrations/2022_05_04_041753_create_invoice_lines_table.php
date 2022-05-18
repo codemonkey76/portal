@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Invoice;
-use App\Models\Product;
+use App\Models\Item;
 use App\Models\TaxRate;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->decimal('tax_inclusive_amount')->default(0);
             $table->decimal('discount_amount')->nullable();
-            $table->foreignIdFor(Product::class)->nullable();
+            $table->foreignIdFor(Item::class)->nullable();
             $table->foreignIdFor(TaxRate::class)->nullable();
             $table->date('service_date')->nullable();
             $table->decimal('discount_rate')->nullable();

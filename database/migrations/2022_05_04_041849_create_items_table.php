@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
@@ -34,7 +34,7 @@ return new class extends Migration
             $table->string('qty_on_hand')->nullable();
             $table->string('sales_tax_code_ref')->nullable();
             $table->string('purchase_tax_code_ref')->nullable();
-            $table->string('qb_product_id')->nullable();
+            $table->string('qb_item_id')->nullable();
             $table->boolean('sync')->default(true);
             $table->integer('sync_failed')->default(0);
             $table->timestamps();
@@ -48,6 +48,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('items');
     }
 };

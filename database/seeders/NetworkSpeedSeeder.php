@@ -24,42 +24,42 @@ class NetworkSpeedSeeder extends Seeder
             'name' => '12Mbps/1Mbps',
             'download' => 12,
             'upload' => 1,
-            'price' => 49
+            'price' => 85
         ]);
 
         $nbn->speeds()->create([
             'name' => '25Mbps/5Mbps',
             'download' => 25,
             'upload' => 5,
-            'price' => 59
+            'price' => 97
         ]);
 
         $nbn->speeds()->create([
             'name' => '50Mbps/20Mbps',
             'download' => 50,
             'upload' => 20,
-            'price' => 69
+            'price' => 105
         ]);
 
         $nbn->speeds()->create([
             'name' => '100Mbps/40Mbps',
             'download' => 100,
             'upload' => 40,
-            'price' => 79
+            'price' => 126
         ]);
 
         $nbn->speeds()->create([
             'name' => '100Mbps/20Mbps',
             'download' => 100,
             'upload' => 20,
-            'price' => 74
+            'price' => 122
         ]);
 
         $nbn->speeds()->create([
-            'name' => '250Mbps/20Mbps',
+            'name' => '250Mbps/25Mbps',
             'download' => 250,
-            'upload' => 20,
-            'price' => 85
+            'upload' => 25,
+            'price' => 142
         ]);
 
         $fibre = ServiceType::create(['name' => 'E-Line']);
