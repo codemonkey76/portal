@@ -42,6 +42,10 @@ Route::middleware([
         ->middleware('can:items.index')
         ->name('items.index');
 
+    Route::view('products', 'products.index')
+         ->middleware('can:products.index')
+         ->name('products.index');
+
     Route::view('accounts', 'accounts.index')
          ->middleware('can:accounts.index')
          ->name('accounts.index');
@@ -66,6 +70,11 @@ Route::middleware([
 Route::controller(InviteController::class)->group(function() {
     Route::get('invites/accept/{token}', 'accept')->name('invites.accept');
     Route::post('invites/process', 'process')->name('invites.process');
+});
+
+Route::controller(ServiceAgreementController::class)->group(function() {
+    Route::get('agreements/accept/{token}', 'accept')->name('agreements.accept');
+    Route::post('agreements/process', 'process')->name('agreements.process');
 });
 
 Route::post('website_contact', [WebsiteContactController::class, 'store'])->name('website_contact.store');

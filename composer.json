@@ -16,6 +16,7 @@
         "livewire/livewire": "^2.10",
         "mews/purifier": "^3.3",
         "popplestones/quickbooks-helper": "^1.0",
+        "predis/predis": "^1.1",
         "spatie/laravel-permission": "^5.5"
     },
     "require-dev": {

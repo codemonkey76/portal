@@ -69,22 +69,30 @@ class PermissionSeeder extends Seeder
         $accounts->givePermissionTo(Permission::create(['name' => 'rate-groups.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'plan-items.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'service-providers.index']));
+
         $accounts->givePermissionTo(Permission::create(['name' => 'items.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'items.update']));
         $accounts->givePermissionTo(Permission::create(['name' => 'items.destroy']));
         $accounts->givePermissionTo(Permission::create(['name' => 'items.create']));
+
+        $accounts->givePermissionTo(Permission::create(['name' => 'products.index']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'products.update']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'products.destroy']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'products.create']));
+
         $accounts->givePermissionTo(Permission::create(['name' => 'accounts.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'accounts.update']));
         $accounts->givePermissionTo(Permission::create(['name' => 'accounts.destroy']));
         $accounts->givePermissionTo(Permission::create(['name' => 'accounts.create']));
 
-
         $admin->givePermissionTo(Permission::create(['name' => 'invites.index']));
         $admin->givePermissionTo(Permission::create(['name' => 'invites.destroy']));
         $admin->givePermissionTo(Permission::create(['name' => 'invites.create']));
+
         $admin->givePermissionTo(Permission::create(['name' => 'users.index']));
         $admin->givePermissionTo(Permission::create(['name' => 'users.update']));
         $admin->givePermissionTo(Permission::create(['name' => 'users.destroy']));
+
         $admin->givePermissionTo(Permission::create(['name' => 'change user role assignments']));
         $admin->givePermissionTo(Permission::create(['name' => 'change user customer assignments']));
 

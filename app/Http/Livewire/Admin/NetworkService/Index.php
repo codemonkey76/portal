@@ -9,6 +9,7 @@ use Livewire\Component;
 class Index extends Component
 {
     public ServiceAgreement $agreement;
+    public $showControls = false;
 
     protected $listeners = ['refreshNetworkServices' => '$refresh'];
 

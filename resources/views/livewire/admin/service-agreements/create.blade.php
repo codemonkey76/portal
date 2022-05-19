@@ -70,8 +70,6 @@
         </div>
     </x-input.group>
 
-    @json($agreement)
-    @json($startsAtDate)
     @if($agreement->customer)
         <div class="grid grid-cols-5 gap-2">
             <span class="text-right">Company name:</span>

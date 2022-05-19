@@ -15,6 +15,9 @@ class ServiceProviderSeeder extends Seeder
      */
     public function run()
     {
-        ServiceProvider::factory(5)->create();
+        ServiceProvider::create(['name' => 'Optus', 'type' => 'mobile']);
+        ServiceProvider::create(['name' => 'Superloop', 'type' => 'network']);
+        ServiceProvider::create(['name' => 'AAPT', 'type' => 'network']);
+        ServiceProvider::create(['name' => 'Optus (Bundled-AGVC-L3)', 'type' => 'network']);
     }
 }

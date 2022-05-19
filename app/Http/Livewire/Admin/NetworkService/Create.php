@@ -7,6 +7,7 @@ use App\Models\NetworkService;
 use App\Models\NetworkSpeed;
 use App\Models\PaymentFrequency;
 use App\Models\ServiceAgreement;
+use App\Models\ServiceProvider;
 use App\Models\ServiceType;
 use Livewire\Component;
 
@@ -69,8 +70,8 @@ class Create extends Component
 
     public function mount()
     {
+        $this->carriers = ServiceProvider::whereType('network')->orderBy('name')->pluck('name')->toArray();
         $this->service_types = ServiceType::pluck('name')->toArray();
-        $this->carriers = NetworkCarrier::pluck('name')->toArray();
         $this->network = $this->makeBlankNetworkService();
         $this->network_speeds = ServiceType::whereName($this->network->service_type)->first()->speeds;
     }

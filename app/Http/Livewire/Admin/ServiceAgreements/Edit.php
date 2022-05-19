@@ -2,13 +2,9 @@
 
 namespace App\Http\Livewire\Admin\ServiceAgreements;
 
-use App\Models\MobileService;
-use App\Models\NetworkCarrier;
 use App\Models\NetworkService;
-use App\Models\NetworkSpeed;
 use App\Models\ServiceAgreement;
-use App\Models\ServiceProvider;
-use App\Models\ServiceType;
+use App\Notifications\ServiceAgreementProposal;
 use Livewire\Component;
 
 class Edit extends Component
@@ -29,6 +25,7 @@ class Edit extends Component
     {
         $this->emit('refreshNetworkServices');
         $this->emit('refreshMobileServices');
+        $this->emit('refreshProducts');
         $this->emit('$refresh');
     }
     public function addService()
@@ -42,6 +39,16 @@ class Edit extends Component
                 $this->emit('showCreateNetworkService');
                 break;
         }
+    }
+
+    public function addProduct()
+    {
+        $this->emit('showAddProduct');
+    }
+
+    public function sendAgreement()
+    {
+        $this->agreement->notify(new ServiceAgreementProposal);
     }
 
     public function render()

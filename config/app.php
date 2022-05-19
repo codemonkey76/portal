@@ -4,20 +4,21 @@ use Illuminate\Support\Facades\Facade;
 use Popplestones\Quickbooks\Providers\QuickbooksHelperServiceProvider;
 
 return [
-    'name' => env('APP_NAME', 'Laravel'),
-    'env' => env('APP_ENV', 'production'),
-    'debug' => (bool) env('APP_DEBUG', false),
-    'url' => env('APP_URL', 'http://localhost'),
-    'asset_url' => env('ASSET_URL'),
-    'timezone' => 'UTC',
-    'locale' => 'en',
+    'name'            => env('APP_NAME', 'Laravel'),
+    'env'             => env('APP_ENV', 'production'),
+    'debug'           => (bool) env('APP_DEBUG', false),
+    'url'             => env('APP_URL', 'http://localhost'),
+    'asset_url'       => env('ASSET_URL'),
+    'timezone'        => 'UTC',
+    'locale'          => 'en',
     'fallback_locale' => 'en',
-    'faker_locale' => 'en_US',
-    'key' => env('APP_KEY'),
-    'cipher' => 'AES-256-CBC',
+    'faker_locale'    => 'en_US',
+    'key'             => env('APP_KEY'),
+    'cipher'          => 'AES-256-CBC',
 
     'settings' => [
-      'invitation_expiry' => 5, // Number of days until an invitation expires
+        'invitation_expiry'        => 5, // Number of days until an invitation expires
+        'service_agreement_expiry' => 30 // Number of days a service agreement is available for signing
     ],
     /*
     |--------------------------------------------------------------------------

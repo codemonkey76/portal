@@ -68,21 +68,21 @@ class NetworkSpeedSeeder extends Seeder
             'name' => 'Fibre 100Mbps',
             'download' => 100,
             'upload' => 100,
-            'price' => 100
+            'price' => 199
         ]);
 
         $fibre->speeds()->create([
             'name' => 'Fibre 400Mbps',
             'download' => 400,
             'upload' => 400,
-            'price' => 150
+            'price' => 399
         ]);
 
         $fibre->speeds()->create([
             'name' => 'Fibre 1000Mbps',
             'download' => 1000,
             'upload' => 1000,
-            'price' => 250
+            'price' => 799
         ]);
     }
 }

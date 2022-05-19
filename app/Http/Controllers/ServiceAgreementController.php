@@ -32,4 +32,14 @@ class ServiceAgreementController extends Controller
         $serviceAgreement->load(['network_services', 'mobile_services', 'voip_services', 'customer']);
         return view('service_agreements.edit', ['agreement' => $serviceAgreement]);
     }
+
+    public function process()
+    {
+
+    }
+
+    public function accept($token)
+    {
+        return view('service_agreements.accept', ['token' => $token]);
+    }
 }

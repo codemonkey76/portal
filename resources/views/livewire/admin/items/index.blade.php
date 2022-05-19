@@ -18,7 +18,7 @@
                     <!-- ItemSearchButton -->
                     <div class="flex space-x-2">
                         <x-input.per-page :options="$perPageOptions" wire:model="perPage" />
-                        @can('products.create')
+                        @can('items.create')
                             <!-- CreateItemButton -->
                             <x-button.primary wire:click="create">Create</x-button.primary>
                             <!-- CreateItemButton -->
@@ -45,12 +45,12 @@
                             <x-table.cell class="text-gray-900">{{ $item->description }}</x-table.cell>
                             <x-table.cell class="text-gray-900">{{ $item->type }}</x-table.cell>
                             <x-table.cell>
-                                @can('products.update')
+                                @can('items.update')
                                     <!-- EditItemButton -->
                                     <x-small-button.warning wire:click="edit({{$item}})">Edit</x-small-button.warning>
                                     <!-- EditItemButton -->
                                 @endcan
-                                @can('products.destroy')
+                                @can('items.destroy')
                                     <!-- DeleteItemButton -->
                                     <x-small-button.danger wire:click="confirmDelete({{$item}})">Delete</x-small-button.danger>
                                     <!-- DeleteItemButton -->

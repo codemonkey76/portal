@@ -23,6 +23,13 @@ return new class extends Migration
             $table->decimal('amount')->default(0);
             $table->date('starts_at');
             $table->date('ends_at');
+            $table->string('token', 64)->unique()->nullable();
+            $table->timestamp('expires_at');
+
+            $table->string('signed_by_name')->nullable();
+            $table->string('signed_by_position')->nullable();
+            $table->date('signed_at')->nullable();
+            $table->string('signature_path')->nullable();
         });
     }
 

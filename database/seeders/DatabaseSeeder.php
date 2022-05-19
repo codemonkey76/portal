@@ -28,7 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MobileServiceSeeder::class);
         $this->call(GlobalSettingSeeder::class);
         $this->call(AccountTypeSeeder::class);
-        $this->call(NetworkCarrierSeeder::class);
         $this->call(NetworkSpeedSeeder::class);
         $this->call(PaymentFrequencySeeder::class);
         $this->call(NetworkServiceSeeder::class);
