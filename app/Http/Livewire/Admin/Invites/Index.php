@@ -25,7 +25,7 @@ class Index extends Component
     protected $rules = [
             'editing.name' => 'required',
             'editing.email' => 'required|email|unique:invites,email',
-            'editing.customer_id' => 'required|exists:customers,id'
+            'editing.customer_id' => 'nullable|exists:customers,id'
         ];
     public function create()
     {

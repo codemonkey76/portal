@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Account;
+use App\Models\Customer;
 use App\Models\Feature;
 use App\Models\Menu;
 use App\Models\Question;
@@ -86,6 +87,11 @@ class AppServiceProvider extends ServiceProvider
         CallbackManager::registerAccounts(
             fn () => Account::query(),
             fn ($q) => $q->whereNull('qb_account_id')->whereSync(true)
+        );
+
+        CallbackManager::registerCustomers(
+            fn() => Customer::query(),
+            fn ($q) => $q->whereNull('qb_customer_id')->whereSync(true)
         );
     }
 }

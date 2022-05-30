@@ -28,6 +28,14 @@ return new class extends Migration
             $table->string('billing_postcode')->nullable();
             $table->string('billing_country')->nullable();
             $table->string('display_name');
+
+            $table->boolean('job')->nullable();
+            $table->boolean('bill_with_parent')->nullable();
+            $table->boolean('is_project')->nullable();
+
+            $table->string('currency_ref')->nullable();
+            $table->string('preferred_delivery_method')->nullable();
+
             $table->boolean('active')->default(true);
             $table->boolean('taxable')->default(true);
             $table->integer('terms')->default(15);

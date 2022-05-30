@@ -2,6 +2,7 @@
 
 use App\Models\Customer;
 use App\Models\Address;
+use App\Models\ServiceAgreement;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Customer::class);
             $table->string('currency_ref')->default('AUD');
-            $table->string('exchange_rate')->default('1');
+            $table->string('exchange_rate')->default('1')->nullable();
             $table->string('bill_email')->nullable();
             $table->date('transaction_date');
             $table->foreignIdFor(Address::class, 'ship_from_address')->nullable();
@@ -32,10 +33,12 @@ return new class extends Migration
             $table->string('customer_memo')->nullable();
             $table->string('ship_method')->nullable();
             $table->boolean('apply_tax_after_discount')->default(false)->nullable();
-            $table->decimal('total_amount');
+            $table->decimal('total_amount')->default(0);
             $table->string('qb_invoice_id')->nullable();
             $table->boolean('sync')->default(true);
             $table->integer('sync_failed')->default(0);
+
+            $table->foreignIdFor(ServiceAgreement::class)->nullable();
             $table->timestamps();
         });
     }

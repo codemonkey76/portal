@@ -42,15 +42,15 @@
 
             <x-table>
                 <x-slot name="head">
-                    <x-table.heading>Starts at</x-table.heading>
-                    <x-table.heading>Ends at</x-table.heading>
+                    <x-table.heading>Approx. Start</x-table.heading>
+                    <x-table.heading>Approx. End</x-table.heading>
                     <x-table.heading>Frequency</x-table.heading>
                     <x-table.heading>Term</x-table.heading>
                 </x-slot>
                 <x-slot name="body">
                     <x-table.row>
-                        <x-table.cell>{{ $agreement->starts_at->format('d/m/Y') }}</x-table.cell>
-                        <x-table.cell>{{ $agreement->ends_at->format('d/m/Y') }}</x-table.cell>
+                        <x-table.cell>{{ $agreement->approximate_start->format('d/m/Y') }}</x-table.cell>
+                        <x-table.cell>{{ $agreement->approximate_end->format('d/m/Y') }}</x-table.cell>
                         <x-table.cell>{{ $agreement->frequencyString }}</x-table.cell>
                         <x-table.cell>{{ $agreement->termString }}</x-table.cell>
                     </x-table.row>

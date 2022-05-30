@@ -67,17 +67,17 @@
                         </x-input.group>
                         <x-input.group for="billing_address" label="Billing Address" :error="$errors->first('editing.billing_address')">
                             <div class="flex flex-col space-y-1">
-                                <x-input.text name="address" placeholder="Street Address" />
+                                <x-input.text name="address" placeholder="Street Address" wire:model="editing.billing_address"/>
                                 <div class="grid grid-cols-5 gap-x-1">
                                     <div class="col-span-3">
-                                        <x-input.text name="suburb" placeholder="Suburb" />
+                                        <x-input.text name="suburb" placeholder="Suburb" wire:model="editing.billing_suburb"/>
                                     </div>
-                                    <x-input.text name="state" placeholder="State" />
-                                    <x-input.text name="postcode" placeholder="Postcode" />
+                                    <x-input.text name="state" placeholder="State" wire:model="editing.billing_state"/>
+                                    <x-input.text name="postcode" placeholder="Postcode" wire:model="editing.billing_postcode"/>
                                 </div>
                             </div>
                         </x-input.group>
-                        <x-input.group for="first_name" label="Accounts Contact" :error="$errors->first('editing.first_name') . ' ' . $errors->first('editing.last_name')">
+                        <x-input.group for="first_name" label="Accounts Contact" :error="$errors->first('editing.first_name') || $errors->first('editing.last_name')">
                             <div class="flex space-x-2">
                                 <x-input.text name="first_name" wire:model="editing.first_name" placeholder="First name" :has-error="$errors->has('editing.first_name')"/>
                                 <x-input.text name="first_name" wire:model="editing.last_name" placeholder="Last name" :has-error="$errors->has('editing.last_name')" />

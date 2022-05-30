@@ -2,21 +2,48 @@
 
 namespace Tests\Feature;
 
+use App\Http\Livewire\Admin\ServiceAgreements\Edit;
+use App\Models\Customer;
+use App\Models\ServiceAgreement;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Livewire\Livewire;
 use Tests\TestCase;
+use Tests\Traits\RolesAndPermissions;
 
 class ServiceAgreementsTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
-    {
-        $response = $this->get('/');
+    use RefreshDatabase, RolesAndPermissions;
 
-        $response->assertStatus(200);
+
+    protected function shouldSeed() : bool
+    {
+        return true;
+    }
+
+    public function test_can_visit_edit_route()
+    {
+        $this->asAdmin();
+
+        $customer = Customer::factory()->create(['company_name' => 'foo']);
+        $service_agreement = ServiceAgreement::factory()->create(['customer_id' => $customer->id]);
+
+        $this->get(route('service-agreements.edit', [$service_agreement->id]))->assertSeeLivewire(Edit::class);
+    }
+    public function test_can_edit_service_agreement()
+    {
+        $this->asAdmin();
+
+
+        $customer = Customer::factory()->create(['company_name' => 'foo']);
+        $service_agreement = ServiceAgreement::factory()->create(['customer_id' => $customer->id]);
+
+        Livewire::test(Edit::class, ['agreement' => $service_agreement])
+                ->assertStatus(200);
+
+        // add a network service
+        // add a mobile service
+        // add a product
+        // send agreement
+        // set active
     }
 }

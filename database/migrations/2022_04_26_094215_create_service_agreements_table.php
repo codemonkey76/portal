@@ -21,11 +21,14 @@ return new class extends Migration
             $table->integer('term')->default(1);
             $table->integer('frequency')->default(12);
             $table->decimal('amount')->default(0);
-            $table->date('starts_at');
-            $table->date('ends_at');
+            $table->date('approximate_start');
+            $table->date('approximate_end');
+            $table->date('start')->nullable();
+            $table->date('end')->nullable();
             $table->string('token', 64)->unique()->nullable();
             $table->timestamp('expires_at');
 
+            $table->timestamp('sent_at')->nullable();
             $table->string('signed_by_name')->nullable();
             $table->string('signed_by_position')->nullable();
             $table->date('signed_at')->nullable();

@@ -47,12 +47,12 @@
                             <x-table.cell>
                                 @can('items.update')
                                     <!-- EditItemButton -->
-                                    <x-small-button.warning wire:click="edit({{$item}})">Edit</x-small-button.warning>
+                                    <x-small-button.warning wire:click="edit({{$item->id}})">Edit</x-small-button.warning>
                                     <!-- EditItemButton -->
                                 @endcan
                                 @can('items.destroy')
                                     <!-- DeleteItemButton -->
-                                    <x-small-button.danger wire:click="confirmDelete({{$item}})">Delete</x-small-button.danger>
+                                    <x-small-button.danger wire:click="confirmDelete({{$item->id}})">Delete</x-small-button.danger>
                                     <!-- DeleteItemButton -->
                                 @endcan
                             </x-table.cell>
@@ -138,7 +138,7 @@
 
             <!-- ProductDeleteModal -->
             <form wire:submit.prevent="delete">
-                <x-jet-confirmation-modal wire:model="showDeleteModal">
+                <x-jet-confirmation-modal wire:model="showDeleteConfirmation">
                     <x-slot name="title">Delete product</x-slot>
                     <x-slot name="content">Are you sure you want to delete this product, this action is irreversible.</x-slot>
                     <x-slot name="footer">

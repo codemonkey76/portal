@@ -1,5 +1,5 @@
 <div>
-    @if($agreement->mobile_services()->count())
+    @if($agreement->mobileServices()->count())
         <x-table>
             <x-slot name="head">
                 <x-table.heading>Service Number</x-table.heading>
@@ -10,7 +10,7 @@
                 @endif
             </x-slot>
             <x-slot name="body">
-                @foreach($agreement->mobile_services as $mobile_service)
+                @foreach($agreement->mobileServices as $mobile_service)
                     <x-table.row>
                         <x-table.cell>{{ $mobile_service->mobile_number }}</x-table.cell>
                         <x-table.cell>{{ $mobile_service->service_provider->name }}</x-table.cell>

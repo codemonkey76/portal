@@ -13,12 +13,12 @@ class ServiceProvider extends Model
 
     public $searchable = ['name', 'type'];
 
-    public function mobile_services()
+    public function mobileServices()
     {
         return $this->hasMany(MobileService::class);
     }
 
-    public function network_services()
+    public function networkServices()
     {
         return $this->hasMany(NetworkService::class);
     }

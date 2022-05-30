@@ -19,55 +19,60 @@ class Create extends Component
     public $created_date;
     public $customers;
     public $contract_term;
-    public $startsAtDate;
-    public $endsAtDate;
+    public $approximateStartDate;
+    public $approximateEndDate;
 
     public $frequencies;
 
-    public $terms = [
-        1 => 'Monthly',
-        6 => '6 Months',
+    public array $terms = [
+        1  => 'Monthly',
+        6  => '6 Months',
         12 => '12 Months',
         24 => '2 Years',
         36 => '3 Years',
         48 => '4 Years'
     ];
-    protected function rules() {
+
+    protected function rules()
+    {
         return [
-            'agreement.customer_id' => 'required|exists:customers,id',
-            'agreement.created_at' => 'required|date',
-            'agreement.starts_at' => 'required|date',
-            'agreement.ends_at' => 'required|date',
-            'agreement.frequency' => 'required|numeric',
-            'agreement.term' => 'required|in:1,6,12,24,36,48'
+            'agreement.customer_id'       => 'required|exists:customers,id',
+            'agreement.created_at'        => 'required|date',
+            'agreement.approximate_start' => 'required|date',
+            'agreement.approximate_end'   => 'required|date',
+            'agreement.frequency'         => 'required|numeric',
+            'agreement.term'              => 'required|in:1,6,12,24,36,48'
         ];
     }
 
     public function updatedAgreementTerm()
     {
-        $this->updateEndsAtDate();
+        $this->updateApproximateEndDate();
     }
 
-    public function updateEndsAtDate()
+    public function updateApproximateEndDate()
     {
-        if ($this->agreement->starts_at && $this->agreement->term) {
-            $this->agreement->ends_at = $this->agreement->starts_at->addMonths($this->agreement->term);
-            $this->endsAtDate = $this->agreement->ends_at->format('Y-m-d');
+        if ($this->agreement->approximate_start && $this->agreement->term) {
+            $this->agreement->approximate_end = $this->agreement->approximate_start->addMonths($this->agreement->term);
+            $this->approximateEndDate = $this->agreement->approximate_end->format('Y-m-d');
         }
     }
 
-    public function updatedStartsAtDate()
+    public function updatedApproximateStartDate()
     {
-        if (!$this->startsAtDate)
-            $this->agreement->starts_at = null;
-        else
-            $this->agreement->starts_at = $this->startsAtDate;
-        $this->updateEndsAtDate();
+        if (!$this->approximateStartDate) {
+            $this->agreement->approximate_start = null;
+        } else {
+            $this->agreement->approximate_start = $this->approximateStartDate;
+        }
+        $this->updateApproximateEndDate();
     }
 
     public function createServiceAgreement()
     {
-        if (auth()->user()->cannot('service-agreements.create')) return $this->denied();
+        if (auth()->user()->cannot('service-agreements.create')) {
+            return $this->denied();
+        }
 
         $this->validate();
         $this->agreement->save();
@@ -80,8 +85,8 @@ class Create extends Component
         $this->agreement = $this->makeBlankAgreement();
         $this->customers = Customer::orderBy('company_name')->get();
         $this->frequencies = PaymentFrequency::all();
-        $this->startsAtDate = today()->format('Y-m-d');
-        $this->updateEndsAtDate();
+        $this->approximateStartsDate = today()->format('Y-m-d');
+        $this->updateApproximateEndDate();
     }
 
     public function updatedCreatedDate()
@@ -92,12 +97,13 @@ class Create extends Component
     public function makeBlankAgreement()
     {
         return ServiceAgreement::make([
-            'created_at' => $this->created_date,
-            'starts_at' => today(),
-            'frequency' => 12,
-            'term' => 12,
+            'created_at'        => $this->created_date,
+            'approximate_start' => today(),
+            'frequency'         => 12,
+            'term'              => 12,
         ]);
     }
+
     public function render()
     {
         return view('livewire.admin.service-agreements.create');

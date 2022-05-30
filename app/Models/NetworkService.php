@@ -14,12 +14,12 @@ class NetworkService extends Model
 
     protected $guarded = [];
 
-    public function service_agreement(): BelongsTo
+    public function serviceAgreement(): BelongsTo
     {
         return $this->belongsTo(ServiceAgreement::class);
     }
 
-    public function service_provider(): BelongsTo
+    public function serviceProvider(): BelongsTo
     {
         return $this->belongsTo(ServiceProvider::class);
     }

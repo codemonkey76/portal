@@ -3,11 +3,14 @@
 namespace App\Http\Livewire\Admin\Users;
 
 use App\Actions\Users\CustomerAttacher;
+use App\Http\Livewire\Traits\WithAuthorizationMessage;
 use App\Http\Livewire\Traits\WithPerPagePagination;
 use App\Http\Livewire\Traits\WithSearch;
 use App\Http\Livewire\Traits\WithSorting;
 use App\Models\Customer;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
@@ -15,7 +18,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Index extends Component
 {
-    use WithPerPagePagination, WithSearch, WithSorting;
+    use WithPerPagePagination, WithSearch, WithSorting, AuthorizesRequests, WithAuthorizationMessage;
 
     public bool $showDeleteModal = false;
     public bool $showEditModal = false;
@@ -66,45 +69,56 @@ class Index extends Component
 
     public function assignCustomerToUser(CustomerAttacher $attacher)
     {
-        if (auth()->user()->can('change user customer assignments')) {
-            $attacher->attach($this->editing, $this->customersToAssign);
+        if (Gate::denies('assign', User::find($this->editing->getKey())))
+            return $this->denied();
 
-            $this->editing->refresh();
-            $this->customersToAssign = [];
-            $this->emit('assignedCustomersChanged');
-        }
+        $attacher->attach($this->editing, $this->customersToAssign);
+
+        $this->editing->refresh();
+        $this->customersToAssign = [];
+        $this->emit('assignedCustomersChanged');
+
     }
 
     public function unassignCustomerFromUser(CustomerAttacher $attacher)
     {
-        if (auth()->user()->can('change user customer assignments')) {
-            $attacher->detach($this->editing, $this->customersToUnassign);
+        if (Gate::denies('assign', User::find($this->editing->getKey()))) return $this->denied();
 
-            $this->editing->refresh();
-            $this->customersToUnassign = [];
-            $this->emit('assignedCustomersChanged');
-        }
+        $attacher->detach($this->editing, $this->customersToUnassign);
+
+        $this->editing->refresh();
+
+        $this->customersToUnassign = [];
+
+        $this->emit('assignedCustomersChanged');
     }
 
     public function addRolesToUser()
     {
-        if (auth()->user()->can('change user role assignments')) {
-            $this->editing->assignRole($this->rolesToAdd);
-            $this->editing->refresh();
-            $this->rolesToAdd = [];
-            $this->emit('assignedRolesChanged');
-        }
+        if (Gate::denies('assign', User::find($this->editing->getKey()))) return $this->denied();
+
+        $this->editing->assignRole($this->rolesToAdd);
+
+        $this->editing->refresh();
+
+        $this->rolesToAdd = [];
+
+        $this->emit('assignedRolesChanged');
     }
 
     public function removeRolesFromUser()
     {
-        if (auth()->user()->can('change user role assignments')) {
-            $rolesToKeep = $this->editing->roles()->whereNotIn('name', $this->rolesToRemove)->pluck('name');
-            $this->editing->syncRoles($rolesToKeep);
-            $this->editing->refresh();
-            $this->rolesToRemove = [];
-            $this->emit('assignedRolesChanged');
-        }
+        if (Gate::denies('assign', User::find($this->editing->getKey()))) return $this->denied();
+
+        $rolesToKeep = $this->editing->roles()->whereNotIn('name', $this->rolesToRemove)->pluck('name');
+
+        $this->editing->syncRoles($rolesToKeep);
+
+        $this->editing->refresh();
+
+        $this->rolesToRemove = [];
+
+        $this->emit('assignedRolesChanged');
     }
 
     public function getAvailableRolesProperty() : mixed
@@ -114,51 +128,50 @@ class Index extends Component
 
     public function edit(User $user)
     {
-        if (auth()->user()->can('edit users'))
-        {
-            $this->editing = $user;
+        if (Gate::denies('update', $user)) return $this->denied();
 
-            $this->showEditModal = true;
-        }
+        $this->editing = $user;
+
+        $this->showEditModal = true;
     }
 
     public function confirmDelete(User $user)
     {
-        if (auth()->user()->can('delete users'))
-        {
-            $this->deleting = $user;
-            $this->showDeleteModal = true;
-        }
+        if (Gate::denies('delete', $user)) return $this->denied();
+
+        $this->deleting = $user;
+
+        $this->showDeleteModal = true;
     }
 
     public function delete()
     {
-        if (auth()->user()->can('delete users') && $this->deleting)
-        {
-            $this->deleting->delete();
-            $this->notify("User deleted successfully!");
-            $this->showDeleteModal = false;
-        }
+        if (Gate::denies('delete', User::find($this->deleting->getKey()))) return $this->denied();
+
+        $this->deleting->delete();
+
+        $this->notify("User deleted successfully!");
+
+        $this->showDeleteModal = false;
     }
 
     public function save()
     {
-        if (auth()->user()->can('edit users'))
-        {
-            $this->validate();
+        if (Gate::denies('update', User::find($this->editing->getKey()))) return $this->denied();
 
-            $this->editing->save();
+        $this->validate();
 
-            $this->notify("User updated successfully!");
+        $this->editing->save();
 
-            $this->showEditModal = false;
-        }
+        $this->notify("User updated successfully!");
+
+        $this->showEditModal = false;
     }
 
     public function getRowsQueryProperty()
     {
         $query = User::query()
-            ->with(['roles', 'primary_customer', 'customers'])
+            ->with(['roles', 'primaryCustomer', 'customers'])
             ->search($this->search);
 
         return $this->applySorting($query);

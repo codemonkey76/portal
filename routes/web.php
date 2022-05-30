@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminMenuController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\NewsletterSubscriptionController;
 use App\Http\Controllers\ServiceAgreementController;
@@ -23,10 +24,7 @@ Route::middleware([
          ->middleware('can:users.index')
          ->name('users.index');
 
-    Route::middleware('can:customers.index')->group(function() {
-        Route::view('customers', 'customers.index')->name('customers.index');
-        Route::view('customers/{customer}', 'customers.show')->name('customers.show');
-    });
+    Route::resource('customers', CustomerController::class)->only(['index', 'show']);
 
     Route::resource('service-agreements', ServiceAgreementController::class);
 

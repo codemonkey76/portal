@@ -38,14 +38,11 @@
                             <x-table.cell>{{ $agreement->frequencyString }}</x-table.cell>
                             <x-table.cell>{{ $agreement->amountString }}</x-table.cell>
                             <x-table.cell>
-                                <x-active :value="true"/>
+                                <x-state-bubble :color="$agreement->statusColor">{{ Str::of($agreement->status)->title() }}</x-state-bubble>
                             </x-table.cell>
                             <x-table.cell>
-                                <x-small-button.primary wire:click="show({{ $agreement->id }})">Show
-                                </x-small-button.primary>
-                                <x-small-button.warning wire:click="edit({{ $agreement->id }})">Edit
-                                </x-small-button.warning>
-                                <x-small-button.danger>Delete</x-small-button.danger>
+                                @can('activate', $agreement)<x-small-button.primary wire:click="confirmActivate({{ $agreement->id }})">Activate</x-small-button.primary>@endcan
+                                @can('update', $agreement)<x-small-button.warning wire:click="edit({{ $agreement->id }})">Edit</x-small-button.warning>@endcan
                             </x-table.cell>
                         </x-table.row>
                     @empty
@@ -59,4 +56,24 @@
             </x-table>
         </div>
     </div>
+    <!-- Activate Modal -->
+    <form wire:submit.prevent="activate">
+        <x-modal.dialog wire:model="showActivateModal">
+            <x-slot name="title">Activate Agreement</x-slot>
+            <x-slot name="content">
+                <x-input.group for="start_date" label="Activation Date">
+                    <x-input.text type="date" wire:model="activationDate" />
+                </x-input.group>
+                <x-jet-validation-errors />
+            </x-slot>
+            <x-slot name="footer">
+                <div class="flex space-x-2">
+                    <x-button.secondary wire:model="$set('showActivateModal', false)">Cancel</x-button.secondary>
+                    <x-button.primary type="submit">Save</x-button.primary>
+                </div>
+            </x-slot>
+        </x-modal.dialog>
+    </form>
+    <!-- Activate Modal -->
+    <div class="bg-yellow-100 bg-green-100 bg-blue-100 bg-red-100 bg-violet-100 bg-cyan-100 bg-gray-100 text-yellow-800 text-green-800 text-blue-800 text-red-800 text-violet-800 text-cyan-800 text-gray-800"></div>
 </div>

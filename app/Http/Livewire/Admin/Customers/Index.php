@@ -30,6 +30,10 @@ class Index extends Component
             'editing.display_name' => 'required|string|max:255',
             'editing.first_name' => '',
             'editing.last_name' => '',
+            'editing.billing_address' => '',
+            'editing.billing_suburb' => '',
+            'editing.billing_state' => '',
+            'editing.billing_postcode' => '',
             'editing.phone' => 'required|string|max:255',
             'editing.email' => 'required|email|max:255',
             'editing.active' => 'required|boolean',
@@ -88,7 +92,7 @@ class Index extends Component
 
         if ($customer->invoices()->count() + $customer->payments()->count() > 0) return $this->denied("Cannot delete customer that has transactions");
 
-        if ($customer->service_agreements()->count() > 0) return $this->denied("Cannot delete customer that has service agreements");
+        if ($customer->serviceAgreements()->count() > 0) return $this->denied("Cannot delete customer that has service agreements");
 
         return true;
     }

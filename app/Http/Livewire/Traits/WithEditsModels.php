@@ -46,7 +46,7 @@ trait WithEditsModels
     {
         if (!$this->deleting) return;
 
-        if (Gate::denies('destroy', $this->deleting)) return $this->denied();
+        if (Gate::denies('delete', $this->deleting)) return $this->denied();
 
         if ($this->editing->is($this->deleting)) $this->editing = $this->makeBlankModel();
 
@@ -57,11 +57,18 @@ trait WithEditsModels
         $this->notify("{$this->shortModelName} has been deleted successfully!");
     }
 
+
+    public function cancelDelete(): void
+    {
+        $this->deleting = null;
+        $this->showDeleteConfirmation = false;
+    }
+
     public function confirmDelete($id)
     {
         $toDelete = $this->modelName::find($id);
 
-        if (Gate::denies('destroy', $toDelete)) return $this->denied();
+        if (Gate::denies('delete', $toDelete)) return $this->denied();
 
         $this->deleting = $toDelete;
 

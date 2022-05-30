@@ -1,3 +1,3 @@
 <x-app-layout>
-    <div>@json($customer ?? null)</div>
+    <livewire:admin.customers.show :customer="$customer" />
 </x-app-layout>

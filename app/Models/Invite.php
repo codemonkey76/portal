@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\Searchable;
 use App\Notifications\InviteUser;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,14 +13,23 @@ use Illuminate\Notifications\Notifiable;
 
 class Invite extends Model
 {
-    use Searchable, Notifiable;
+    use Searchable, Notifiable, Prunable;
 
     use HasFactory;
+
     protected $guarded = [];
+
     protected $searchable = ['name', 'email'];
+
     protected $casts = [
         'expires_at' => 'datetime'
     ];
+
+
+    public function prunable()
+    {
+        return static::where('expires_at', '<', now());
+    }
 
     protected static function booted()
     {

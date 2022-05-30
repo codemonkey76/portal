@@ -54,7 +54,7 @@ class PermissionSeeder extends Seeder
         $super->givePermissionTo(Permission::create(['name' => 'roles.create']));
         $super->givePermissionTo(Permission::create(['name' => 'roles.update']));
         $super->givePermissionTo(Permission::create(['name' => 'roles.destroy']));
-        $super->givePermissionTo(Permission::create(['name' => 'change role permission assignments']));
+        $super->givePermissionTo(Permission::create(['name' => 'roles.assign']));
 
         $accounts->givePermissionTo(Permission::create(['name' => 'payments.create']));
         $accounts->givePermissionTo(Permission::create(['name' => 'view admin menu']));
@@ -65,6 +65,7 @@ class PermissionSeeder extends Seeder
 
         $accounts->givePermissionTo(Permission::create(['name' => 'view admin dashboard']));
         $accounts->givePermissionTo(Permission::create(['name' => 'customers.index']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'customers.show']));
         $accounts->givePermissionTo(Permission::create(['name' => 'transactions.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'rate-groups.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'plan-items.index']));

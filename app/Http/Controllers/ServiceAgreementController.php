@@ -23,13 +23,13 @@ class ServiceAgreementController extends Controller
 
     public function show(ServiceAgreement $serviceAgreement)
     {
-        $serviceAgreement->load(['network_services', 'mobile_services', 'voip_services', 'customer']);
+        $serviceAgreement->load(['networkServices', 'mobileServices', 'voipServices', 'customer']);
         return view('service_agreements.show', ['serviceAgreement' => $serviceAgreement]);
     }
 
     public function edit(ServiceAgreement $serviceAgreement)
     {
-        $serviceAgreement->load(['network_services', 'mobile_services', 'voip_services', 'customer']);
+        $serviceAgreement->load(['networkServices', 'mobileServices', 'voipServices', 'customer']);
         return view('service_agreements.edit', ['agreement' => $serviceAgreement]);
     }
 

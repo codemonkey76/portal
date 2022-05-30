@@ -19,8 +19,8 @@ return new class extends Migration
         Schema::create('invoice_lines', function (Blueprint $table) {
             $table->id();
             $table->string('detail_type')->default('SalesItemLine');
-            $table->decimal('amount')->default(0);
-            $table->string('description')->nullable();
+            $table->decimal('amount')->default(0)->nullable();
+            $table->string('description', 4000)->nullable();
             $table->decimal('tax_inclusive_amount')->default(0);
             $table->decimal('discount_amount')->nullable();
             $table->foreignIdFor(Item::class)->nullable();

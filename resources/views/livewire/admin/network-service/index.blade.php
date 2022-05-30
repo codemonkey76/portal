@@ -1,5 +1,5 @@
 <div>
-    @if($agreement->network_services()->count())
+    @if($agreement->networkServices()->count())
         <x-table>
             <x-slot name="head">
                 <x-table.heading>Service Description</x-table.heading>
@@ -10,7 +10,7 @@
                 @endif
             </x-slot>
             <x-slot name="body">
-                @foreach($agreement->network_services as $network_service)
+                @foreach($agreement->networkServices as $network_service)
                     <x-table.row>
                         <x-table.cell>{{ $network_service->description }}</x-table.cell>
                         <x-table.cell>{{ $network_service->speed }}</x-table.cell>

@@ -23,7 +23,7 @@
         </x-slot>
         <x-slot name="footer">
             <div class="flex space-x-2">
-                <x-button.secondary wire:click="$set('showAddMobileServiceModal', false)">Cancel</x-button.secondary>
+                <x-button.secondary wire:click="$set('showModal', false)">Cancel</x-button.secondary>
                 <x-button.primary type="submit">Save</x-button.primary>
             </div>
         </x-slot>

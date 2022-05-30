@@ -48,7 +48,10 @@ class Edit extends Component
 
     public function sendAgreement()
     {
+        $this->agreement->update(['sent_at' => now()]);
         $this->agreement->notify(new ServiceAgreementProposal);
+        $this->notify("Service agreement has been queued for sending");
+        $this->redirectRoute('service-agreements.index');
     }
 
     public function render()

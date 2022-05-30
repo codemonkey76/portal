@@ -27,7 +27,12 @@ class ServiceAgreementPolicy
 
     public function update(User $user, ServiceAgreement $serviceAgreement)
     {
-        return $user->can('service-agreements.update');
+        return $user->can('service-agreements.update') && !$serviceAgreement->signed_at;
+    }
+
+    public function activate(User $user, ServiceAgreement $serviceAgreement)
+    {
+        return $user->can('service-agreements.update') && ($serviceAgreement->status === 'waiting');
     }
 
     public function delete(User $user, ServiceAgreement $serviceAgreement)

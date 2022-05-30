@@ -19,17 +19,18 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Customer::class);
-            $table->foreignIdFor(Account::class);
+            $table->foreignIdFor(Account::class)->nullable();
             $table->foreignIdFor(PaymentMethod::class)->nullable();
             $table->decimal('total_amount')->default(0);
             $table->string('qb_payment_id')->nullable();
             $table->string('private_note')->nullable();
             $table->decimal('unapplied_amount')->default(0);
             $table->date('transaction_date')->nullable();
-            $table->string('currency_ref')->default('AUD');
-            $table->string('exchange_rate')->default('1');
+            $table->string('currency_ref')->default('AUD')->nullable();
+            $table->string('exchange_rate')->default('1')->nullable();
             $table->boolean('sync')->default(true);
             $table->integer('sync_failed')->default(0);
+            $table->timestamps();
         });
     }
 

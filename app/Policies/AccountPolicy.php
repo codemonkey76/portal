@@ -10,16 +10,6 @@ class AccountPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function create(User $user)
     {
         return $user->can('accounts.create');
@@ -30,7 +20,7 @@ class AccountPolicy
         return $user->can('accounts.update');
     }
 
-    public function destroy(User $user, Account $account)
+    public function delete(User $user, Account $account)
     {
         return $user->can('accounts.destroy');
     }

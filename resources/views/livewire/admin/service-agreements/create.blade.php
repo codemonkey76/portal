@@ -42,14 +42,14 @@
         </x-input.group>
 
     <div class="flex space-x-2">
-        <x-input.group for="starts_at" label="Agreement Start">
+        <x-input.group for="starts_at" label="Approximate Start">
             <div class="flex">
-                <x-input.text name="starts_at" type="date" wire:model="startsAtDate"/>
+                <x-input.text name="starts_at" type="date" wire:model="approximateStartDate"/>
             </div>
         </x-input.group>
-        <x-input.group for="ends_at" label="Agreement End">
+        <x-input.group for="ends_at" label="Approximate End">
             <div class="flex">
-                <x-input.text name="ends_at" type="date" wire:model="endsAtDate" readonly/>
+                <x-input.text name="ends_at" type="date" wire:model="approximateEndDate" readonly/>
             </div>
         </x-input.group>
     </div>

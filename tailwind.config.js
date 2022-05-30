@@ -8,6 +8,12 @@ module.exports = {
         './resources/views/**/*.blade.php',
     ],
 
+    variants: {
+        extend: {
+            borderStyle: ['hover']
+        }
+    },
+
     theme: {
         extend: {
             fontFamily: {
@@ -24,6 +30,7 @@ module.exports = {
                     '700': '#4e3a66'
                 }
             },
+            borderStyle: ['hover'],
         },
     },
 

@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::create('payment_lines', function (Blueprint $table) {
             $table->id();
             $table->decimal('amount');
-            $table->foreignIdFor(Invoice::class);
+            $table->foreignIdFor(Invoice::class)->nullable();
             $table->foreignIdFor(Payment::class);
         });
     }

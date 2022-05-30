@@ -6,6 +6,8 @@ use App\Models\Traits\Searchable;
 use App\Notifications\VerifyEmailQueued;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -76,12 +78,12 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new VerifyEmailQueued);
     }
 
-    public function primary_customer()
+    public function primaryCustomer(): BelongsTo
     {
         return $this->belongsTo(Customer::class, 'primary_customer_id');
     }
 
-    public function  customers()
+    public function customers(): BelongsToMany
     {
         return $this->belongsToMany(Customer::class);
     }

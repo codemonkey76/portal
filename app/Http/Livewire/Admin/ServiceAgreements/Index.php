@@ -8,6 +8,8 @@ use App\Http\Livewire\Traits\WithSearch;
 use App\Http\Livewire\Traits\WithSorting;
 use App\Models\Customer;
 use App\Models\ServiceAgreement;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Component;
 
@@ -16,6 +18,19 @@ class Index extends Component
     use WithPerPagePagination, WithSorting, WithSearch, WithAuthorizationMessage;
 
     protected string $perPageVariable="agreementsPerPage";
+
+    public bool $showActivateModal = false;
+    public $activating;
+    public $activationDate;
+
+    public $rules = [
+        'activating.start' => 'required|date',
+    ];
+
+    public function updatedActivationDate()
+    {
+        $this->activating->start  = $this->activationDate;
+    }
 
     public function getColumnList(): array
     {
@@ -48,19 +63,35 @@ class Index extends Component
 
     public function create()
     {
-        if (auth()->user()->cannot('service-agreements.create'))
-            return $this->denied();
+        if (Gate::denies('create', ServiceAgreement::class)) return $this->denied();
 
         return redirect()->route('service-agreements.create');
     }
 
     public function edit(ServiceAgreement $agreement)
     {
-        if (auth()->user()->cannot('service-agreements.update'))
-            return $this->denied();
-
+        if (Gate::denies('update', $agreement)) return $this->denied();
 
         return redirect()->route('service-agreements.edit', $agreement->id);
+    }
+
+    public function confirmActivate(ServiceAgreement $agreement)
+    {
+        if (Gate::denies('activate', $agreement)) return $this->denied();
+
+        $this->activating = $agreement;
+
+        $this->showActivateModal = true;
+    }
+
+    public function activate()
+    {
+        if (Gate::denies('activate', ServiceAgreement::find($this->activating->getKey()))) return $this->denied();
+
+        $this->validate();
+        $this->activating->save();
+
+        $this->showActivateModal = false;
     }
 
     public function render()

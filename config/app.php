@@ -17,8 +17,8 @@ return [
     'cipher'          => 'AES-256-CBC',
 
     'settings' => [
-        'invitation_expiry'        => 5, // Number of days until an invitation expires
-        'service_agreement_expiry' => 30 // Number of days a service agreement is available for signing
+        'invitation_expiry'        => env('INVITATION_EXPIRY', 5), // Number of days until an invitation expires
+        'service_agreement_expiry' => env('SERVICE_AGREEMENT_EXPIRY', 30) // Number of days a service agreement is available for signing
     ],
     /*
     |--------------------------------------------------------------------------

@@ -35,7 +35,7 @@ class ItemTest extends TestCase
         $this->get(route('items.index'))->assertSeeLivewire(Index::class);
     }
 
-    public function test_admin_can_create_product()
+    public function test_admin_can_create_item()
     {
         $this->asAdmin();
 
@@ -49,7 +49,7 @@ class ItemTest extends TestCase
         $this->assertTrue(Item::whereName('foo')->count() === 1);
     }
 
-    public function test_admin_can_edit_product()
+    public function test_admin_can_edit_item()
     {
         $this->asAdmin();
 
@@ -65,7 +65,7 @@ class ItemTest extends TestCase
         $this->assertTrue($product->fresh()->name === 'bar');
     }
 
-    public function test_admin_can_delete_product()
+    public function test_admin_can_delete_item()
     {
         $this->asAdmin();
 
@@ -76,11 +76,10 @@ class ItemTest extends TestCase
             ->call('confirmDelete', $product->id)
             ->call('delete');
 
-        $this->assertNull(Item::first());
-
+        $this->assertNull(Item::find($product->id));
     }
 
-    public function test_admin_can_search_for_product()
+    public function test_admin_can_search_for_item()
     {
         $this->asAdmin();
 

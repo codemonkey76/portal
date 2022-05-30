@@ -30,16 +30,17 @@ class InviteController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', new Password, 'confirmed'],
             'token' => Rule::in($invite->token),
-            'customer_id' => Rule::in($invite->customer_id),
+            'customer_id' => ['nullable', Rule::in($invite->customer_id)],
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'customer_id' => $validated['customer_id']
+            'password' => Hash::make($validated['password'])
         ]);
+
+        if ($validated['customer_id']) $user->update(['customer_id' => $validated['customer_id']]);
 
         if ($user->email === $invite->email)
             $user->markEmailAsVerified();

@@ -53,8 +53,8 @@
                             @endforeach
                         </x-table.cell>
                         <x-table.cell>
-                            @can('edit users')<x-small-button.warning wire:click="edit({{$user->id}})">Edit</x-small-button.warning>@endcan
-                            @can('delete users')<x-small-button.danger wire:click="confirmDelete({{$user->id}})">Delete</x-small-button.danger>@endcan
+                            @can('update', $user)<x-small-button.warning wire:click="edit({{$user->id}})">Edit</x-small-button.warning>@endcan
+                            @can('delete', $user)<x-small-button.danger wire:click="confirmDelete({{$user->id}})">Delete</x-small-button.danger>@endcan
                         </x-table.cell>
                     </x-table.row>
                     @empty

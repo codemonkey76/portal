@@ -11,8 +11,8 @@ class VoipServer extends Model
     use HasFactory, Searchable;
 
     protected $guarded = [];
-    
-    public $searchable = ['name', 'server_url', 'api_user'];
+
+    public array $searchable = ['name', 'server_url', 'api_user'];
 
 
 }
