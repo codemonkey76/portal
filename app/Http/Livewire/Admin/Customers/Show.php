@@ -6,7 +6,7 @@ use App\Http\Livewire\Traits\WithPerPagePagination;
 use App\Http\Livewire\Traits\WithSearch;
 use App\Http\Livewire\Traits\WithSorting;
 use App\Models\Customer;
-use App\Models\Invoice;
+use App\Models\Transaction;
 use Livewire\Component;
 
 class Show extends Component
@@ -18,7 +18,7 @@ class Show extends Component
 
     public function getRowsQueryProperty()
     {
-        $query = Invoice::query()
+        $query = Transaction::query()
                         ->whereCustomerId($this->customer->id)
                         ->search($this->search);
 
@@ -30,34 +30,39 @@ class Show extends Component
         return $this->applyPagination($this->rowsQuery);
     }
 
-    public function print(Invoice $invoice)
+    public function print(Transaction $transaction)
     {
         $this->notify('Print');
     }
 
-    public function send(Invoice $invoice)
+    public function send(Transaction $transaction)
     {
         $this->notify('Send');
     }
 
-    public function show(Invoice $invoice)
+    public function show(Transaction $transaction)
     {
         $this->notify('Show');
     }
 
-    public function copy(Invoice $invoice)
+    public function copy(Transaction $transaction)
     {
         $this->notify('Copy');
     }
 
-    public function void(Invoice $invoice)
+    public function void(Transaction $transaction)
     {
         $this->notify('Void');
     }
 
-    public function delete(Invoice $invoice)
+    public function delete(Transaction $transaction)
     {
         $this->notify('Delete');
+    }
+
+    public function mount()
+    {
+        $this->sorts['transaction_date'] = 'desc';
     }
 
     public function render()

@@ -102,8 +102,8 @@
                 <x-slot name="body">
                     @forelse ($transactions as $transaction)
                         <x-table.row>
-                            <x-table.cell class="pl-4 sm:pl-6 text-gray-900">{{ $transaction->id }}</x-table.cell>
-                            <x-table.cell class="text-gray-900">Invoice</x-table.cell>
+                            <x-table.cell class="pl-4 sm:pl-6 text-gray-900">{{ $transaction->transaction_ref }}</x-table.cell>
+                            <x-table.cell class="text-gray-900">{{ $transaction->type }}</x-table.cell>
                             <x-table.cell class="text-gray-900">{{ $transaction->transactionDateString }}</x-table.cell>
                             <x-table.cell class="text-gray-900">$0.00</x-table.cell>
                             <x-table.cell class="text-gray-900">{{ $transaction->totalAmountString }}</x-table.cell>
@@ -111,6 +111,7 @@
                             <x-table.cell class="text-gray-900">{{ $transaction->totalIncAmountString }}</x-table.cell>
                             <x-table.cell>Closed</x-table.cell>
                             <x-table.cell>
+                                @if($transaction->type === 'invoice')
                                 <div x-data="{showMenu: false}" class="relative">
                                     <div class="flex items-center space-x-2">
                                         <button class="hover:text-indigo-400 hover:underline" wire:click="print({{$transaction->id}})">
@@ -128,6 +129,7 @@
                                         <div role="button" class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400" wire:click="delete({{ $transaction->id }})">Delete</div>
                                     </div>
                                 </div>
+                                @endif
                             </x-table.cell>
                         </x-table.row>
                     @empty
@@ -144,6 +146,7 @@
             <div class=" md:px-6 lg:px-8">
                 {{ $transactions->links() }}
             </div>
+            @json($sorts)
 
 
         </div>

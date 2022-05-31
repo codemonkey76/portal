@@ -28,5 +28,15 @@ class GlobalSettingSeeder extends Seeder
             'key' => 'address',
             'value' => '1/48 Lillian Ave, Salisbury QLD 4107'
         ]);
+
+        GlobalSetting::create([
+            'key' => 'next_invoice_no',
+            'value' => 'INV-02000'
+        ]);
+
+        GlobalSetting::create([
+            'key' => 'next_payment_no',
+            'value' => 'PAY-02000'
+        ]);
     }
 }

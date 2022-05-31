@@ -21,7 +21,7 @@ return [
         ]
     ],
     'invoice' => [
-        'model' => 'App\Models\Invoice',
+        'model' => 'App\Models\Transaction',
         'lineRelationship' => 'invoiceLines',
         'settings' => [
             'austax' => '',
@@ -51,7 +51,7 @@ return [
     'invoiceLine' => [
         'model' => 'App\Models\InvoiceLine',
         'attributeMap' => [
-            'invoice_ref' => 'invoice_id',
+            'invoice_ref' => 'transaction_id',
             'amount' => 'amount',
             'detail_type' => 'detail_type',
             'description' => 'description',
@@ -168,7 +168,7 @@ return [
         ]
     ],
     'payment' => [
-        'model' => 'App\Models\Payment',
+        'model' => 'App\Models\Transaction',
         'lineRelationship' => 'paymentLines',
         'attributeMap' => [
             'id' => 'id',
@@ -193,7 +193,7 @@ return [
         'attributeMap' => [
             'amount' => 'amount',
             'invoice_ref' => 'invoice_id',
-            'payment_ref' => 'payment_id'
+            'payment_ref' => 'transaction_id'
         ]
     ],
     'data_service' => [
