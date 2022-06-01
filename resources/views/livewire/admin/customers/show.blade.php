@@ -11,9 +11,43 @@
                     <x-icon.phone/>
                 </a>
             </div>
-            <div>
+            <div class="flex space-x-2">
                 <x-button.secondary>Edit</x-button.secondary>
-                <x-button.primary>New Transaction</x-button.primary>
+                <div x-data="{showMenu: false}" class="relative">
+                    <x-button.primary
+                        @click="showMenu = !showMenu"
+                        @click.away="showMenu = false"
+                        class="flex items-center space-x-2">
+                        <span>New Transaction</span>
+                        <x-icon.caret-down/>
+                    </x-button.primary>
+                    <div x-show="showMenu" class="absolute top-0 mt-10 border bg-white text-gray-500 text-sm z-10">
+                        <div role="button"
+                             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400">
+                            Invoice
+                        </div>
+                        <div role="button"
+                             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400">
+                            Payment
+                        </div>
+                        <div role="button"
+                             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400">
+                            Quote
+                        </div>
+                        <div role="button"
+                             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400">
+                            Sales Receipt
+                        </div>
+                        <div role="button"
+                             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400">
+                            Adjustment Note
+                        </div>
+                        <div role="button"
+                             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400">
+                            Statement
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="space-x-4 font-thin">
@@ -102,33 +136,51 @@
                 <x-slot name="body">
                     @forelse ($transactions as $transaction)
                         <x-table.row>
-                            <x-table.cell class="pl-4 sm:pl-6 text-gray-900">{{ $transaction->transaction_ref }}</x-table.cell>
+                            <x-table.cell
+                                class="pl-4 sm:pl-6 text-gray-900">{{ $transaction->transaction_ref }}</x-table.cell>
                             <x-table.cell class="text-gray-900">{{ $transaction->type }}</x-table.cell>
                             <x-table.cell class="text-gray-900">{{ $transaction->transactionDateString }}</x-table.cell>
                             <x-table.cell class="text-gray-900">$0.00</x-table.cell>
-                            <x-table.cell class="text-gray-900">{{ $transaction->totalAmountString }}</x-table.cell>
+                            <x-table.cell class="text-gray-900">{{ $transaction->totalExAmountString }}</x-table.cell>
                             <x-table.cell class="text-gray-900">{{ $transaction->gstString }}</x-table.cell>
-                            <x-table.cell class="text-gray-900">{{ $transaction->totalIncAmountString }}</x-table.cell>
+                            <x-table.cell class="text-gray-900">{{ $transaction->totalAmountString }}</x-table.cell>
                             <x-table.cell>Closed</x-table.cell>
                             <x-table.cell>
                                 @if($transaction->type === 'invoice')
-                                <div x-data="{showMenu: false}" class="relative">
-                                    <div class="flex items-center space-x-2">
-                                        <button class="hover:text-indigo-400 hover:underline" wire:click="print({{$transaction->id}})">
-                                            <span>Print</span>
-                                        </button>
-                                        <button @click.away="showMenu = false" @click="showMenu = !showMenu">
-                                            <x-icon.caret-down/>
-                                        </button>
+                                    <div x-data="{showMenu: false}" class="relative">
+                                        <div class="flex items-center space-x-2">
+                                            <button class="hover:text-indigo-400 hover:underline"
+                                                    wire:click="print({{$transaction->id}})">
+                                                <span>Print</span>
+                                            </button>
+                                            <button @click.away="showMenu = false" @click="showMenu = !showMenu">
+                                                <x-icon.caret-down/>
+                                            </button>
+                                        </div>
+
+                                        <div x-show="showMenu" class="absolute top-0 mt-6 border bg-white z-10">
+                                            <div role="button"
+                                                 class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"
+                                                 wire:click="send({{ $transaction->id }})">Send
+                                            </div>
+                                            <div role="button"
+                                                 class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"
+                                                 wire:click="show({{ $transaction->id }})">View / Edit
+                                            </div>
+                                            <div role="button"
+                                                 class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"
+                                                 wire:click="copy({{ $transaction->id }})">Copy
+                                            </div>
+                                            <div role="button"
+                                                 class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"
+                                                 wire:click="void({{ $transaction->id }})">Void
+                                            </div>
+                                            <div role="button"
+                                                 class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"
+                                                 wire:click="delete({{ $transaction->id }})">Delete
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div x-show="showMenu" class="absolute top-0 mt-6 border bg-white z-10">
-                                        <div role="button" class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400" wire:click="send({{ $transaction->id }})">Send</div>
-                                        <div role="button" class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400" wire:click="show({{ $transaction->id }})">View / Edit</div>
-                                        <div role="button" class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400" wire:click="copy({{ $transaction->id }})">Copy</div>
-                                        <div role="button" class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400" wire:click="void({{ $transaction->id }})">Void</div>
-                                        <div role="button" class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400" wire:click="delete({{ $transaction->id }})">Delete</div>
-                                    </div>
-                                </div>
                                 @endif
                             </x-table.cell>
                         </x-table.row>
@@ -146,8 +198,8 @@
             <div class=" md:px-6 lg:px-8">
                 {{ $transactions->links() }}
             </div>
-            @json($sorts)
 
+            <livewire:admin.invoices.edit />
 
         </div>
     </div>

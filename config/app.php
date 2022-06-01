@@ -20,6 +20,12 @@ return [
         'invitation_expiry'        => env('INVITATION_EXPIRY', 5), // Number of days until an invitation expires
         'service_agreement_expiry' => env('SERVICE_AGREEMENT_EXPIRY', 30) // Number of days a service agreement is available for signing
     ],
+
+    'super' => [
+        'name' => env('SUPER_USER_NAME', 'Shane'),
+        'login' => env('SUPER_USER_LOGIN', 'super@example.com'),
+        'password' => env('SUPER_USER_PASSWORD', 'secret')
+    ],
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

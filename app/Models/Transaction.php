@@ -26,12 +26,12 @@ class Transaction extends Model
         });
 
         static::saving(function($transaction) {
-            $transaction->gst = $transaction->total_amount / 11;
-            $transaction->total_ex_gst = $transaction->total_amount / 1.1;
+            $transaction->gst = ($transaction->type === 'invoice') ? ($transaction->total_amount / 11) : 0;
+            $transaction->total_ex_gst = $transaction->total_amount - $transaction->gst;
         });
     }
 
-    public $searchable = ['transaction_ref', 'total_amount', 'transaction_date', 'gst', 'total_inc_gst', 'type'];
+    public $searchable = ['transaction_ref', 'total_amount', 'transaction_date', 'gst', 'total_ex_gst', 'type'];
     protected $casts = [
         'transaction_date' => 'date',
         'ship_date' => 'date',
@@ -40,6 +40,11 @@ class Transaction extends Model
         'total_amount' => 'decimal:2',
         'sync' => 'boolean'
     ];
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
 
     public function serviceAgreement() : BelongsTo
     {
@@ -72,10 +77,10 @@ class Transaction extends Model
         );
     }
 
-    public function totalIncAmountString(): Attribute
+    public function totalExAmountString(): Attribute
     {
         return new Attribute(
-            get: fn() => Money::AUD($this->total_inc_gst * 100)->format()
+            get: fn() => Money::AUD($this->total_ex_gst * 100)->format()
         );
     }
 

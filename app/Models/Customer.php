@@ -48,6 +48,10 @@ class Customer extends Model
         return $this->hasMany(ServiceAgreement::class);
     }
 
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
 
     public function invoices(): HasMany
     {

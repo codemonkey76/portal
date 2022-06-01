@@ -15,6 +15,7 @@ class Show extends Component
 
     public $perPageVariable = "transactionsPerPage";
     public Customer $customer;
+    public Transaction $editing;
 
     public function getRowsQueryProperty()
     {
@@ -42,7 +43,7 @@ class Show extends Component
 
     public function show(Transaction $transaction)
     {
-        $this->notify('Show');
+        $this->emit('editInvoice', $transaction);
     }
 
     public function copy(Transaction $transaction)
@@ -63,6 +64,7 @@ class Show extends Component
     public function mount()
     {
         $this->sorts['transaction_date'] = 'desc';
+        $this->transaction = Transaction::make();
     }
 
     public function render()
