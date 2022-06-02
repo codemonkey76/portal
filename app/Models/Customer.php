@@ -6,6 +6,7 @@ use App\Models\Traits\Searchable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -78,6 +79,11 @@ class Customer extends Model
         return new Attribute(
             get: fn() => "{$this->billingAddress->line1}, {$this->billingAddress->city} {$this->billingAddress->state} {$this->billingAddress->postal_code}" . ($this->billingAddress->country ? ", {$this->billingAdress->country}" : "")
         );
+    }
+
+    public function terms() : BelongsTo
+    {
+        return $this->belongsTo(Term::class);
     }
 
     public static function setCompanyNamesFromFqn()

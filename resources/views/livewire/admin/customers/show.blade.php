@@ -199,8 +199,6 @@
                 {{ $transactions->links() }}
             </div>
 
-            <livewire:admin.invoices.edit />
-
         </div>
     </div>
 </div>

@@ -37,7 +37,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'customer_id',
-        'active'
+        'active',
+        'email_verified_at'
     ];
 
     protected $searchable = ['name', 'email'];

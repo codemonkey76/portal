@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminMenuController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InviteController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NewsletterSubscriptionController;
 use App\Http\Controllers\ServiceAgreementController;
 use App\Http\Controllers\WebsiteContactController;
@@ -25,6 +26,7 @@ Route::middleware([
          ->name('users.index');
 
     Route::resource('customers', CustomerController::class)->only(['index', 'show']);
+    Route::resource('invoices', InvoiceController::class)->only(['edit']);
 
     Route::resource('service-agreements', ServiceAgreementController::class);
 

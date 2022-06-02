@@ -43,7 +43,7 @@ class Show extends Component
 
     public function show(Transaction $transaction)
     {
-        $this->emit('editInvoice', $transaction);
+        $this->redirectRoute('invoices.edit', [$transaction]);
     }
 
     public function copy(Transaction $transaction)
