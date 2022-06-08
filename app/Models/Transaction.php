@@ -84,8 +84,26 @@ class Transaction extends Model
         );
     }
 
+    public function totalPaymentsString(): Attribute
+    {
+        return new Attribute(
+            get: fn() => Money::AUD($this->payments()->sum('amount') * 100)->format()
+        );
+    }
+    public function balanceString(): Attribute
+    {
+        return new Attribute(
+            get: fn() => Money::AUD(($this->total_amount - $this->payments()->sum('amount')) * 100)->format()
+        );
+    }
+
     public function paymentLines(): HasMany
     {
         return $this->hasMany(PaymentLine::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(PaymentLine::class, 'invoice_id');
     }
 }

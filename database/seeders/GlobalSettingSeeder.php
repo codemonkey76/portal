@@ -38,5 +38,10 @@ class GlobalSettingSeeder extends Seeder
             'key' => 'next_payment_no',
             'value' => 'PAY-02000'
         ]);
+
+        GlobalSetting::create([
+            'key' => 'default_payment_terms',
+            'value' => 'Net 30'
+        ]);
     }
 }
