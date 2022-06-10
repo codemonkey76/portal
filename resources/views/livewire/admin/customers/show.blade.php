@@ -1,4 +1,4 @@
-<div class="px-4 sm:px-6 lg:px-8">
+<div x-data="{showMenu: false}" class="px-4 sm:px-6 lg:px-8">
     <!-- Page Heading -->
     <div class="bg-gray-200 border-t border-b border-gray-300 px-6 py-2 space-y-2">
         <div class="flex justify-between">
@@ -146,42 +146,14 @@
                             <x-table.cell class="text-gray-900">{{ $transaction->totalAmountString }}</x-table.cell>
                             <x-table.cell>Closed</x-table.cell>
                             <x-table.cell>
-                                @if($transaction->type === 'invoice')
-                                    <div x-data="{showMenu: false}" class="relative">
-                                        <div class="flex items-center space-x-2">
-                                            <button class="hover:text-indigo-400 hover:underline"
-                                                    wire:click="print({{$transaction->id}})">
-                                                <span>Print</span>
-                                            </button>
-                                            <button @click.away="showMenu = false" @click="showMenu = !showMenu">
-                                                <x-icon.caret-down/>
-                                            </button>
-                                        </div>
+                                <div class="flex space-x-1">
+                                    <button title="Send" class="hover:text-blue-600" wire:click="email()"><x-icon.email /></button>
+                                    <button title="View" class="hover:text-cyan-600" wire:click="view()"><x-icon.view /></button>
 
-                                        <div x-show="showMenu" class="absolute top-0 mt-6 border bg-white z-10">
-                                            <div role="button"
-                                                 class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"
-                                                 wire:click="send({{ $transaction->id }})">Send
-                                            </div>
-                                            <div role="button"
-                                                 class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"
-                                                 wire:click="show({{ $transaction->id }})">View / Edit
-                                            </div>
-                                            <div role="button"
-                                                 class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"
-                                                 wire:click="copy({{ $transaction->id }})">Copy
-                                            </div>
-                                            <div role="button"
-                                                 class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"
-                                                 wire:click="void({{ $transaction->id }})">Void
-                                            </div>
-                                            <div role="button"
-                                                 class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"
-                                                 wire:click="delete({{ $transaction->id }})">Delete
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
+                                    <button title="Copy" class="hover:text-orange-500" wire:click="copy()"><x-icon.copy /></button>
+                                    <button title="Void" class="hover:text-fuchsia-700" wire:click="void()"><x-icon.void /></button>
+                                    <button title="Delete" class="hover:text-red-600" wire:click="delete()"><x-icon.trash /></button>
+                                </div>
                             </x-table.cell>
                         </x-table.row>
                     @empty
@@ -201,4 +173,35 @@
 
         </div>
     </div>
+
+    <div class="border px-1 py-2 bg-gray-300 flex">
+        <x-icon.email />
+        <x-icon.view />
+        <x-icon.copy />
+        <x-icon.void />
+        <x-icon.trash />
+    </div>
+{{--    <div x-show="true" class="absolute top-0 mt-6 border bg-white z-10">--}}
+{{--        <div role="button"--}}
+{{--             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"--}}
+{{--             wire:click="send({{ $transaction->id }})">Send--}}
+{{--        </div>--}}
+{{--        <div role="button"--}}
+{{--             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"--}}
+{{--             wire:click="show({{ $transaction->id }})">View / Edit--}}
+{{--        </div>--}}
+{{--        <div role="button"--}}
+{{--             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"--}}
+{{--             wire:click="copy({{ $transaction->id }})">Copy--}}
+{{--        </div>--}}
+{{--        <div role="button"--}}
+{{--             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"--}}
+{{--             wire:click="void({{ $transaction->id }})">Void--}}
+{{--        </div>--}}
+{{--        <div role="button"--}}
+{{--             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"--}}
+{{--             wire:click="delete({{ $transaction->id }})">Delete--}}
+{{--        </div>--}}
+{{--    </div>--}}
+
 </div>
