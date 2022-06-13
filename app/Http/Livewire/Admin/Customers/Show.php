@@ -31,34 +31,38 @@ class Show extends Component
         return $this->applyPagination($this->rowsQuery);
     }
 
-    public function print(Transaction $transaction)
-    {
-        $this->notify('Print');
-    }
-
     public function send(Transaction $transaction)
     {
-        $this->notify('Send');
+        $this->notImplemented();
+    }
+    public function notImplemented()
+    {
+        $this->notify('Not yet implemented');
     }
 
-    public function show(Transaction $transaction)
+    public function view(Transaction $transaction)
+    {
+        $this->redirectRoute('invoices.show', [$transaction]);
+    }
+
+    public function edit(Transaction $transaction)
     {
         $this->redirectRoute('invoices.edit', [$transaction]);
     }
 
     public function copy(Transaction $transaction)
     {
-        $this->notify('Copy');
+        $this->notImplemented();
     }
 
     public function void(Transaction $transaction)
     {
-        $this->notify('Void');
+        $this->notImplemented();
     }
 
     public function delete(Transaction $transaction)
     {
-        $this->notify('Delete');
+        $this->notImplemented();
     }
 
     public function mount()

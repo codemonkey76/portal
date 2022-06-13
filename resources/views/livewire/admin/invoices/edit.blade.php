@@ -60,7 +60,16 @@
                             <x-table.cell class="text-gray-900 md:text-xs">{{ $line->amountString }}</x-table.cell>
                             <x-table.cell class="md:text-xs">
                                 <x-small-button.warning wire:click="editLine({{$line->id}})">Edit</x-small-button.warning>
-                                <x-small-button.danger>Delete</x-small-button.danger>
+                                <x-small-button.danger wire:click="confirmDelete({{ $line->id }})">Delete</x-small-button.danger>
+                            </x-table.cell>
+                        </x-table.row>
+                    @else
+                        <x-table.row>
+                            <x-table.cell colspan="5"
+                                class="pl-4 sm:pl-6 text-gray-900 md:text-xs ">{{ $line->detail_type }}</x-table.cell>
+                            <x-table.cell class="md:text-xs">
+                                <x-small-button.warning wire:click="editLine({{$line->id}})">Edit</x-small-button.warning>
+                                <x-small-button.danger wire:click="confirmDelete({{ $line->id }})">Delete</x-small-button.danger>
                             </x-table.cell>
                         </x-table.row>
                     @endif
@@ -101,5 +110,20 @@
         <!-- Table Footer -->
 
         <livewire:admin.invoice-lines.edit :invoice="$invoice"/>
+
+        <!-- InvoiceLineDeleteModal -->
+        <form wire:submit.prevent="delete">
+            <x-jet-confirmation-modal wire:model="showDeleteModal">
+                <x-slot name="title">Delete line</x-slot>
+                <x-slot name="content">Are you sure you want to delete this line?</x-slot>
+                <x-slot name="footer">
+                    <div class="flex space-x-2">
+                        <x-button.secondary wire:click="cancelDelete">Cancel</x-button.secondary>
+                        <x-button.danger type="submit">Delete</x-button.danger>
+                    </div>
+                </x-slot>
+            </x-jet-confirmation-modal>
+        </form>
+        <!-- InvoiceLineDeleteModal -->
     </div>
 </div>

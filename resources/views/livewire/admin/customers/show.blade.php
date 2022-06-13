@@ -99,7 +99,8 @@
                                      class="pl-4 sm:pl-6">
                         ID
                     </x-table.heading>
-                    <x-table.heading sortable
+                    <x-table.heading align="middle"
+                                     sortable
                                      multi-column
                                      :direction="$sorts['type'] ?? null"
                                      wire:click="sortBy('type')">
@@ -111,48 +112,98 @@
                                      wire:click="sortBy('due_date')">
                         Due Date
                     </x-table.heading>
-                    <x-table.heading sortable
+                    <x-table.heading align="right"
+                                     sortable
                                      multi-column
                                      :direction="$sorts['balance'] ?? null"
                                      wire:click="sortBy('balance')">
                         Balance
                     </x-table.heading>
-                    <x-table.heading sortable
+                    <x-table.heading align="right"
+                                     sortable
                                      multi-column
                                      :direction="$sorts['total_amount'] ?? null"
                                      wire:click="sortBy('total_amount')">
                         Total ex.
                     </x-table.heading>
-                    <x-table.heading>GST</x-table.heading>
-                    <x-table.heading sortable
+                    <x-table.heading align="right">GST</x-table.heading>
+                    <x-table.heading align="right" sortable
                                      multi-column
                                      :direction="$sorts['total'] ?? null"
                                      wire:click="sortBy('total')">
                         Total
                     </x-table.heading>
-                    <x-table.heading>Status</x-table.heading>
-                    <x-table.heading>Actions</x-table.heading>
+                    <x-table.heading class="text-center">Status</x-table.heading>
+                    <x-table.heading class="text-center">Actions</x-table.heading>
                 </x-slot>
                 <x-slot name="body">
                     @forelse ($transactions as $transaction)
                         <x-table.row>
                             <x-table.cell
                                 class="pl-4 sm:pl-6 text-gray-900">{{ $transaction->transaction_ref }}</x-table.cell>
-                            <x-table.cell class="text-gray-900">{{ $transaction->type }}</x-table.cell>
+                            <x-table.cell class="text-gray-900 text-center">{{ $transaction->type }}</x-table.cell>
                             <x-table.cell class="text-gray-900">{{ $transaction->transactionDateString }}</x-table.cell>
-                            <x-table.cell class="text-gray-900">$0.00</x-table.cell>
-                            <x-table.cell class="text-gray-900">{{ $transaction->totalExAmountString }}</x-table.cell>
-                            <x-table.cell class="text-gray-900">{{ $transaction->gstString }}</x-table.cell>
-                            <x-table.cell class="text-gray-900">{{ $transaction->totalAmountString }}</x-table.cell>
-                            <x-table.cell>Closed</x-table.cell>
-                            <x-table.cell>
-                                <div class="flex space-x-1">
-                                    <button title="Send" class="hover:text-blue-600" wire:click="email()"><x-icon.email /></button>
-                                    <button title="View" class="hover:text-cyan-600" wire:click="view()"><x-icon.view /></button>
+                            <x-table.cell class="text-gray-900 text-right">$0.00</x-table.cell>
+                            <x-table.cell class="text-gray-900 text-right">{{ $transaction->totalExAmountString }}</x-table.cell>
+                            <x-table.cell class="text-gray-900 text-right">{{ $transaction->gstString }}</x-table.cell>
+                            <x-table.cell class="text-gray-900 text-right">{{ $transaction->totalAmountString }}</x-table.cell>
+                            <x-table.cell class="text-center">Closed</x-table.cell>
+                            <x-table.cell class="text-center">
+                                <div class="flex justify-center space-x-1">
 
-                                    <button title="Copy" class="hover:text-orange-500" wire:click="copy()"><x-icon.copy /></button>
-                                    <button title="Void" class="hover:text-fuchsia-700" wire:click="void()"><x-icon.void /></button>
-                                    <button title="Delete" class="hover:text-red-600" wire:click="delete()"><x-icon.trash /></button>
+                                    @can('send', $transaction)
+                                        <button
+                                            title="Send"
+                                            class="hover:text-blue-600"
+                                            wire:click="email({{ $transaction->id }})">
+                                            <x-icon.email />
+                                        </button>
+                                    @endcan
+
+                                    @can('show', $transaction)
+                                        <button
+                                            title="View"
+                                            class="hover:text-cyan-600"
+                                            wire:click="view({{ $transaction->id }})">
+                                            <x-icon.view />
+                                        </button>
+                                    @endcan
+
+                                    @can('edit', $transaction)
+                                        <button
+                                            title="Edit"
+                                            class="hover:text-yellow-600"
+                                            wire:click="edit({{ $transaction->id }})">
+                                            <x-icon.pencil />
+                                        </button>
+                                    @endcan
+
+                                    @can('copy', $transaction)
+                                        <button
+                                            title="Copy"
+                                            class="hover:text-orange-500"
+                                            wire:click="copy({{ $transaction->id }})">
+                                            <x-icon.copy />
+                                        </button>
+                                    @endcan
+
+                                    @can('void', $transaction)
+                                        <button
+                                            title="Void"
+                                            class="hover:text-fuchsia-700"
+                                            wire:click="void({{ $transaction->id }})">
+                                            <x-icon.void />
+                                        </button>
+                                    @endcan
+
+                                    @can('delete', $transaction)
+                                        <button
+                                            title="Delete"
+                                            class="hover:text-red-600"
+                                            wire:click="delete({{ $transaction->id }})">
+                                            <x-icon.trash />
+                                        </button>
+                                    @endcan
                                 </div>
                             </x-table.cell>
                         </x-table.row>
@@ -172,14 +223,6 @@
             </div>
 
         </div>
-    </div>
-
-    <div class="border px-1 py-2 bg-gray-300 flex">
-        <x-icon.email />
-        <x-icon.view />
-        <x-icon.copy />
-        <x-icon.void />
-        <x-icon.trash />
     </div>
 {{--    <div x-show="true" class="absolute top-0 mt-6 border bg-white z-10">--}}
 {{--        <div role="button"--}}

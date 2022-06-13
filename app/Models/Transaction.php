@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Transaction extends Model
 {
@@ -26,8 +27,8 @@ class Transaction extends Model
         });
 
         static::saving(function($transaction) {
-            $transaction->gst = ($transaction->type === 'invoice') ? ($transaction->total_amount / 11) : 0;
-            $transaction->total_ex_gst = $transaction->total_amount - $transaction->gst;
+            $transaction->gst = ($transaction->isInvoice()) ? ($transaction->total_ex_gst * 0.1) : 0;
+            $transaction->total_amount = $transaction->total_ex_gst + $transaction->gst;
         });
     }
 
@@ -53,7 +54,12 @@ class Transaction extends Model
 
     public function invoiceLines(): HasMany
     {
-        return $this->hasMany(InvoiceLine::class);
+        return $this->hasMany(InvoiceLine::class)->whereNot('detail_type', '=', 'SubTotalLineDetail');
+    }
+
+    public function subtotalLine(): HasOne
+    {
+        return $this->hasOne(InvoiceLine::class)->whereDetailType('SubTotalLineDetail');
     }
 
     public function transactionDateString(): Attribute
@@ -105,5 +111,10 @@ class Transaction extends Model
     public function payments(): HasMany
     {
         return $this->hasMany(PaymentLine::class, 'invoice_id');
+    }
+
+    public function isInvoice(): bool
+    {
+        return $this->type === 'invoice';
     }
 }

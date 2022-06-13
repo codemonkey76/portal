@@ -21,8 +21,11 @@ class Edit extends Component
     public $transaction_date;
     public $due_date;
     public $editing;
+    public $deleting;
 
     public $showEditModal = false;
+    public $showDeleteModal = false;
+
     protected $listeners = ['editInvoice'];
 
     protected function rules()
@@ -89,13 +92,26 @@ class Edit extends Component
         $this->emit('showEditInvoiceLineModal', [$line]);
     }
 
+    public function confirmDelete(InvoiceLine $line)
+    {
+        $this->deleting = $line;
+        $this->showDeleteModal = true;
+    }
+
+    public function delete()
+    {
+        $this->deleting->delete();
+        $this->showDeleteModal = false;
+        $this->notify("Line deleted successfully!");
+    }
+
     public function mount()
     {
         $this->customers = Customer::orderBy('company_name')->get();
         $this->terms = Term::orderBy('name')->get();
         $this->term_id = $this->invoice->customer->term_id;
         $this->transaction_date = $this->invoice->transaction_date->format('Y-m-d');
-        $this->due_date = $this->invoice->due_date->format('Y-m-d');
+        $this->due_date = $this->invoice->due_date?->format('Y-m-d');
         $this->default_term = Term::whereName(GlobalSetting::whereKey('default_payment_terms')->first()->value)->first();
     }
     public function render()
