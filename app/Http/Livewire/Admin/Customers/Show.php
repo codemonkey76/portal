@@ -6,7 +6,7 @@ use App\Http\Livewire\Traits\WithPerPagePagination;
 use App\Http\Livewire\Traits\WithSearch;
 use App\Http\Livewire\Traits\WithSorting;
 use App\Models\Customer;
-use App\Models\Invoice;
+use App\Models\Transaction;
 use Livewire\Component;
 
 class Show extends Component
@@ -15,10 +15,11 @@ class Show extends Component
 
     public $perPageVariable = "transactionsPerPage";
     public Customer $customer;
+    public Transaction $editing;
 
     public function getRowsQueryProperty()
     {
-        $query = Invoice::query()
+        $query = Transaction::query()
                         ->whereCustomerId($this->customer->id)
                         ->search($this->search);
 
@@ -30,34 +31,44 @@ class Show extends Component
         return $this->applyPagination($this->rowsQuery);
     }
 
-    public function print(Invoice $invoice)
+    public function send(Transaction $transaction)
     {
-        $this->notify('Print');
+        $this->notImplemented();
+    }
+    public function notImplemented()
+    {
+        $this->notify('Not yet implemented');
     }
 
-    public function send(Invoice $invoice)
+    public function view(Transaction $transaction)
     {
-        $this->notify('Send');
+        $this->redirectRoute('invoices.show', [$transaction]);
     }
 
-    public function show(Invoice $invoice)
+    public function edit(Transaction $transaction)
     {
-        $this->notify('Show');
+        $this->redirectRoute('invoices.edit', [$transaction]);
     }
 
-    public function copy(Invoice $invoice)
+    public function copy(Transaction $transaction)
     {
-        $this->notify('Copy');
+        $this->notImplemented();
     }
 
-    public function void(Invoice $invoice)
+    public function void(Transaction $transaction)
     {
-        $this->notify('Void');
+        $this->notImplemented();
     }
 
-    public function delete(Invoice $invoice)
+    public function delete(Transaction $transaction)
     {
-        $this->notify('Delete');
+        $this->notImplemented();
+    }
+
+    public function mount()
+    {
+        $this->sorts['transaction_date'] = 'desc';
+        $this->transaction = Transaction::make();
     }
 
     public function render()

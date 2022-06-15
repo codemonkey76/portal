@@ -28,6 +28,7 @@ class SetupQuickbooks extends Command
     public function handle()
     {
         $this->call('qb:account:import');
+        $this->call('qb:term:import');
         $this->call('qb:customer:import');
         $this->call('qb:item:import');
         $this->call('qb:set-company-names-from-fqn');

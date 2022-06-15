@@ -63,10 +63,18 @@ class PermissionSeeder extends Seeder
         $accounts->givePermissionTo(Permission::create(['name' => 'service-agreements.create']));
         $accounts->givePermissionTo(Permission::create(['name' => 'service-agreements.update']));
 
+        $accounts->givePermissionTo(Permission::create(['name' => 'transactions.index']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'transactions.update']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'transactions.void']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'transactions.show']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'transactions.send']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'transactions.delete']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'transactions.copy']));
+
         $accounts->givePermissionTo(Permission::create(['name' => 'view admin dashboard']));
         $accounts->givePermissionTo(Permission::create(['name' => 'customers.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'customers.show']));
-        $accounts->givePermissionTo(Permission::create(['name' => 'transactions.index']));
+
         $accounts->givePermissionTo(Permission::create(['name' => 'rate-groups.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'plan-items.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'service-providers.index']));

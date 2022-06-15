@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Term;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -38,7 +39,7 @@ return new class extends Migration
 
             $table->boolean('active')->default(true);
             $table->boolean('taxable')->default(true);
-            $table->integer('terms')->default(15);
+            $table->foreignIdFor(Term::class)->nullable();
             $table->decimal('starting_balance')->default(0);
             $table->decimal('credit_limit')->default(1000);
             $table->string('qb_customer_id')->nullable();

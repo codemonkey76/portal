@@ -31,6 +31,9 @@ module.exports = {
                 }
             },
             borderStyle: ['hover'],
+            spacing: {
+                '128': '32rem'
+            }
         },
     },
 

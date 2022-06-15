@@ -1475,6 +1475,15 @@ select {
 .w-3 {
   width: 0.75rem;
 }
+.w-1\/4 {
+  width: 25%;
+}
+.w-128 {
+  width: 32rem;
+}
+.w-96 {
+  width: 24rem;
+}
 .w-11 {
   width: 2.75rem;
 }
@@ -1489,9 +1498,6 @@ select {
 }
 .w-32 {
   width: 8rem;
-}
-.w-96 {
-  width: 24rem;
 }
 .w-2 {
   width: 0.5rem;
@@ -1653,14 +1659,17 @@ select {
 .grid-cols-5 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
-.grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 .flex-row {
   flex-direction: row;
+}
+.flex-row-reverse {
+  flex-direction: row-reverse;
 }
 .flex-col {
   flex-direction: column;
@@ -1679,6 +1688,9 @@ select {
 }
 .items-baseline {
   align-items: baseline;
+}
+.justify-start {
+  justify-content: flex-start;
 }
 .justify-end {
   justify-content: flex-end;
@@ -2680,13 +2692,33 @@ select {
   --tw-text-opacity: 1;
   color: rgb(209 213 219 / var(--tw-text-opacity));
 }
-.hover\:text-indigo-500:hover {
-  --tw-text-opacity: 1;
-  color: rgb(99 102 241 / var(--tw-text-opacity));
-}
 .hover\:text-indigo-400:hover {
   --tw-text-opacity: 1;
   color: rgb(129 140 248 / var(--tw-text-opacity));
+}
+.hover\:text-blue-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity));
+}
+.hover\:text-cyan-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(8 145 178 / var(--tw-text-opacity));
+}
+.hover\:text-yellow-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(202 138 4 / var(--tw-text-opacity));
+}
+.hover\:text-orange-500:hover {
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity));
+}
+.hover\:text-fuchsia-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(162 28 175 / var(--tw-text-opacity));
+}
+.hover\:text-red-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity));
 }
 .hover\:underline:hover {
   -webkit-text-decoration-line: underline;
@@ -3334,6 +3366,11 @@ select {
     grid-column: span 1 / span 1;
   }
 
+  .md\:-mx-6 {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+  }
+
   .md\:mt-0 {
     margin-top: 0px;
   }
@@ -3399,6 +3436,10 @@ select {
     row-gap: 2.5rem;
   }
 
+  .md\:whitespace-normal {
+    white-space: normal;
+  }
+
   .md\:rounded-lg {
     border-radius: 0.5rem;
   }
@@ -3428,6 +3469,11 @@ select {
 
   .md\:pb-20 {
     padding-bottom: 5rem;
+  }
+
+  .md\:text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
   }
 
   .md\:text-6xl {

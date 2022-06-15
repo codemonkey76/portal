@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Invoice;
-use App\Models\Payment;
+use App\Models\Transaction;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,8 +17,8 @@ return new class extends Migration
         Schema::create('payment_lines', function (Blueprint $table) {
             $table->id();
             $table->decimal('amount');
-            $table->foreignIdFor(Invoice::class)->nullable();
-            $table->foreignIdFor(Payment::class);
+            $table->foreignIdFor(Transaction::class, 'invoice_id')->nullable();
+            $table->foreignIdFor(Transaction::class);
         });
     }
 

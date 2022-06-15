@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Invoice;
 use App\Models\Item;
 use App\Models\TaxRate;
+use App\Models\Transaction;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->decimal('qty')->nullable();
             $table->decimal('unit_price')->nullable();
             $table->integer('line_num')->default(1)->nullable();
-            $table->foreignIdFor(Invoice::class);
+            $table->foreignIdFor(Transaction::class);
             $table->timestamps();
         });
     }
