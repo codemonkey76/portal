@@ -58,6 +58,7 @@ return [
             'ship_method'              => 'ship_method',
             'apply_tax_after_discount' => 'apply_tax_after_discount',
             'total_amount'             => 'total_amount',
+            'balance'                  => 'balance',
             'qb_invoice_id'            => 'qb_invoice_id',
             'customer_ref'             => 'customer_id',
             'transaction_type'         => 'type',

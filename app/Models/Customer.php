@@ -77,7 +77,7 @@ class Customer extends Model
     public function billingAddressString(): Attribute
     {
         return new Attribute(
-            get: fn() => "{$this->billingAddress->line1}, {$this->billingAddress->city} {$this->billingAddress->state} {$this->billingAddress->postal_code}" . ($this->billingAddress->country ? ", {$this->billingAdress->country}" : "")
+            get: fn() => "{$this->billingAddress?->line1}, {$this->billingAddress?->city} {$this->billingAddress?->state} {$this->billingAddress?->postal_code}" . ($this->billingAddress?->country ? ", {$this->billingAdress?->country}" : "")
         );
     }
 

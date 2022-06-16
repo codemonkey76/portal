@@ -17,7 +17,15 @@ class InvoiceLineFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'detail_type' => 'SalesItemLineDetail',
+            'amount' => 0
         ];
+    }
+
+    public function subtotal(): InvoiceLineFactory
+    {
+        return $this->state(function(array $attributes) {
+            return ['detail_type' => 'SubTotalLineDetail'];
+        });
     }
 }

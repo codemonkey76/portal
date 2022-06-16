@@ -3,7 +3,11 @@
 namespace App\Providers;
 
 use App\Models\InvoiceLine;
+use App\Models\PaymentLine;
+use App\Models\Transaction;
 use App\Observers\InvoiceLineObserver;
+use App\Observers\PaymentLineObserver;
+use App\Observers\TransactionObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,7 +27,9 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     protected $observers = [
-        InvoiceLine::class => [InvoiceLineObserver::class]
+        InvoiceLine::class => [InvoiceLineObserver::class],
+        PaymentLine::class => [PaymentLineObserver::class],
+        Transaction::class => [TransactionObserver::class]
     ];
 
     /**

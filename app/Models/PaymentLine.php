@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PaymentLine extends Model
 {
@@ -11,4 +12,13 @@ class PaymentLine extends Model
 
     protected $guarded = [];
     public $timestamps = false;
+
+    public function invoice(): BelongsTo
+    {
+        return $this->belongsTo(Transaction::class, 'invoice_id');
+    }
+    public function payment(): BelongsTo
+    {
+        return $this->belongsTo(Transaction::class, 'transaction_id');
+    }
 }

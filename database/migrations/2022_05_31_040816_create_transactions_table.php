@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('currency_ref')->default('AUD');
             $table->string('exchange_rate')->default('1')->nullable();
             $table->decimal('total_amount')->default(0);
+            $table->decimal('balance')->default(0);
             $table->decimal('gst')->default(0);
             $table->decimal('total_ex_gst')->default(0);
             $table->text('private_note')->nullable();

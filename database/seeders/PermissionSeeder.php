@@ -103,6 +103,7 @@ class PermissionSeeder extends Seeder
         $admin->givePermissionTo(Permission::create(['name' => 'users.destroy']));
 
         $admin->givePermissionTo(Permission::create(['name' => 'change user role assignments']));
+        $admin->givePermissionTo(Permission::create(['name' => 'change role permission assignments']));
         $admin->givePermissionTo(Permission::create(['name' => 'change user customer assignments']));
 
         $admin->givePermissionTo(Permission::create(['name' => 'service-providers.create']));

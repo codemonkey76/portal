@@ -6,20 +6,19 @@ use App\Models\InvoiceLine;
 
 class InvoiceLineObserver
 {
-    public function updating(InvoiceLine $invoiceLine)
+    public function saving(InvoiceLine $invoiceLine)
     {
-        info('Updating invoice line');
-        info("Amount: {$invoiceLine->amount}");
-        info("Orig Amount: {$invoiceLine->getOriginal('amount')}");
-
+        logger("Running InvoiceLine::saving hook");
         if ($invoiceLine->detail_type !== 'SalesItemLineDetail') return;
 
         $invoice = $invoiceLine->invoice;
         $subtotalLine = $invoice->subtotalLine;
 
-        $subtotalLine->amount -= $invoiceLine->getOriginal('amount');
-        $subtotalLine->amount += $invoiceLine->amount;
-        $subtotalLine->save();
+        if ($subtotalLine) {
+            $subtotalLine->amount -= $invoiceLine->getOriginal('amount');
+            $subtotalLine->amount += $invoiceLine->amount;
+            $subtotalLine->save();
+        }
 
         $invoice->total_ex_gst -= $invoiceLine->getOriginal('amount');
         $invoice->total_ex_gst += $invoiceLine->amount;
@@ -28,9 +27,7 @@ class InvoiceLineObserver
 
     public function deleting(InvoiceLine $invoiceLine)
     {
-        info('Deleting invoice line');
-        info("Orig Amount: {$invoiceLine->getOriginal('amount')}");
-
+        logger("Running InvoiceLine::deleting hook");
         $invoice = $invoiceLine->invoice;
         $subtotalLine = $invoice->subtotalLine;
 

@@ -13,7 +13,7 @@ class CustomerPolicy
 
     public function viewAny(User $user)
     {
-        $user->can('customers.index');
+        return $user->can('customers.index');
     }
 
     /**
@@ -25,7 +25,7 @@ class CustomerPolicy
      */
     public function view(User $user, Customer $customer)
     {
-        $user->can('customers.show');
+        return $user->can('customers.show');
     }
 
     /**

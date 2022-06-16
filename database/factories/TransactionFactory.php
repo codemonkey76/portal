@@ -17,7 +17,17 @@ class TransactionFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'type' => 'invoice',
+            'transaction_date' => now()->subDays(mt_rand(0,30))
         ];
+    }
+
+    public function payment()
+    {
+        return $this->state(function(array $attributes) {
+           return [
+               'type' => 'payment'
+           ];
+        });
     }
 }
