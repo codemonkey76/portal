@@ -56,12 +56,12 @@ class Customer extends Model
 
     public function invoices(): HasMany
     {
-        return $this->hasMany(Invoice::class);
+        return $this->hasMany(Transaction::class)->whereType('invoice');
     }
 
     public function payments(): HasMany
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(Transaction::class)->whereType('payment');
     }
 
     public function addresses(): HasMany

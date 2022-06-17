@@ -209,7 +209,7 @@ return [
             'transaction_date'  => 'transaction_date',
             'currency_ref'      => 'currency_ref',
             'exchange_rate'     => 'exchange_rate',
-            'total_amount'      => 'total_amount',
+            'total_amount'      => 'total_ex_gst',
             'customer_ref'      => 'customer_id',
             'deposit_account'   => 'account_id',
             'payment_method'    => 'payment_method_id',

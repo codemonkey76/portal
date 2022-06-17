@@ -27,6 +27,7 @@ class InvoiceTest extends TestCase
         $this->assertTrue($invoice->total_amount == 0);
         $this->assertTrue($invoice->gst == 0);
         $this->assertTrue($invoice->total_ex_gst == 0);
+        $this->assertTrue($invoice->balance == 0);
 
         InvoiceLine::factory()->subtotal()->create(['transaction_id' => $invoice->id]);
         $invoice->refresh();
@@ -46,6 +47,7 @@ class InvoiceTest extends TestCase
         $this->assertTrue($invoice->total_amount == 110);
         $this->assertTrue($invoice->gst == 10);
         $this->assertTrue($invoice->total_ex_gst == 100);
+        $this->assertTrue($invoice->balance == 110);
 
         InvoiceLine::factory()->create([
             'transaction_id' => $invoice->id,
@@ -60,6 +62,7 @@ class InvoiceTest extends TestCase
         $this->assertTrue($invoice->total_amount == 385);
         $this->assertTrue($invoice->gst == 35);
         $this->assertTrue($invoice->total_ex_gst == 350);
+        $this->assertTrue($invoice->balance == 385);
 
         $invoice->invoiceLines()->first()->delete();
         $invoice->refresh();
@@ -68,6 +71,7 @@ class InvoiceTest extends TestCase
         $this->assertTrue($invoice->total_amount == 275);
         $this->assertTrue($invoice->gst == 25);
         $this->assertTrue($invoice->total_ex_gst == 250);
+        $this->assertTrue($invoice->balance == 275);
     }
 
     public function test_invoices_and_payments_can_track_allocations()

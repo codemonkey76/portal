@@ -15,6 +15,12 @@ class TransactionObserver
             'invoice' => GlobalSetting::getNextInvoiceNo(),
             'payment' => GlobalSetting::getNextPaymentNo()
         };
+        $transaction->gst = 0;
+        $transaction->total_amount = 0;
+        $transaction->balance = 0;
+
+        if ($transaction->type === 'payment')
+            $transaction->unapplied_amount = $transaction->total_ex_gst;
     }
 
     public function saving(Transaction $transaction): void

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Akaunting\Money\Money;
+use App\Enums\TransactionStatus;
 use App\Models\Traits\Searchable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -100,5 +101,26 @@ class Transaction extends Model
     public function isInvoice(): bool
     {
         return $this->type === 'invoice';
+    }
+
+    public function status(): Attribute
+    {
+        return new Attribute(
+            get: function() {
+                if ($this->isInvoice()) {
+                    if (($this->balance == $this->total_amount) && ($this->date_due > now())) return TransactionStatus::OPEN;
+                    if (($this->balance > 0) && ($this->date_due < now())) return TransactionStatus::OVERDUE;
+                    if (($this->balance > 0) && ($this->balance < $this->total_amount)) return TransactionStatus::PARTIAL;
+                    if ($this->balance == 0) return TransactionStatus::PAID;
+                    return TransactionStatus::UNKNOWN;
+                }
+
+                if ($this->unapplied_amount == $this->total_ex_gst) return TransactionStatus::UNAPPLIED;
+                if ($this->unapplied_amount > 0) return TransactionStatus::PARTIAL;
+                if ($this->unapplied_amount == 0) return TransactionStatus::CLOSED;
+
+                return TransactionStatus::UNKNOWN;
+            }
+        );
     }
 }

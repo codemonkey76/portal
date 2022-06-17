@@ -13,14 +13,33 @@ class PaymentLineObserver
 
     public function saving(PaymentLine $paymentLine)
     {
+        logger("Running PaymentLine::saving() hook");
+        logger("amount: {$paymentLine->amount}");
+        logger("original: {$paymentLine->getOriginal('amount')}");
         $change = $paymentLine->amount - $paymentLine->getOriginal('amount');
+
+        logger("Saving payment line");
+        logger("Change: {$change}");
+
         $invoice = $paymentLine->invoice;
+        if ($invoice)
+        {
+            logger('Updating Invoice');
+            logger("Balance before: {$invoice->balance}");
+            $invoice->balance -= $change;
+            logger("Balance after: {$invoice->balance}");
+            $invoice->save();
+        }
+
         $payment = $paymentLine->payment;
 
-        $invoice->balance -= $change;
-        $invoice->save();
-
-        $payment->unapplied_amount -= $change;
-        $payment->save();
+        if ($payment)
+        {
+            logger('Updating Payment');
+            logger("Unapplied before: {$payment->unapplied_amount}");
+            $payment->unapplied_amount -= $change;
+            logger("Unapplied after: {$payment->unapplied_amount}");
+            $payment->save();
+        }
     }
 }

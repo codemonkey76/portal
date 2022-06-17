@@ -138,16 +138,23 @@
                 </x-slot>
                 <x-slot name="body">
                     @forelse ($transactions as $transaction)
-                        <x-table.row>
+                        <x-table.row override-color
+                                     class="{{
+                            $transaction->status->value === 'Paid'
+                                ? 'bg-green-400'
+                                : ($transaction->status->value === 'Overdue'
+                                    ? 'bg-orange-400' :
+                                    ($transaction->status->value === 'Closed'
+                                        ? 'bg-gray-300' : 'bg-white')) }}">
                             <x-table.cell
                                 class="pl-4 sm:pl-6 text-gray-900">{{ $transaction->transaction_ref }}</x-table.cell>
                             <x-table.cell class="text-gray-900 text-center">{{ $transaction->type }}</x-table.cell>
                             <x-table.cell class="text-gray-900">{{ $transaction->transactionDateString }}</x-table.cell>
-                            <x-table.cell class="text-gray-900 text-right">$0.00</x-table.cell>
+                            <x-table.cell class="text-gray-900 text-right">{{ $transaction->balanceString }}</x-table.cell>
                             <x-table.cell class="text-gray-900 text-right">{{ $transaction->totalExAmountString }}</x-table.cell>
                             <x-table.cell class="text-gray-900 text-right">{{ $transaction->gstString }}</x-table.cell>
                             <x-table.cell class="text-gray-900 text-right">{{ $transaction->totalAmountString }}</x-table.cell>
-                            <x-table.cell class="text-center">Closed</x-table.cell>
+                            <x-table.cell class="text-center">{{ $transaction->status->value }}</x-table.cell>
                             <x-table.cell class="text-center">
                                 <div class="flex justify-center space-x-1">
 
