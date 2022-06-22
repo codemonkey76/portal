@@ -68,6 +68,7 @@ return new class extends Migration
             $table->foreignIdFor(PaymentMethod::class)->nullable();
             $table->string('qb_payment_id')->nullable();
             $table->decimal('unapplied_amount')->default(0);
+            $table->string('payment_ref')->nullable();
 
             $table->timestamps();
         });

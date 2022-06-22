@@ -47,7 +47,14 @@ class Show extends Component
 
     public function edit(Transaction $transaction)
     {
-        $this->redirectRoute('invoices.edit', [$transaction]);
+        switch($transaction->type)
+        {
+            case "invoice":
+                $this->redirectRoute('invoices.edit', [$transaction]);
+                break;
+            case "payment":
+                $this->redirectRoute('payments.edit', [$transaction]);
+        }
     }
 
     public function copy(Transaction $transaction)

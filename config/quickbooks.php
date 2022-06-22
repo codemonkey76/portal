@@ -213,6 +213,7 @@ return [
             'customer_ref'      => 'customer_id',
             'deposit_account'   => 'account_id',
             'payment_method'    => 'payment_method_id',
+            'payment_ref'       => 'payment_ref',
             'private_note'      => 'private_note',
             'qb_payment_id'     => 'qb_payment_id',
             'sync_failed'       => 'sync_failed',
