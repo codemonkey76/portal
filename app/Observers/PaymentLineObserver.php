@@ -22,24 +22,23 @@ class PaymentLineObserver
         logger("Change: {$change}");
 
         $invoice = $paymentLine->invoice;
-        if ($invoice)
-        {
-            logger('Updating Invoice');
-            logger("Balance before: {$invoice->balance}");
-            $invoice->balance -= $change;
-            logger("Balance after: {$invoice->balance}");
-            $invoice->save();
-        }
+        $type = $invoice->type;
+        $change = $type === 'adjustment' ? -$change : $change;
+
+        logger("Updating $type");
+        logger("Balance before: {$invoice->balance}");
+        $invoice->balance -= $change;
+
+        logger("Balance after: {$invoice->balance}");
+        $invoice->save();
 
         $payment = $paymentLine->payment;
 
-        if ($payment)
-        {
-            logger('Updating Payment');
-            logger("Unapplied before: {$payment->unapplied_amount}");
-            $payment->unapplied_amount -= $change;
-            logger("Unapplied after: {$payment->unapplied_amount}");
-            $payment->save();
-        }
+        logger('Updating Payment');
+        logger("Unapplied before: {$payment->unapplied_amount}");
+        $payment->unapplied_amount -= $change;
+        logger("Unapplied after: {$payment->unapplied_amount}");
+        $payment->save();
+
     }
 }

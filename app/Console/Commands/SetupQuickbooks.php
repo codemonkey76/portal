@@ -33,6 +33,7 @@ class SetupQuickbooks extends Command
         $this->call('qb:item:import');
         $this->call('qb:set-company-names-from-fqn');
         $this->call('qb:invoice:import');
+        $this->call('qb:adjustment:import');
         $this->call('qb:payment:import');
         return 0;
     }

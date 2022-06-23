@@ -71,7 +71,7 @@ class Transaction extends Model
     public function totalExAmountString(): Attribute
     {
         return new Attribute(
-            get: fn() => Money::AUD($this->total_ex_gst * 100)->format()
+            get: fn() => Money::AUD(($this->type === 'invoice' ? $this->total_ex_gst : -$this->total_ex_gst)* 100)->format()
         );
     }
 
@@ -108,13 +108,14 @@ class Transaction extends Model
         return new Attribute(
             get: function() {
                 if ($this->isInvoice()) {
-                    if (($this->balance == $this->total_amount) && ($this->date_due > now())) return TransactionStatus::OPEN;
-                    if (($this->balance > 0) && ($this->date_due < now())) return TransactionStatus::OVERDUE;
+                    if (($this->balance == $this->total_amount) && ($this->due_date > now())) return TransactionStatus::OPEN;
+                    if (($this->balance > 0) && ($this->due_date < now())) return TransactionStatus::OVERDUE;
                     if (($this->balance > 0) && ($this->balance < $this->total_amount)) return TransactionStatus::PARTIAL;
                     if ($this->balance == 0) return TransactionStatus::PAID;
                     return TransactionStatus::UNKNOWN;
                 }
 
+                if ($this->total_ex_gst == 0 && $this->unapplied_amount == 0) return TransactionStatus::CLOSED;
                 if ($this->unapplied_amount == $this->total_ex_gst) return TransactionStatus::UNAPPLIED;
                 if ($this->unapplied_amount > 0) return TransactionStatus::PARTIAL;
                 if ($this->unapplied_amount == 0) return TransactionStatus::CLOSED;

@@ -16,6 +16,10 @@ class GlobalSetting extends Model
     protected $guarded = [];
 
 
+    public static function getNextAdjustmentNo()
+    {
+        return static::getNextTransactionNo('adjustment');
+    }
     public static function getNextPaymentNo()
     {
         return static::getNextTransactionNo('payment');
@@ -30,7 +34,8 @@ class GlobalSetting extends Model
     {
         $key = match($type) {
             'invoice' => 'next_invoice_no',
-            'payment' => 'next_payment_no'
+            'payment' => 'next_payment_no',
+            'adjustment' => 'next_adjustment_no'
         };
 
         $setting = GlobalSetting::whereKey($key)->first();

@@ -31,12 +31,17 @@ class GlobalSettingSeeder extends Seeder
 
         GlobalSetting::create([
             'key' => 'next_invoice_no',
-            'value' => 'INV-02000'
+            'value' => 'INV-01000'
         ]);
 
         GlobalSetting::create([
             'key' => 'next_payment_no',
-            'value' => 'PAY-02000'
+            'value' => 'PAY-01000'
+        ]);
+
+        GlobalSetting::create([
+            'key' => 'next_adjustment_no',
+            'value' => 'ADJ-01000'
         ]);
 
         GlobalSetting::create([

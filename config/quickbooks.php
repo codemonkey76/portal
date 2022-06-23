@@ -34,6 +34,58 @@ return [
             'sync_failed'          => 'sync_failed'
         ]
     ],
+    'adjustment'    => [
+        'model'            => 'App\Models\Transaction',
+        'lineRelationship' => 'invoiceLines',
+        'attributeMap'     => [
+            'currency_ref'             => 'currency_ref',
+            'exchange_rate'            => 'exchange_rate',
+            'bill_email'               => 'bill_email',
+            'transaction_date'         => 'transaction_date',
+            'ship_date'                => 'ship_date',
+            'tracking_num'             => 'tracking_num',
+            'due_date'                 => 'due_date',
+            'private_note'             => 'private_note',
+            'customer_memo'            => 'customer_memo',
+            'ship_method'              => 'ship_method',
+            'apply_tax_after_discount' => 'apply_tax_after_discount',
+            'total_amount'             => 'total_amount',
+            'balance'                  => 'balance',
+            'qb_adjustment_id'         => 'qb_invoice_id',
+            'customer_ref'             => 'customer_id',
+            'transaction_type'         => 'type',
+            'line1'                    => 'line1',
+            'line2'                    => 'line2',
+            'line3'                    => 'line3',
+            'line4'                    => 'line4',
+            'line5'                    => 'line5',
+            'city'                     => 'city',
+            'country'                  => 'country',
+            'state'                    => 'state',
+            'postal_code'              => 'postal_code',
+            'postal_code_suffix'       => 'postal_code_suffix',
+            'country_code'             => 'country_code',
+            'lat'                      => 'lat',
+            'long'                     => 'long',
+            'tag'                      => 'tag',
+            'note'                     => 'note',
+            'type'                     => 'type',
+            'doc_number'               => 'doc_number'
+        ],
+    ],
+    'adjustmentLine' => [
+        'model' => 'App\Models\InvoiceLine',
+        'attributeMap' => [
+            'invoice_ref' => 'transaction_id',
+            'amount'      => 'amount',
+            'detail_type' => 'detail_type',
+            'description' => 'description',
+            'line_num'    => 'line_num',
+            'item_ref'    => 'item_id',
+            'qty'         => 'qty',
+            'unit_price'  => 'unit_price'
+        ]
+    ],
     'invoice'       => [
         'model'            => 'App\Models\Transaction',
         'lineRelationship' => 'invoiceLines',
@@ -238,14 +290,12 @@ return [
         'client_secret' => env('QUICKBOOKS_CLIENT_SECRET'),
         'scope'         => 'com.intuit.quickbooks.accounting'
     ],
-
-    'logging' => [
+    'logging'       => [
         'enabled' => env('QUICKBOOKS_DEBUG', config('app.debug')),
 
         'location' => storage_path('logs')
     ],
-
-    'route' => [
+    'route'         => [
         'middleware' => [
             'authenticated' => 'auth',
             'default'       => 'web'
@@ -260,8 +310,7 @@ return [
 
         'prefix' => 'quickbooks'
     ],
-
-    'user' => [
+    'user'          => [
         'keys'  => [
             'foreign' => 'user_id',
             'owner'   => 'id'

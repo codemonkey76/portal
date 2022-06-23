@@ -13,7 +13,8 @@ class TransactionObserver
         logger("Running Transaction::creating hook");
         $transaction->transaction_ref = match ($transaction->type) {
             'invoice' => GlobalSetting::getNextInvoiceNo(),
-            'payment' => GlobalSetting::getNextPaymentNo()
+            'payment' => GlobalSetting::getNextPaymentNo(),
+            'adjustment' => GlobalSetting::getNextAdjustmentNo()
         };
         $transaction->gst = 0;
         $transaction->total_amount = 0;
@@ -25,7 +26,7 @@ class TransactionObserver
 
     public function saving(Transaction $transaction): void
     {
-        if (!$transaction->isInvoice())
+        if ($transaction->type === 'payment')
         {
             return;
         }

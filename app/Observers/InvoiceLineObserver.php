@@ -29,6 +29,14 @@ class InvoiceLineObserver
     {
         logger("Running InvoiceLine::deleting hook");
         $invoice = $invoiceLine->invoice;
+
+        if (!$invoice)
+        {
+            info("Cannot retrieve invoice for invoiceline");
+            info(json_encode($invoiceLine));
+            return;
+        }
+
         $subtotalLine = $invoice->subtotalLine;
 
         $subtotalLine->amount -= $invoiceLine->getOriginal('amount');
