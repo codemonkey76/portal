@@ -23,7 +23,7 @@ class PaymentLineObserver
 
         $invoice = $paymentLine->invoice;
         $type = $invoice->type;
-        $change = $type === 'adjustment' ? -$change : $change;
+
 
         logger("Updating $type");
         logger("Balance before: {$invoice->balance}");
@@ -32,6 +32,7 @@ class PaymentLineObserver
         logger("Balance after: {$invoice->balance}");
         $invoice->save();
 
+        $change = $type === 'adjustment' ? -$change : $change;
         $payment = $paymentLine->payment;
 
         logger('Updating Payment');

@@ -54,6 +54,13 @@ class Transaction extends Model
         );
     }
 
+    public function dueDateString(): Attribute
+    {
+        return new Attribute(
+            get: fn() => $this->due_date?->format('d/m/Y')
+        );
+    }
+
     public function totalAmountString(): Attribute
     {
         return new Attribute(
@@ -123,5 +130,14 @@ class Transaction extends Model
                 return TransactionStatus::UNKNOWN;
             }
         );
+    }
+
+    public function scopeOutstanding($query, $payment)
+    {
+        $invoices = PaymentLine::whereTransactionId($payment->id)->pluck('invoice_id')->toArray();
+
+        return $query->where('balance', '<>', 0)->orWhere(function($query) use ($invoices) {
+            $query->whereIn('id', $invoices);
+        });
     }
 }

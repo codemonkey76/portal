@@ -27,7 +27,7 @@ Route::middleware([
          ->name('users.index');
 
     Route::resource('customers', CustomerController::class)->only(['index', 'show']);
-    Route::resource('invoices', InvoiceController::class)->only(['edit']);
+    Route::resource('invoices', InvoiceController::class)->only(['edit', 'show']);
     Route::resource('payments', PaymentController::class)->only(['edit']);
 
     Route::resource('service-agreements', ServiceAgreementController::class);

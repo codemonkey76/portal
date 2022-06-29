@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -87,5 +88,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function customers(): BelongsToMany
     {
         return $this->belongsToMany(Customer::class);
+    }
+
+    public function paymentAllocation(): HasOne
+    {
+        return $this->hasOne(PaymentAllocation::class);
     }
 }
