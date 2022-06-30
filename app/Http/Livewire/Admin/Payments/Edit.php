@@ -14,18 +14,17 @@ class Edit extends Component
     public $customers;
     public $transaction_date;
 
-    public $allocations;
+    public $editingAllocationIndex = null;
 
-    protected function rules()
-    {
-        return [
-            'payment.customer_id' => 'required|exists:customers,id',
-            'payment.bill_email' => 'nullable|email',
-            'payment.payment_ref' => 'nullable',
-            'payment.transaction_date' => 'required|date',
-            'payment.total_ex_gst' => 'required|numeric'
-        ];
-    }
+    public $allocations = [];
+
+    protected $rules =  [
+        'allocations.*.amount' => ['required', 'numeric']
+    ];
+
+    protected $validationAttributes = [
+        'allocations.*.amount' => 'amount'
+    ];
 
     public function updatedTransactionDate()
     {
@@ -35,33 +34,6 @@ class Edit extends Component
     public function updatedPaymentCustomerId()
     {
         $this->payment->bill_email = Customer::find($this->payment->customer_id)?->email;
-    }
-
-    public function calcAllocations()
-    {
-        $related = $this->payment->customer->transactions()->outstanding($this->payment)->get();
-
-        $p = $this->payment;
-        //Create custom array
-        $allocations = $related->map(function ($transaction) use ($p){
-            return (object)[
-                'id' => $transaction->id,
-                'type' => $transaction->type,
-                'transaction_ref' => $transaction->transaction_ref,
-                'date' => $transaction->transaction_date,
-                'due_date' => $transaction->due_date,
-                'total_amount' => ($transaction->type === 'invoice')
-                    ? floatval($transaction->total_amount)
-                    : floatval(-$transaction->total_amount),
-                'balance' => floatval($transaction->balance),
-                'allocation' => ($transaction->type === 'invoice')
-                    ? floatval($p->paymentLines()->whereInvoiceId($transaction->id)->first()?->amount)
-                    : floatval(-$p->paymentLines()->whereInvoiceId($transaction->id)->first()?->amount)
-
-            ];
-        });
-
-        return $allocations;
     }
 
     public function allocate($allocationId)
@@ -113,9 +85,24 @@ class Edit extends Component
                 ]);
         });
 
-        $this->allocations = auth()->user()->paymentAllocation->paymentAllocationLines;
+        $this->allocations = auth()
+            ->user()
+            ->paymentAllocation
+            ->paymentAllocationLines()
+            ->with('transaction')
+            ->get()
+            ->toArray();
+    }
 
-        //$this->allocations = $this->calcAllocations();
+    public function editAllocation($index)
+    {
+        $this->editingAllocationIndex = $index;
+    }
+
+    public function saveAllocation()
+    {
+        $this->notify("Saving");
+        $this->editingAllocationIndex = null;
     }
 
     public function render()

@@ -18,6 +18,8 @@ class Transaction extends Model
 
     protected $guarded = [];
 
+    protected $appends = ['due_date_string', 'transaction_date_string', 'total_amount_string', 'balance_string'];
+
     public $searchable = ['transaction_ref', 'total_amount', 'transaction_date', 'gst', 'total_ex_gst', 'type'];
     protected $casts = [
         'transaction_date' => 'date',
@@ -54,9 +56,9 @@ class Transaction extends Model
         );
     }
 
-    public function dueDateString(): Attribute
+    protected function dueDateString(): Attribute
     {
-        return new Attribute(
+        return Attribute::make(
             get: fn() => $this->due_date?->format('d/m/Y')
         );
     }

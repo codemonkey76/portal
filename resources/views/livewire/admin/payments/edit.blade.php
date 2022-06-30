@@ -30,7 +30,7 @@
             </x-input.group>
         </div>
     </div>
-    <div class="-mx-4 sm:-mx-6 lg:-mx-8">
+    <div class="-mx-4 sm:-mx-6 lg:-mx-8" x-data="{}">
     <x-table>
         <x-slot name="head">
             <x-table.heading><span class="sr-only">Checkbox</span></x-table.heading>
@@ -42,15 +42,33 @@
         </x-slot>
         <x-slot name="body">
             @if($this->allocations)
-            @forelse ($this->allocations as $allocation)
+            @forelse ($allocations as $index => $allocation)
             <x-table.row>
                 <x-table.cell>
-                    <input wire:click="allocate({{ $allocation->transaction_id }})" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" {{ $allocation->transaction->balance == 0 ? 'checked' : '' }}></x-table.cell>
-                <x-table.cell><a href="{{ route('invoices.show', $allocation->transaction_id) }}" class="text-indigo-500 hover:underline">{{ Str::title($allocation-> transaction->type) }} # {{ $allocation->transaction->transaction_ref }}</a> ({{ $allocation->transaction->transactionDateString }})</x-table.cell>
-                <x-table.cell>{{ $allocation->transaction->dueDateString }}</x-table.cell>
-                <x-table.cell>{{ $allocation->transaction->totalAmountString }}</x-table.cell>
-                <x-table.cell>{{ $allocation->transaction->balance }}</x-table.cell>
-                <x-table.cell><x-input.text leading-add-on="$" class="w-12" wire:model="allocation.amount"/></x-table.cell>
+                    <input
+                        wire:click="allocate({{ $allocation['transaction_id'] }})"
+                        type="checkbox"
+                        class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" {{ $allocation['transaction']['balance'] == 0 ? 'checked' : '' }}>
+                </x-table.cell>
+                <x-table.cell>
+                    <a
+                        href="{{ route('invoices.show', $allocation['transaction_id']) }}"
+                        class="text-indigo-500 hover:underline">
+                        {{ Str::title($allocation['transaction']['type']) }} # {{ $allocation['transaction']['transaction_ref'] }}
+                    </a> ({{ $allocation['transaction']['transaction_date_string'] }})
+                </x-table.cell>
+                <x-table.cell>{{ $allocation['transaction']['due_date_string'] }}</x-table.cell>
+                <x-table.cell>{{ $allocation['transaction']['total_amount_string'] }}</x-table.cell>
+                <x-table.cell>{{ $allocation['transaction']['balance_string'] }}</x-table.cell>
+                <x-table.cell>
+                    @if ($this->editingAllocationIndex !== $index)
+                        <div class="cursor-pointer" wire:click="editAllocation({{ $index }})">
+                            {{ $allocation['amount_string'] }}
+                        </div>
+                    @else
+                        <x-input.text @click.away="$wire.saveAllocation()" leading-add-on="$" class="w-12" wire:model="allocations.{{ $index }}.amount"/>
+                    @endif
+                </x-table.cell>
             </x-table.row>
             @empty
                 <x-table.row><x-table.cell>testing</x-table.cell></x-table.row>
