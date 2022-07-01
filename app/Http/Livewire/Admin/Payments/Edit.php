@@ -101,7 +101,9 @@ class Edit extends Component
 
     public function saveAllocation()
     {
-        $this->notify("Saving");
+
+        $this->notify(json_encode($this->allocations[$this->editingAllocationIndex]));
+//        $this->notify("Saving");
         $this->editingAllocationIndex = null;
     }
 

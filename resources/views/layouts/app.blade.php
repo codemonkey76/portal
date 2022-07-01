@@ -12,12 +12,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 
     @livewireStyles
 
     <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}" defer></script>
 </head>
 
 <body class="font-sans antialiased">
@@ -29,7 +30,7 @@
         <!-- Page Content -->
         <main class="flex-1 flex h-screen">
             <div class="flex flex-1">
-                @livewire('sidebar')
+                <livewire:sidebar />
                 <div class="flex-1 overflow-auto">
                     <!-- Page Heading -->
                     @if (isset($header))

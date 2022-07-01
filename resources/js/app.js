@@ -1,9 +1,13 @@
-require('./bootstrap');
+import lodash from 'lodash'
+window._ = lodash
 
-import Alpine from 'alpinejs';
+import axios from 'axios'
+window.axios = axios
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
-window.Alpine = Alpine;
+import Alpine from 'alpinejs'
+window.Alpine = Alpine
+Alpine.start()
 
-Alpine.start();
-
-window.moment = require('moment');
+import moment from 'moment'
+window.moment = moment

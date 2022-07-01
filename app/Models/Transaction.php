@@ -52,7 +52,7 @@ class Transaction extends Model
     public function transactionDateString(): Attribute
     {
         return new Attribute(
-            get: fn() => $this->transaction_date->format('d/m/Y')
+            get: fn() => $this->transaction_date?->format('d/m/Y')
         );
     }
 

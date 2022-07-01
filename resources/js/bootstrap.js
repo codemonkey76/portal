@@ -1,3 +1,6 @@
+import lodash from 'lodash';
+window._ = lodash;
+
 window._ = require('lodash');
 
 /**
