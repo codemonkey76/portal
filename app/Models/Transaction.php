@@ -26,7 +26,9 @@ class Transaction extends Model
         'ship_date' => 'date',
         'due_date' => 'date',
         'apply_tax_after_discount' => 'boolean',
-        'sync' => 'boolean'
+        'sync' => 'boolean',
+        'total_ex_gst' => 'float',
+        'total_amount' => 'float'
     ];
 
     public function customer(): BelongsTo
@@ -136,10 +138,17 @@ class Transaction extends Model
 
     public function scopeOutstanding($query, $payment)
     {
+        // Get all transactions that are either outstanding or paid by provided payment
+
         $invoices = PaymentLine::whereTransactionId($payment->id)->pluck('invoice_id')->toArray();
 
         return $query->where('balance', '<>', 0)->orWhere(function($query) use ($invoices) {
             $query->whereIn('id', $invoices);
         });
+    }
+
+    public function getBalanceExcludingPayment(Transaction $payment)
+    {
+        return $this->total_amount - $this->payments()->where('transaction_id', '<>', $payment->id)->sum('amount');
     }
 }

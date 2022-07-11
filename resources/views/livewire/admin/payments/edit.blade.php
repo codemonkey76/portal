@@ -42,13 +42,20 @@
         </x-slot>
         <x-slot name="body">
             @if($this->allocations)
-            @forelse ($allocations as $index => $allocation)
+            @forelse ($this->allocations as $index => $allocation)
             <x-table.row>
                 <x-table.cell>
-                    <input
-                        wire:click="allocate({{ $allocation['transaction_id'] }})"
-                        type="checkbox"
-                        class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" {{ $allocation['transaction']['balance'] == 0 ? 'checked' : '' }}>
+                    <button wire:click="allocate({{ $allocation }})">
+                        <div class="flex">
+                            @if ($allocation->transaction->getBalanceExcludingPayment($this->payment) == $allocation->amount)
+                                <x-icon.check />
+                            @elseif ($allocation->amount != 0)
+                                <x-icon.partial />
+                            @else
+                                <x-icon.cleared />
+                            @endif
+                        </div>
+                    </button>
                 </x-table.cell>
                 <x-table.cell>
                     <a
@@ -66,7 +73,7 @@
                             {{ $allocation['amount_string'] }}
                         </div>
                     @else
-                        <x-input.text @click.away="$wire.saveAllocation()" leading-add-on="$" class="w-12" wire:model="allocations.{{ $index }}.amount"/>
+                        <x-input.text @click.away="$wire.saveAllocation()" leading-add-on="$" class="w-12" wire:model.defer="allocations.{{ $index }}.amount"/>
                     @endif
                 </x-table.cell>
             </x-table.row>
@@ -77,5 +84,7 @@
         </x-slot>
     </x-table>
     </div>
-    List all invoices either already allocated to this payment or still with some outstanding balance.
+    @if ($errors->has('amount'))
+        <div class="text-red-500">{{ $errors->first('amount') }}</div>
+    @endif
 </div>

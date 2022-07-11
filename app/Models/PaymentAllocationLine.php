@@ -14,6 +14,9 @@ class PaymentAllocationLine extends Model
 
     protected $appends = ['amount_string'];
     protected $guarded = [];
+    protected $casts = [
+        'amount' => 'float'
+    ];
 
     public function paymentAllocation(): BelongsTo
     {

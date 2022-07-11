@@ -13,6 +13,10 @@ class PaymentLine extends Model
     protected $guarded = [];
     public $timestamps = false;
 
+    protected $casts = [
+        'amount' => 'float'
+    ];
+
     public function invoice(): BelongsTo
     {
         return $this->belongsTo(Transaction::class, 'invoice_id');
