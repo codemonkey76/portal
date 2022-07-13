@@ -6,6 +6,7 @@ use Akaunting\Money\Money;
 use App\Models\Customer;
 use App\Models\PaymentAllocation;
 use App\Models\PaymentAllocationLine;
+use App\Models\PaymentLine;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -147,9 +148,7 @@ class Edit extends Component
         $this->editingAllocationIndex = $index;
     }
 
-
-
-    public function saveAllocation()
+    public function validatePayment()
     {
         $allocated = collect($this->allocations)->sum('amount');
 
@@ -158,11 +157,33 @@ class Edit extends Component
                 'amount' => ['The allocations are larger than the payment amount.']
             ]);
         }
+    }
+
+    public function saveAllocation()
+    {
+        $this->validatePayment();
 
         $this->allocations[$this->editingAllocationIndex]->save();
-        $this->notify("Saving allocations");
 
         $this->editingAllocationIndex = null;
+    }
+
+    public function savePayment()
+    {
+        $this->validatePayment();
+
+        // Delete all payment lines
+        $this->payment->paymentLines->each->delete();
+
+        // Create payment lines which match allocations
+        $this->allocations->where('amount', '>', 0)->each(function($allocationLine) {
+            PaymentLine::create([
+                'invoice_id' => $allocationLine->transaction_id,
+                'transaction_id' => $this->payment->id,
+                'amount' => $allocationLine->amount
+            ]);
+        });
+        $this->redirectRoute('customers.show', $this->payment->customer_id);
     }
 
     public function getAllocations()

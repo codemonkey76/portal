@@ -8,7 +8,18 @@ class PaymentLineObserver
 {
     public function deleting(PaymentLine $paymentLine)
     {
-        logger("Running PaymentLine::deleting hook");
+        $invoice = $paymentLine->invoice;
+        if($invoice) {
+            $invoice->balance += $paymentLine->amount;
+            $invoice->save();
+        }
+
+        $payment = $paymentLine->payment;
+
+        if ($payment) {
+            $payment->unapplied_amount += $paymentLine->amount;
+            $payment->save();
+        }
     }
 
     public function saving(PaymentLine $paymentLine)
