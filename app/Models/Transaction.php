@@ -114,6 +114,12 @@ class Transaction extends Model
         return $this->type === 'invoice';
     }
 
+    public function isAdjustment(): bool
+    {
+        return $this->type === 'adjustment';
+    }
+
+
     public function status(): Attribute
     {
         return new Attribute(

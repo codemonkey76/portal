@@ -41,5 +41,15 @@ class PaymentAllocationLine extends Model
             get: fn() => Money::AUD($this->amount * 100)->format()
         );
     }
+
+    public function scopeWithWhereHas($query, $relation, $field, $operator, $value)
+    {
+        $query->with([$relation => function ($q) use ($field, $operator, $value) {
+            $q->where($field, $operator, $value);
+        }])->whereHas($relation, function ($q) use ($field, $operator, $value) {
+            $q->where($field, $operator, $value);
+        });
+    }
+
 }
 

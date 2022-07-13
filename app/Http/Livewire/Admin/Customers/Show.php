@@ -83,4 +83,36 @@ class Show extends Component
         return view('livewire.admin.customers.show', ['transactions' => $this->rows]);
     }
 
+    public function newInvoice()
+    {
+        return $this->notImplemented();
+    }
+    public function newPayment()
+    {
+        $p = Transaction::create([
+            'customer_id' => $this->customer->id,
+            'type' => 'payment',
+            'unapplied_amount' => 0,
+            'transaction_date' => now(),
+        ]);
+
+        return redirectRoute('payments.edit', $p->id);
+    }
+    public function newQuote()
+    {
+        return $this->notImplemented();
+    }
+    public function newSalesReceipt()
+    {
+        return $this->notImplemented();
+    }
+    public function newAdjustment()
+    {
+        return $this->notImplemented();
+    }
+    public function newStatement()
+    {
+        return $this->notImplemented();
+    }
+
 }

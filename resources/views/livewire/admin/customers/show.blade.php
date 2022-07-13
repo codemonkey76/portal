@@ -22,27 +22,32 @@
                         <x-icon.caret-down/>
                     </x-button.primary>
                     <div x-show="showMenu" class="absolute top-0 mt-10 border bg-white text-gray-500 text-sm z-10">
-                        <div role="button"
+                        <div wire:click="newInvoice" role="button"
                              class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400">
                             Invoice
                         </div>
                         <div role="button"
+                             wire:click="newPayment"
                              class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400">
                             Payment
                         </div>
                         <div role="button"
+                             wire:click="newQuote"
                              class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400">
                             Quote
                         </div>
                         <div role="button"
+                             wire:click="newSalesReceipt"
                              class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400">
                             Sales Receipt
                         </div>
                         <div role="button"
+                             wire:click="newAdjustment"
                              class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400">
                             Adjustment Note
                         </div>
                         <div role="button"
+                             wire:click="newStatement"
                              class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400">
                             Statement
                         </div>

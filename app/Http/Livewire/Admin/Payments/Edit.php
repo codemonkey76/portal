@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Admin\Payments;
 
 use Akaunting\Money\Money;
+use App\Http\Livewire\Traits\WithPerPagePagination;
 use App\Models\Customer;
 use App\Models\PaymentAllocation;
 use App\Models\PaymentAllocationLine;
@@ -14,14 +15,20 @@ use Livewire\Component;
 
 class Edit extends Component
 {
+    use WithPerPagePagination;
+
+
+    public $perPageVariable = "transactionsPerPage";
     public $payment;
 
     public $customers;
     public $transaction_date;
 
     public $editingAllocationIndex = null;
+    public $editingCreditAllocationIndex = null;
 
     public $allocations;
+    public $creditAllocations;
 
     protected function rules()
     {
@@ -53,10 +60,24 @@ class Edit extends Component
         return $allocation->transaction->getBalanceExcludingPayment($this->payment);
     }
 
+    public function formatMoney($amount)
+    {
+        return Money::AUD($amount*100)->format();
+    }
+
+    public function getAmountToApplyProperty()
+    {
+        return $this->payment->total_ex_gst + $this->creditAllocationAmount();
+    }
+    public function getRemainingPaymentProperty()
+    {
+        return $this->amount_to_apply - $this->invoiceAllocationAmount();
+    }
+
     public function allocate(PaymentAllocationLine $paymentAllocationLine)
     {
         // Get remaining payment
-        $remainingPayment = $this->payment->total_ex_gst - collect($this->allocations)->sum('amount');
+        $remainingPayment = $this->remaining_payment;
 
         // If invoice is fully paid, clear allocation
         if ($this->getAllocationBalance($paymentAllocationLine) == $paymentAllocationLine->amount)
@@ -81,7 +102,7 @@ class Edit extends Component
 
         // payment allocation is currently 0
         // If payment remaining less than invoice remaining, add payment_remaining to amount
-        if ($remainingPayment < ($paymentAllocationLine->transaction->total_amount - $paymentAllocationLine->amount))
+        if ($paymentAllocationLine->transaction->isInvoice() && $remainingPayment < ($paymentAllocationLine->transaction->total_amount - $paymentAllocationLine->amount))
             return $this->setAllocationAmount($paymentAllocationLine, $remainingPayment, true);
 
         //payment amount can fully cover the invoice
@@ -94,7 +115,8 @@ class Edit extends Component
         $allocation->amount = $addToExisting ? $allocation->amount + $amount: $amount;
         $allocation->save();
         $this->allocations = $this->getAllocations();
-
+        $this->creditAllocations = $this->getCreditAllocations();
+        $this->forgetComputed(['remaining_payment', 'amount_to_apply']);
         return 0;
     }
 
@@ -140,6 +162,7 @@ class Edit extends Component
         });
 
         $this->allocations = $this->getAllocations();
+        $this->creditAllocations = $this->getCreditAllocations();
     }
 
 
@@ -148,9 +171,23 @@ class Edit extends Component
         $this->editingAllocationIndex = $index;
     }
 
+    public function editCreditAllocation($index)
+    {
+        $this->editingCreditAllocationIndex = $index;
+    }
+
+    public function invoiceAllocationAmount()
+    {
+        return $this->allocations->sum('amount');
+    }
+
+    public function creditAllocationAmount()
+    {
+        return $this->creditAllocations->sum('amount');
+    }
     public function validatePayment()
     {
-        $allocated = collect($this->allocations)->sum('amount');
+        $allocated = $this->invoiceAllocationAmount() - $this->creditAllocationAmount();
 
         if ($allocated > $this->payment->total_ex_gst) {
             throw ValidationException::withMessages([
@@ -168,32 +205,53 @@ class Edit extends Component
         $this->editingAllocationIndex = null;
     }
 
+    public function saveCreditAllocation()
+    {
+        $this->validatePayment();
+
+        $this->creditAllocations[$this->editingCreditAllocationIndex]->save();
+
+        $this->editingCreditAllocationIndex = null;
+    }
+
     public function savePayment()
     {
         $this->validatePayment();
 
         // Delete all payment lines
-        $this->payment->paymentLines->each->delete();
-
-        // Create payment lines which match allocations
-        $this->allocations->where('amount', '>', 0)->each(function($allocationLine) {
-            PaymentLine::create([
-                'invoice_id' => $allocationLine->transaction_id,
-                'transaction_id' => $this->payment->id,
-                'amount' => $allocationLine->amount
-            ]);
-        });
-        $this->redirectRoute('customers.show', $this->payment->customer_id);
+//        $this->payment->paymentLines->each->delete();
+//
+//        // Create payment lines which match allocations
+//        $this->allocations->where('amount', '>', 0)->each(function($allocationLine) {
+//            PaymentLine::create([
+//                'invoice_id' => $allocationLine->transaction_id,
+//                'transaction_id' => $this->payment->id,
+//                'amount' => $allocationLine->amount
+//            ]);
+//        });
+//        $this->redirectRoute('customers.show', $this->payment->customer_id);
     }
 
-    public function getAllocations()
+    public function getTransactionsQuery()
     {
         return auth()
             ->user()
             ->paymentAllocation
             ->paymentAllocationLines()
-            ->with('transaction')
+            ->with('transaction');
+    }
+    public function getAllocations()
+    {
+        return $this->getTransactionsQuery()
+            ->whereHas('transaction', fn($q) => $q->whereType('invoice'))
             ->get();
+    }
+
+    public function getCreditAllocations()
+    {
+        return $this->getTransactionsQuery()
+                    ->whereHas('transaction', fn($q) => $q->whereType('adjustment'))
+                    ->get();
     }
 
     public function render()
