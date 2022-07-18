@@ -10,7 +10,6 @@ class TransactionObserver
 
     public function creating(Transaction $transaction): void
     {
-        logger("Running Transaction::creating hook");
         $transaction->transaction_ref = match ($transaction->type) {
             'invoice' => GlobalSetting::getNextInvoiceNo(),
             'payment' => GlobalSetting::getNextPaymentNo(),
@@ -21,13 +20,15 @@ class TransactionObserver
         $transaction->balance = 0;
 
         if ($transaction->type === 'payment')
-            $transaction->unapplied_amount = $transaction->total_ex_gst;
+            $transaction->unapplied_amount = $transaction->total_ex_gst ?? 0;
     }
 
     public function saving(Transaction $transaction): void
     {
         if ($transaction->type === 'payment')
         {
+            $applied = $transaction->paymentLines()->sum('amount');
+            $transaction->unapplied_amount = ($transaction->total_ex_gst ?? 0) - $applied;
             return;
         }
 
