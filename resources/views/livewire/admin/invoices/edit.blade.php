@@ -34,7 +34,7 @@
     <div class="md:-mx-6 lg:-mx-8">
         <div class="md:px-6 lg:px-8 py-2">
             <div class="flex justify-end">
-                <x-button.primary wire:click="create">Add Line</x-button.primary>
+                <x-button.primary wire:click="createLine">Add Line</x-button.primary>
             </div>
         </div>
 
@@ -108,6 +108,10 @@
             <!-- Totals -->
         </div>
         <!-- Table Footer -->
+
+        <div class="lg:px-8 py-4">
+            <x-button.primary wire:click="saveInvoice">Save Invoice</x-button.primary>
+        </div>
 
         <livewire:admin.invoice-lines.edit :invoice="$invoice"/>
 

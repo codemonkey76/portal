@@ -46,6 +46,7 @@ class Edit extends Component
     {
         $this->validate();
         $this->editing->save();
+        $this->emitUp('refreshInvoice');
         $this->showModal = false;
     }
     public function updateAmount()

@@ -26,7 +26,7 @@ class Edit extends Component
     public $showEditModal = false;
     public $showDeleteModal = false;
 
-    protected $listeners = ['editInvoice'];
+    protected $listeners = ['editInvoice', 'refreshInvoice' => '$refresh'];
 
     protected function rules()
     {
@@ -89,7 +89,7 @@ class Edit extends Component
 
     public function editLine(InvoiceLine $line)
     {
-        $this->emit('showEditInvoiceLineModal', [$line]);
+        $this->emit('showEditInvoiceLineModal', [$line->id]);
     }
 
     public function confirmDelete(InvoiceLine $line)
@@ -114,6 +114,20 @@ class Edit extends Component
         $this->due_date = $this->invoice->due_date?->format('Y-m-d');
         $this->default_term = Term::whereName(GlobalSetting::whereKey('default_payment_terms')->first()->value)->first();
     }
+
+
+    public function createLine()
+    {
+        $line = InvoiceLine::create(['transaction_id' => $this->invoice->id]);
+        $this->emit('showEditInvoiceLineModal', [$line->id]);
+    }
+
+    public function saveInvoice()
+    {
+        $this->validate();
+        $this->invoice->save();
+    }
+
     public function render()
     {
         return view('livewire.admin.invoices.edit');

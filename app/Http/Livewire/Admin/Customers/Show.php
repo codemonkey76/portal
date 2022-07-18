@@ -85,7 +85,13 @@ class Show extends Component
 
     public function newInvoice()
     {
-        return $this->notImplemented();
+        $i = Transaction::create([
+            'customer_id' => $this->customer->id,
+            'type' => 'invoice',
+            'transaction_date' => now()
+        ]);
+
+        return $this->redirectRoute('invoices.edit', $i->id);
     }
     public function newPayment()
     {

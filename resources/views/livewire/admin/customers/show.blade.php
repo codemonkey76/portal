@@ -223,7 +223,7 @@
                         </x-table.row>
                     @empty
                         <x-table.row>
-                            <x-table.cell colspan="9" class="text-gray-500 text-center italic text-md">
+                            <x-table.cell colspan="10" class="text-gray-500 text-center italic text-md">
                                 No transactions found
                             </x-table.cell>
                         </x-table.row>
@@ -238,27 +238,4 @@
 
         </div>
     </div>
-{{--    <div x-show="true" class="absolute top-0 mt-6 border bg-white z-10">--}}
-{{--        <div role="button"--}}
-{{--             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"--}}
-{{--             wire:click="send({{ $transaction->id }})">Send--}}
-{{--        </div>--}}
-{{--        <div role="button"--}}
-{{--             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"--}}
-{{--             wire:click="show({{ $transaction->id }})">View / Edit--}}
-{{--        </div>--}}
-{{--        <div role="button"--}}
-{{--             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"--}}
-{{--             wire:click="copy({{ $transaction->id }})">Copy--}}
-{{--        </div>--}}
-{{--        <div role="button"--}}
-{{--             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"--}}
-{{--             wire:click="void({{ $transaction->id }})">Void--}}
-{{--        </div>--}}
-{{--        <div role="button"--}}
-{{--             class="cursor-pointer px-4 py-2 hover:underline hover:bg-gray-100 hover:text-indigo-400"--}}
-{{--             wire:click="delete({{ $transaction->id }})">Delete--}}
-{{--        </div>--}}
-{{--    </div>--}}
-
 </div>
