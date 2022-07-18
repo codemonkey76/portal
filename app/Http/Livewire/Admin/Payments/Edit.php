@@ -36,6 +36,7 @@ class Edit extends Component
             'payment.customer_id' => ['required'],
             'payment.bill_email' => '',
             'payment.payment_ref' => '',
+            'payment.transaction_date' => '',
             'payment.total_ex_gst' => ['required', 'numeric'],
             'allocations.*.amount' => ['required']
         ];
@@ -219,17 +220,21 @@ class Edit extends Component
         $this->validatePayment();
 
         // Delete all payment lines
-//        $this->payment->paymentLines->each->delete();
-//
-//        // Create payment lines which match allocations
-//        $this->allocations->where('amount', '>', 0)->each(function($allocationLine) {
-//            PaymentLine::create([
-//                'invoice_id' => $allocationLine->transaction_id,
-//                'transaction_id' => $this->payment->id,
-//                'amount' => $allocationLine->amount
-//            ]);
-//        });
-//        $this->redirectRoute('customers.show', $this->payment->customer_id);
+        $this->payment->paymentLines->each->delete();
+
+        // Create payment lines which match allocations
+        $this->allocations->where('amount', '>', 0)->each(function($allocationLine) {
+            PaymentLine::create([
+                'invoice_id' => $allocationLine->transaction_id,
+                'transaction_id' => $this->payment->id,
+                'amount' => $allocationLine->amount
+            ]);
+        });
+
+        // Save payment
+        $this->payment->save();
+
+        $this->redirectRoute('customers.show', $this->payment->customer_id);
     }
 
     public function getTransactionsQuery()
