@@ -21,6 +21,7 @@ class Transaction extends Model
     protected $appends = ['due_date_string', 'transaction_date_string', 'total_amount_string', 'balance_string'];
 
     public $searchable = ['transaction_ref', 'total_amount', 'transaction_date', 'gst', 'total_ex_gst', 'type'];
+
     protected $casts = [
         'transaction_date' => 'date',
         'ship_date' => 'date',
@@ -28,7 +29,8 @@ class Transaction extends Model
         'apply_tax_after_discount' => 'boolean',
         'sync' => 'boolean',
         'total_ex_gst' => 'float',
-        'total_amount' => 'float'
+        'total_amount' => 'float',
+        'unapplied_amount' => 'float'
     ];
 
     public function customer(): BelongsTo
@@ -117,6 +119,11 @@ class Transaction extends Model
     public function isAdjustment(): bool
     {
         return $this->type === 'adjustment';
+    }
+
+    public function isSynced(): bool
+    {
+        return $this->qb_invoice_id || $this->qb_payment_id;
     }
 
 

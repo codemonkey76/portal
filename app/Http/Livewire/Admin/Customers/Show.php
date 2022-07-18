@@ -92,11 +92,10 @@ class Show extends Component
         $p = Transaction::create([
             'customer_id' => $this->customer->id,
             'type' => 'payment',
-            'unapplied_amount' => 0,
             'transaction_date' => now(),
         ]);
 
-        return redirectRoute('payments.edit', $p->id);
+        return $this->redirectRoute('payments.edit', $p->id);
     }
     public function newQuote()
     {

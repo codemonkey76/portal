@@ -97,11 +97,13 @@
             <!-- Table -->
             <x-table>
                 <x-slot name="head">
+                    <x-table.heading align="middle">
+                        Sync
+                    </x-table.heading>
                     <x-table.heading sortable
                                      multi-column
                                      :direction="$sorts['id'] ?? null"
-                                     wire:click="sortBy('id')"
-                                     class="pl-4 sm:pl-6">
+                                     wire:click="sortBy('id')">
                         ID
                     </x-table.heading>
                     <x-table.heading align="middle"
@@ -151,8 +153,8 @@
                                     ? 'bg-orange-400' :
                                     ($transaction->status->value === 'Closed'
                                         ? 'bg-gray-300' : 'bg-white')) }}">
-                            <x-table.cell
-                                class="pl-4 sm:pl-6 text-gray-900">{{ $transaction->transaction_ref }}</x-table.cell>
+                            <x-table.cell class="pl-4 sm:pl-6 text-gray-900 flex items-center justify-center">@if($transaction->isSynced())<x-icon.sync />@endif</x-table.cell>
+                            <x-table.cell class="pl-4 sm:pl-6 text-gray-900">{{ $transaction->transaction_ref }}</x-table.cell>
                             <x-table.cell class="text-gray-900 text-center">{{ $transaction->type }}</x-table.cell>
                             <x-table.cell class="text-gray-900">{{ $transaction->transactionDateString }}</x-table.cell>
                             <x-table.cell class="text-gray-900 text-right">{{ $transaction->balanceString }}</x-table.cell>
