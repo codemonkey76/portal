@@ -140,6 +140,7 @@ class Edit extends Component
     {
         $this->validate();
         $this->invoice->save();
+        $this->redirectRoute('customers.show', $this->invoice->customer_id);
     }
 
     public function render()
