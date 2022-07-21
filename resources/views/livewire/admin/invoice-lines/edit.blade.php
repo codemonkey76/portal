@@ -33,7 +33,6 @@
                                               readonly/>
                             </x-input.group>
                         </div>
-                        @json($editing)
                     </div>
                     <x-jet-validation-errors />
                 </x-slot>
