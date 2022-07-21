@@ -214,7 +214,7 @@
                                         <button
                                             title="Delete"
                                             class="hover:text-red-600"
-                                            wire:click="delete({{ $transaction->id }})">
+                                            wire:click="confirmDelete({{ $transaction->id }})">
                                             <x-icon.trash />
                                         </button>
                                     @endcan
@@ -238,4 +238,18 @@
 
         </div>
     </div>
+    <!-- InvoiceDeleteModal -->
+    <form wire:submit.prevent="delete">
+        <x-jet-confirmation-modal wire:model="showDeleteModal">
+            <x-slot name="title">Delete invoice</x-slot>
+            <x-slot name="content">Are you sure you want to delete this invoice?</x-slot>
+            <x-slot name="footer">
+                <div class="flex space-x-2">
+                    <x-button.secondary wire:click="cancelDelete">Cancel</x-button.secondary>
+                    <x-button.danger type="submit">Delete</x-button.danger>
+                </div>
+            </x-slot>
+        </x-jet-confirmation-modal>
+    </form>
+    <!-- InvoiceDeleteModal -->
 </div>

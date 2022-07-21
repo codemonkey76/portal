@@ -49,6 +49,11 @@ class Edit extends Component
         $this->emitUp('refreshInvoice');
         $this->showModal = false;
     }
+
+    public function deleteInvoice()
+    {
+        $this->editing->delete();
+    }
     public function updateAmount()
     {
         $this->editing->amount = floatval($this->editing->unit_price) * floatval($this->editing->qty);

@@ -87,7 +87,7 @@
         <div class="flex justify-between lg:px-8">
             <div class="w-96 flex flex-col justify-end">
                 <x-input.group for="message" label="Message on invoice">
-                    <x-input.textarea readonly wire:model="invoice.customer_memo"></x-input.textarea>
+                    <x-input.textarea wire:model="invoice.customer_memo"></x-input.textarea>
                 </x-input.group>
             </div>
             <!-- Totals -->
@@ -111,6 +111,7 @@
 
         <div class="lg:px-8 py-4">
             <x-button.primary wire:click="saveInvoice">Save Invoice</x-button.primary>
+            <x-button.danger wire:click="confirmDeleteInvoice">Delete Invoice</x-button.danger>
         </div>
 
         <livewire:admin.invoice-lines.edit :invoice="$invoice"/>
@@ -129,5 +130,20 @@
             </x-jet-confirmation-modal>
         </form>
         <!-- InvoiceLineDeleteModal -->
+
+        <!-- InvoiceDeleteModal -->
+        <form wire:submit.prevent="deleteInvoice">
+            <x-jet-confirmation-modal wire:model="showDeleteInvoiceModal">
+                <x-slot name="title">Delete invoice</x-slot>
+                <x-slot name="content">Are you sure you want to delete this invoice?</x-slot>
+                <x-slot name="footer">
+                    <div class="flex space-x-2">
+                        <x-button.secondary wire:click="cancelDeleteInvoice">Cancel</x-button.secondary>
+                        <x-button.danger type="submit">Delete</x-button.danger>
+                    </div>
+                </x-slot>
+            </x-jet-confirmation-modal>
+        </form>
+        <!-- InvoiceDeleteModal -->
     </div>
 </div>

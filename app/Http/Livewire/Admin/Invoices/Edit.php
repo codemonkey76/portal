@@ -25,6 +25,7 @@ class Edit extends Component
 
     public $showEditModal = false;
     public $showDeleteModal = false;
+    public $showDeleteInvoiceModal = false;
 
     protected $listeners = ['editInvoice', 'refreshInvoice' => '$refresh'];
 
@@ -97,7 +98,18 @@ class Edit extends Component
         $this->deleting = $line;
         $this->showDeleteModal = true;
     }
+    public function confirmDeleteInvoice()
+    {
+        $this->showDeleteInvoiceModal = true;
+    }
 
+    public function deleteInvoice()
+    {
+        $custId = $this->invoice->customer_id;
+        $this->invoice->delete();
+        $this->showDeleteInvoiceModal = false;
+        $this->redirectRoute('customers.show', $custId);
+    }
     public function delete()
     {
         $this->deleting->delete();
@@ -109,10 +121,12 @@ class Edit extends Component
     {
         $this->customers = Customer::orderBy('company_name')->get();
         $this->terms = Term::orderBy('name')->get();
-        $this->term_id = $this->invoice->customer->term_id;
+        $this->default_term = Term::whereName(GlobalSetting::whereKey('default_payment_terms')->first()->value)->first()->id;
+        $this->term_id = $this->invoice->customer->term_id ?? $this->default_term;
         $this->transaction_date = $this->invoice->transaction_date->format('Y-m-d');
+        $this->updatedTermId();
         $this->due_date = $this->invoice->due_date?->format('Y-m-d');
-        $this->default_term = Term::whereName(GlobalSetting::whereKey('default_payment_terms')->first()->value)->first();
+
     }
 
 

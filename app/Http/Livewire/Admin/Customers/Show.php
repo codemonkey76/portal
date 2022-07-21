@@ -16,6 +16,8 @@ class Show extends Component
     public $perPageVariable = "transactionsPerPage";
     public Customer $customer;
     public Transaction $editing;
+    public $deleting;
+    public $showDeleteModal = false;
 
     public function getRowsQueryProperty()
     {
@@ -67,9 +69,22 @@ class Show extends Component
         $this->notImplemented();
     }
 
-    public function delete(Transaction $transaction)
+    public function confirmDelete(Transaction $transaction)
     {
-        $this->notImplemented();
+        $this->deleting = $transaction;
+        $this->showDeleteModal = true;
+    }
+
+    public function cancelDelete()
+    {
+        $this->deleting = null;
+        $this->showDeleteModal = false;
+    }
+    public function delete()
+    {
+        $this->deleting->delete();
+        $this->showDeleteModal = false;
+        $this->notify("Deleted successfully.");
     }
 
     public function mount()
@@ -88,7 +103,8 @@ class Show extends Component
         $i = Transaction::create([
             'customer_id' => $this->customer->id,
             'type' => 'invoice',
-            'transaction_date' => now()
+            'transaction_date' => now(),
+
         ]);
 
         return $this->redirectRoute('invoices.edit', $i->id);
