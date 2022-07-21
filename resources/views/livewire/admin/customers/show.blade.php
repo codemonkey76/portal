@@ -169,7 +169,7 @@
                                         <button
                                             title="Send"
                                             class="hover:text-blue-600"
-                                            wire:click="email({{ $transaction->id }})">
+                                            wire:click="send({{ $transaction->id }})">
                                             <x-icon.email />
                                         </button>
                                     @endcan
