@@ -38,6 +38,6 @@ class PaymentLineObserver
 
         $payment->unapplied_amount -= $change;
 
-        $payment->save();
+        $payment->saveQuietly();
     }
 }
