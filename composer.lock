@@ -2847,16 +2847,16 @@
         },
         {
             "name": "popplestones/quickbooks-helper",
-            "version": "v1.1.8",
+            "version": "v1.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/popplestones/quickbooks-helper.git",
-                "reference": "3a9515046204d9205dece1d2fea2bae6bc5160c8"
+                "reference": "1130c009de1b675a5dcb9a4b3a8b7226d1b06ac1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/popplestones/quickbooks-helper/zipball/3a9515046204d9205dece1d2fea2bae6bc5160c8",
-                "reference": "3a9515046204d9205dece1d2fea2bae6bc5160c8",
+                "url": "https://api.github.com/repos/popplestones/quickbooks-helper/zipball/1130c009de1b675a5dcb9a4b3a8b7226d1b06ac1",
+                "reference": "1130c009de1b675a5dcb9a4b3a8b7226d1b06ac1",
                 "shasum": ""
             },
             "require": {
@@ -2893,9 +2893,9 @@
             "description": "Everything you need to integrate Quickbooks with Laravel",
             "support": {
                 "issues": "https://github.com/popplestones/quickbooks-helper/issues",
-                "source": "https://github.com/popplestones/quickbooks-helper/tree/v1.1.8"
+                "source": "https://github.com/popplestones/quickbooks-helper/tree/v1.1.10"
             },
-            "time": "2022-06-23T03:39:02+00:00"
+            "time": "2022-07-22T01:51:57+00:00"
         },
         {
             "name": "pragmarx/google2fa",
