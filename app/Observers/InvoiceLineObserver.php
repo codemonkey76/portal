@@ -8,7 +8,6 @@ class InvoiceLineObserver
 {
     public function saving(InvoiceLine $invoiceLine)
     {
-        logger("Running InvoiceLine::saving hook");
         if ($invoiceLine->detail_type !== 'SalesItemLineDetail') return;
 
         $invoice = $invoiceLine->invoice;
@@ -27,15 +26,9 @@ class InvoiceLineObserver
 
     public function deleting(InvoiceLine $invoiceLine)
     {
-        logger("Running InvoiceLine::deleting hook");
         $invoice = $invoiceLine->invoice;
 
-        if (!$invoice)
-        {
-            info("Cannot retrieve invoice for invoiceline");
-            info(json_encode($invoiceLine));
-            return;
-        }
+        if (!$invoice) return;
 
         $subtotalLine = $invoice->subtotalLine;
 
