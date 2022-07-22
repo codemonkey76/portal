@@ -26,7 +26,7 @@
                 <x-input.text name="payment_ref" wire:model="payment.payment_ref"/>
             </x-input.group>
             <x-input.group for="amount" label="Amount Received">
-                <x-input.text name="amount" wire:model="payment.total_ex_gst" leading-add-on="$"/>
+                <x-input.text name="amount" wire:model.defer="payment.total_ex_gst" leading-add-on="$"/>
             </x-input.group>
         </div>
     </div>
