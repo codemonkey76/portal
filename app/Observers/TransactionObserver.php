@@ -40,7 +40,6 @@ class TransactionObserver
 
     public function deleting(Transaction $transaction): void
     {
-        logger("Running Transaction::deleting hook");
         // If deleting an invoice, delete all the invoice lines, and remove any payment allocations that were allocated to it.
 
         if (!$transaction->isInvoice()) return; //not yet supported
