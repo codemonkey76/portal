@@ -33,7 +33,7 @@ class Edit extends Component
     {
         return [
             'invoice.customer_id' => 'required|exists:customers,id',
-            'invoice.bill_email' => 'required|email',
+            'invoice.bill_email' => 'nullable|email',
             'invoice.transaction_date' => 'required|date',
             'invoice.due_date' => 'required|date',
             'invoice.doc_number' => '',
