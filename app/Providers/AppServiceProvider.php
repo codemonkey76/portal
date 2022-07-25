@@ -8,13 +8,16 @@ use App\Models\Feature;
 use App\Models\Menu;
 use App\Models\Question;
 use App\Models\Testimonial;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Schema;
 
 use Livewire\Component;
+use PDOException;
 use Popplestones\Quickbooks\Facades\CallbackManager;
 
 class AppServiceProvider extends ServiceProvider
@@ -38,11 +41,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if(!DB::connection()->getDatabaseName())
+        App::error(function(PDOException $exception)
         {
-            return;
-        }
-        
+            Log::error("Error connecting to database: ".$exception->getMessage());
+
+            return "Error connecting to database";
+        });
+
         if (Schema::hasTable('menus')) {
             View::share('adminMenu', Menu::whereName('Admin')->with('items')->first());
             View::share('mainMenu', Menu::whereName('Main')->with('items')->first());
