@@ -41,12 +41,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        App::error(function(PDOException $exception)
-        {
-            Log::error("Error connecting to database: ".$exception->getMessage());
-
-            return "Error connecting to database";
-        });
+        try {
+            DB::connection()->getPdo();
+            echo "Connected successfully to: " . DB::connection()->getDatabaseName();
+        } catch (\Exception $e) {
+            return;
+        }
 
         if (Schema::hasTable('menus')) {
             View::share('adminMenu', Menu::whereName('Admin')->with('items')->first());
