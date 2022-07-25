@@ -43,7 +43,6 @@ class AppServiceProvider extends ServiceProvider
     {
         try {
             DB::connection()->getPdo();
-            echo "Connected successfully to: " . DB::connection()->getDatabaseName();
         } catch (\Exception $e) {
             return;
         }
