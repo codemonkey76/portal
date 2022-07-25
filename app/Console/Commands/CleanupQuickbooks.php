@@ -35,14 +35,39 @@ class CleanupQuickbooks extends Command
      */
     public function handle()
     {
+        $this->info("Deleting transactions...");
         Transaction::all()->each->delete();
+        $this->info("Done.");
+
+        $this->info("Deleting InvoiceLines...");
         InvoiceLine::all()->each->delete();
+        $this->info("Done.");
+
+        $this->info("Deleting PaymentLines...");
         PaymentLine::all()->each->delete();
+        $this->info("Done.");
+
+        $this->info("Deleting Items...");
         Item::all()->each->delete();
+        $this->info("Done.");
+
+        $this->info("Deleting Addresses...");
         Address::all()->each->delete();
+        $this->info("Done.");
+
+        $this->info("Deleting Customers...");
         Customer::all()->each->delete();
+        $this->info("Done.");
+
+        $this->info("Deleting Terms...");
         Term::all()->each->delete();
+        $this->info("Done.");
+
+        $this->info("Deleting Accounts...");
         Account::all()->each->delete();
+        $this->info("Done.");
+
+        $this->info("Cleanup Complete.");
         return 0;
     }
 }

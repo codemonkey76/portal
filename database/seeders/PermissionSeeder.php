@@ -93,6 +93,7 @@ class PermissionSeeder extends Seeder
         $accounts->givePermissionTo(Permission::create(['name' => 'accounts.update']));
         $accounts->givePermissionTo(Permission::create(['name' => 'accounts.destroy']));
         $accounts->givePermissionTo(Permission::create(['name' => 'accounts.create']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'quickbooks.utilities']));
 
         $admin->givePermissionTo(Permission::create(['name' => 'invites.index']));
         $admin->givePermissionTo(Permission::create(['name' => 'invites.destroy']));

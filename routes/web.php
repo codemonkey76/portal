@@ -6,6 +6,7 @@ use App\Http\Controllers\InviteController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NewsletterSubscriptionController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\QuickbooksController;
 use App\Http\Controllers\ServiceAgreementController;
 use App\Http\Controllers\WebsiteContactController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,8 @@ Route::middleware([
     Route::resource('customers', CustomerController::class)->only(['index', 'show']);
     Route::resource('invoices', InvoiceController::class)->only(['edit', 'show']);
     Route::resource('payments', PaymentController::class)->only(['edit']);
+
+    Route::get('quickbooks', [QuickbooksController::class, 'utilities'])->name('quickbooks.utilities');
 
     Route::resource('service-agreements', ServiceAgreementController::class);
 

@@ -27,14 +27,36 @@ class SetupQuickbooks extends Command
      */
     public function handle()
     {
-        $this->call('qb:account:import');
-        $this->call('qb:term:import');
-        $this->call('qb:customer:import');
-        $this->call('qb:item:import');
-        $this->call('qb:set-company-names-from-fqn');
-        $this->call('qb:invoice:import');
-        $this->call('qb:adjustment:import');
-        $this->call('qb:payment:import');
-        return 0;
+        $exitCode = 0;
+
+        $exitCode = $this->call('qb:account:import');
+
+        if ($exitCode !== 0) return $exitCode;
+
+        $exitCode = $this->call('qb:term:import');
+
+        if ($exitCode !== 0) return $exitCode;
+
+        $exitCode = $this->call('qb:customer:import');
+
+        if ($exitCode !== 0) return $exitCode;
+
+        $exitCode = $this->call('qb:item:import');
+
+        if ($exitCode !== 0) return $exitCode;
+
+        $exitCode = $this->call('qb:set-company-names-from-fqn');
+
+        if ($exitCode !== 0) return $exitCode;
+
+        $exitCode = $this->call('qb:invoice:import');
+
+        if ($exitCode !== 0) return $exitCode;
+
+        $exitCode = $this->call('qb:adjustment:import');
+
+        if ($exitCode !== 0) return $exitCode;
+
+        return $this->call('qb:payment:import');
     }
 }

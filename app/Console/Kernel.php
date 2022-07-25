@@ -4,9 +4,26 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Popplestones\Quickbooks\Console\Commands\QbAccountImport;
+use Popplestones\Quickbooks\Console\Commands\QbAdjustmentImport;
+use Popplestones\Quickbooks\Console\Commands\QbCustomerImport;
+use Popplestones\Quickbooks\Console\Commands\QbInvoiceImport;
+use Popplestones\Quickbooks\Console\Commands\QbItemImport;
+use Popplestones\Quickbooks\Console\Commands\QbPaymentImport;
+use Popplestones\Quickbooks\Console\Commands\QbTermImport;
 
 class Kernel extends ConsoleKernel
 {
+    protected $commands = [
+        QbAccountImport::class,
+        QbTermImport::class,
+        QbCustomerImport::class,
+        QbItemImport::class,
+        QbInvoiceImport::class,
+        QbAdjustmentImport::class,
+        QbPaymentImport::class
+    ];
+
     /**
      * Define the application's command schedule.
      *
