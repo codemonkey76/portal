@@ -8,6 +8,7 @@ use App\Models\Feature;
 use App\Models\Menu;
 use App\Models\Question;
 use App\Models\Testimonial;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
@@ -37,7 +38,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        if(!DB::connection()->getDatabaseName())
+        {
+            return;
+        }
+        
         if (Schema::hasTable('menus')) {
             View::share('adminMenu', Menu::whereName('Admin')->with('items')->first());
             View::share('mainMenu', Menu::whereName('Main')->with('items')->first());
@@ -54,7 +59,6 @@ class AppServiceProvider extends ServiceProvider
         if (Schema::hasTable('questions')) {
             View::share('questions', Question::all());
         }
-
 
 
         View::share('preferAdminMenu', session()->get('preferAdminMenu'), false);
