@@ -5091,9 +5091,14 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = (pusher_js__WEBPACK_IMPORTED_MODULE_2___default());
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_1__["default"]({
   broadcaster: 'pusher',
-  key: "5f8bf33a376d8bad222b",
-  cluster: "ap1",
-  forceTLS: true
+  key: "3yv0lpt64vthk3aslux6",
+  wsHost: "socket.asgcom.net",
+  wsPort: "443",
+  wssPort: "443",
+  cluster: "",
+  forceTLS: true,
+  disabledStats: true,
+  enabledTransports: ['ws', 'wss']
 });
 
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_3__["default"];
