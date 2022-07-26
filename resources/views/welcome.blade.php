@@ -12,4 +12,5 @@
     <x-marketing.faq :questions="$questions ?? null" />
     <x-marketing.contact />
     <x-marketing.footer />
+    <livewire:test />
 </x-guest-layout>

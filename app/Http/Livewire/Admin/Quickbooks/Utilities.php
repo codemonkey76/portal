@@ -2,20 +2,31 @@
 
 namespace App\Http\Livewire\Admin\Quickbooks;
 
+use App\Jobs\SetupQuickbooks;
 use Illuminate\Support\Facades\Artisan;
 use Livewire\Component;
+use Log;
 
 class Utilities extends Component
 {
     public $output = '';
+    public $userId;
 
-    protected $listeners = ['echo:log,LogMessageReceived' => 'newLogMessage'];
+    protected function getListeners()
+    {
+        return [
+            "echo-private:log.{$this->userId},LogMessageReceived" => 'newLogMessage'
+        ];
+    }
+
+    public function mount()
+    {
+        $this->userId = auth()->id();
+    }
 
     public function quickbooksSetup()
     {
-        Artisan::call('qb:setup');
-
-        $this->output = Artisan::output();
+        SetupQuickbooks::dispatch(auth()->user());
     }
 
     public function quickbooksCleanup()
@@ -25,10 +36,11 @@ class Utilities extends Component
         $this->output = Artisan::output();
     }
 
-    public function newLogMessage()
+    public function newLogMessage($e)
     {
-        $this->notify('New Message Received');
+        $this->output  .= $e['message'] . PHP_EOL;
     }
+
     public function render()
     {
         return view('livewire.admin.quickbooks.utilities');

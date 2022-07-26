@@ -13,7 +13,6 @@ use App\Http\Controllers\WebsiteContactController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    broadcast(new LogMessageReceived("Test Message"));
     return view('welcome');
 })->name('home');
 
