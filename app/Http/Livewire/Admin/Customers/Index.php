@@ -26,8 +26,6 @@ class Index extends Component
     {
         return [
             'editing.company_name' => 'required|string|max:255',
-            'editing.fully_qualified_name' => 'required|string|max:255',
-            'editing.display_name' => 'required|string|max:255',
             'editing.first_name' => '',
             'editing.last_name' => '',
             'editing.billing_address' => '',
