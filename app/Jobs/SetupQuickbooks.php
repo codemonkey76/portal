@@ -17,21 +17,11 @@ class SetupQuickbooks implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
+    public int $timeout = 360;
+
     public function __construct(public User $user)
-    {
-    }
-
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-
+    {}
+    
     private function runCommand(string $command): int
     {
         $exitCode = Artisan::call($command);
@@ -39,9 +29,10 @@ class SetupQuickbooks implements ShouldQueue
         return $exitCode;
     }
 
-
     public function handle()
     {
+        LogMessageReceived::dipatch($this->user, "Queueing job, please wait...");
+
         $exitCode = $this->runCommand('qb:account:import');
         if ($exitCode !== 0) return;
 
