@@ -174,7 +174,7 @@ return [
             'maxJobs' => 0,
             'memory' => 128,
             'tries' => 1,
-            'timeout' => 1200,
+            'timeout' => 60,
             'nice' => 0,
         ],
     ],
@@ -185,6 +185,14 @@ return [
                 'maxProcesses' => 10,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
+            ],
+            'supervisor-long-running' => [
+                'connection' => 'redis-long-running',
+                'queue' => 'default_long',
+                'balance' => 'simple',
+                'processes' => 3,
+                'tries' => 2,
+                'timeout' => 1200, // 20 minutes
             ],
         ],
 
