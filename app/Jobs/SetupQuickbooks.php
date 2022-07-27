@@ -30,7 +30,7 @@ class SetupQuickbooks implements ShouldQueue
         return $exitCode;
     }
 
-    public function handle()
+    private function importData()
     {
         $exitCode = $this->runCommand('qb:account:import');
         if ($exitCode !== 0) return;
@@ -55,7 +55,10 @@ class SetupQuickbooks implements ShouldQueue
 
         $exitCode = $this->runCommand('qb:payment:import');
         if ($exitCode !== 0) return;
-
+    }
+    public function handle()
+    {
+        $this->importData();
         QuickbooksSetupComplete::dispatch($this->user);
     }
 }

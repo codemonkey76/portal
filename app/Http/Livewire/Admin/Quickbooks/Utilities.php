@@ -35,7 +35,7 @@ class Utilities extends Component
     public function quickbooksSetup()
     {
         $this->setupInProgress = true;
-        $this->output = "Dispatching QuickbooksSetup Job, please wait...";
+        $this->output = "Dispatching QuickbooksSetup Job, please wait..." . PHP_EOL;
         SetupQuickbooks::dispatch(auth()->user());
     }
 
