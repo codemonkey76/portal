@@ -19,6 +19,7 @@ class SetupQuickbooks implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public int $timeout = 360;
+    public bool $failOnTimeout = true;
 
     public function __construct(public User $user)
     {}
