@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Events\LogMessageReceived;
+use App\Events\QuickbooksSetupComplete;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -21,7 +22,7 @@ class SetupQuickbooks implements ShouldQueue
 
     public function __construct(public User $user)
     {}
-    
+
     private function runCommand(string $command): int
     {
         $exitCode = Artisan::call($command);
@@ -31,8 +32,6 @@ class SetupQuickbooks implements ShouldQueue
 
     public function handle()
     {
-        LogMessageReceived::dipatch($this->user, "Queueing job, please wait...");
-
         $exitCode = $this->runCommand('qb:account:import');
         if ($exitCode !== 0) return;
 
@@ -57,6 +56,6 @@ class SetupQuickbooks implements ShouldQueue
         $exitCode = $this->runCommand('qb:payment:import');
         if ($exitCode !== 0) return;
 
-        LogMessageReceived::dispatch($this->user, "Done.");
+        QuickbooksSetupComplete::dispatch($this->user);
     }
 }

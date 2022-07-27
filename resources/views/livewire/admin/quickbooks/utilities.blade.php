@@ -8,7 +8,7 @@
                 <h2 class="text-lg font-semibold text-gray-900">Functions</h2>
 
                 <div class="flex space-y-2 flex-col">
-                    <x-button.primary wire:click="quickbooksSetup">Setup Quickbooks</x-button.primary>
+                    <x-button.primary wire:click="quickbooksSetup" :disabled="$setupInProgress">Setup Quickbooks</x-button.primary>
                     <x-button.primary wire:click="quickbooksCleanup">Cleanup Quickbooks</x-button.primary>
                 </div>
                 <x-input.textarea rows="20" readonly wire:model="output"/>

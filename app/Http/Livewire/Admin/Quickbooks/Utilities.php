@@ -11,11 +11,13 @@ class Utilities extends Component
 {
     public $output = '';
     public $userId;
+    public $setupInProgress = false;
 
     protected function getListeners()
     {
         return [
-            "echo-private:log.{$this->userId},LogMessageReceived" => 'newLogMessage'
+            "echo-private:log.{$this->userId},LogMessageReceived" => 'newLogMessage',
+            "echo-private:log.{$this->userId},QuickbooksSetupComplete" => 'setupComplete'
         ];
     }
 
@@ -24,8 +26,16 @@ class Utilities extends Component
         $this->userId = auth()->id();
     }
 
+    public function setupComplete()
+    {
+        $this->setupInProgress = false;
+        $this->output .= "Done." . PHP_EOL;
+    }
+
     public function quickbooksSetup()
     {
+        $this->setupInProgress = true;
+        $this->output = "Dispatching QuickbooksSetup Job, please wait...";
         SetupQuickbooks::dispatch(auth()->user());
     }
 
