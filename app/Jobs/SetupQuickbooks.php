@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Events\LogMessageReceived;
-use App\Events\QuickbooksSetupComplete;
+use App\Events\TaskComplete;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -60,6 +60,6 @@ class SetupQuickbooks implements ShouldQueue
     public function handle()
     {
         $this->importData();
-        QuickbooksSetupComplete::dispatch($this->user);
+        TaskComplete::dispatch($this->user);
     }
 }

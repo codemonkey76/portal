@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Quickbooks;
 
+use App\Jobs\CleanupQuickbooks;
 use App\Jobs\SetupQuickbooks;
 use Illuminate\Support\Facades\Artisan;
 use Livewire\Component;
@@ -11,13 +12,13 @@ class Utilities extends Component
 {
     public $output = '';
     public $userId;
-    public $setupInProgress = false;
+    public $taskInProgress = false;
 
     protected function getListeners()
     {
         return [
             "echo-private:log.{$this->userId},LogMessageReceived" => 'newLogMessage',
-            "echo-private:log.{$this->userId},QuickbooksSetupComplete" => 'setupComplete'
+            "echo-private:log.{$this->userId},TaskComplete" => 'taskComplete'
         ];
     }
 
@@ -26,24 +27,24 @@ class Utilities extends Component
         $this->userId = auth()->id();
     }
 
-    public function setupComplete()
+    public function taskComplete()
     {
-        $this->setupInProgress = false;
-        $this->output .= "Done." . PHP_EOL;
+        $this->taskInProgress = false;
+        $this->output .= "Task complete." . PHP_EOL;
     }
 
     public function quickbooksSetup()
     {
-        $this->setupInProgress = true;
+        $this->taskInProgress = true;
         $this->output = "Dispatching QuickbooksSetup Job, please wait..." . PHP_EOL;
         SetupQuickbooks::dispatch(auth()->user())->onQueue('default_long');
     }
 
     public function quickbooksCleanup()
     {
-        Artisan::call('qb:cleanup');
-
-        $this->output = Artisan::output();
+        $this->taskInProgress = true;
+        $this->output = "Dispatching QuickbooksCleanup Job, please wait..." . PHP_EOL;
+        CleanupQuickbooks::dispatch(auth()->user())->onQueue('default_long');
     }
 
     public function newLogMessage($e)

@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Events\LogMessageReceived;
+use App\Events\TaskComplete;
 use App\Models\Account;
 use App\Models\Address;
 use App\Models\Customer;
@@ -27,48 +28,41 @@ class CleanupQuickbooks implements ShouldQueue
     public function __construct(public User $user)
     {}
 
-    private function runCommand(string $command): int
-    {
-        $exitCode = Artisan::call($command);
-        LogMessageReceived::dispatch($this->user, Artisan::output());
-        return $exitCode;
-    }
-
     public function handle()
     {
-        $this->info("Deleting transactions...");
+        LogMessageReceived::dispatch($this->user, "Deleting transactions...");
         Transaction::all()->each->delete();
-        $this->info("Done.");
+        LogMessageReceived::dispatch($this->user, "Done.");
 
-        $this->info("Deleting InvoiceLines...");
+        LogMessageReceived::dispatch($this->user, "Deleting InvoiceLines...");
         InvoiceLine::all()->each->delete();
-        $this->info("Done.");
+        LogMessageReceived::dispatch($this->user, "Done.");
 
-        $this->info("Deleting PaymentLines...");
+        LogMessageReceived::dispatch($this->user, "Deleting PaymentLines...");
         PaymentLine::all()->each->delete();
-        $this->info("Done.");
+        LogMessageReceived::dispatch($this->user, "Done.");
 
-        $this->info("Deleting Items...");
+        LogMessageReceived::dispatch($this->user, "Deleting Items...");
         Item::all()->each->delete();
-        $this->info("Done.");
+        LogMessageReceived::dispatch($this->user, "Done.");
 
-        $this->info("Deleting Addresses...");
+        LogMessageReceived::dispatch($this->user, "Deleting Addresses...");
         Address::all()->each->delete();
-        $this->info("Done.");
+        LogMessageReceived::dispatch($this->user, "Done.");
 
-        $this->info("Deleting Customers...");
+        LogMessageReceived::dispatch($this->user, "Deleting Customers...");
         Customer::all()->each->delete();
-        $this->info("Done.");
+        LogMessageReceived::dispatch($this->user, "Done.");
 
-        $this->info("Deleting Terms...");
+        LogMessageReceived::dispatch($this->user, "Deleting Terms...");
         Term::all()->each->delete();
-        $this->info("Done.");
+        LogMessageReceived::dispatch($this->user, "Done.");
 
-        $this->info("Deleting Accounts...");
+        LogMessageReceived::dispatch($this->user, "Deleting Accounts...");
         Account::all()->each->delete();
-        $this->info("Done.");
+        LogMessageReceived::dispatch($this->user, "Done.");
 
-        $this->info("Cleanup Complete.");
+        TaskComplete::dispatch($this->user);
         return 0;
     }
 }
