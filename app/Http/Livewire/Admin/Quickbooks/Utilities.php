@@ -36,6 +36,7 @@ class Utilities extends Component
     }
 
 
+
     public function taskComplete()
     {
         $this->taskInProgress = false;
@@ -43,12 +44,14 @@ class Utilities extends Component
 
     public function quickbooksSetup()
     {
+        $this->taskInProgress = true;
         auth()->user()->logMessage("Dispatching QuickbooksSetup Job, please wait..." . PHP_EOL);
         SetupQuickbooks::dispatch(auth()->user())->onQueue('default_long');
     }
 
     public function quickbooksCleanup()
     {
+        $this->taskInProgress = true;
         auth()->user()->logMessage("Dispatching QuickbooksCleanup Job, please wait..." . PHP_EOL);
         CleanupQuickbooks::dispatch(auth()->user())->onQueue('default_long');
     }

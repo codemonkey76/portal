@@ -17,7 +17,10 @@
                 </div>
                 <div class="bg-white rounded border border-gray-300 p-2 text-gray-700 overflow-y-scroll h-120">
                     @foreach($messages as $message)
-                        <div><span class="text-gray-500">[{{ $message->created_at }}]</span> {{ $message->message }}</div>
+                        <div class="flex mt-2 space-x-2">
+                            <div class="text-gray-500">[{{ $message->created_at }}]</div>
+                            <div>{!! Str::replace(PHP_EOL, '<br>', $message->message) !!}</div>
+                        </div>
                     @endforeach
                 </div>
             </div>
