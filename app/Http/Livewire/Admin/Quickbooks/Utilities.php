@@ -36,24 +36,34 @@ class Utilities extends Component
     }
 
 
+    public function clearLog()
+    {
+        auth()->user()->logMessages()->delete();
+        $this->getLogMessages();
+    }
 
     public function taskComplete()
     {
         $this->taskInProgress = false;
     }
 
-    public function quickbooksSetup()
+    public function setup()
     {
         $this->taskInProgress = true;
         auth()->user()->logMessage("Dispatching QuickbooksSetup Job, please wait..." . PHP_EOL);
         SetupQuickbooks::dispatch(auth()->user())->onQueue('default_long');
     }
 
-    public function quickbooksCleanup()
+    public function cleanup()
     {
         $this->taskInProgress = true;
         auth()->user()->logMessage("Dispatching QuickbooksCleanup Job, please wait..." . PHP_EOL);
         CleanupQuickbooks::dispatch(auth()->user())->onQueue('default_long');
+    }
+
+    public function customerSync()
+    {
+
     }
 
     public function newLogMessage()

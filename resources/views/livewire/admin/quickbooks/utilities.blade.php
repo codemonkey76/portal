@@ -8,12 +8,12 @@
                 <h2 class="text-lg font-semibold text-gray-900">Functions</h2>
 
                 <div class="flex space-y-2 flex-col">
-                    <x-button.primary wire:click="quickbooksSetup" :disabled="$taskInProgress">Setup Quickbooks</x-button.primary>
-                    <x-button.primary wire:click="quickbooksCleanup" :disabled="$taskInProgress">Cleanup Quickbooks</x-button.primary>
-                    <x-button.primary wire:click="quickbooksCleanup" :disabled="$taskInProgress">Cleanup Quickbooks</x-button.primary>
+                    <x-button.primary wire:click="setup" :disabled="$taskInProgress">Setup Quickbooks</x-button.primary>
+                    <x-button.primary wire:click="cleanup" :disabled="$taskInProgress">Cleanup Quickbooks</x-button.primary>
                 </div>
                 <div class="flex space-y-2 flex-col">
-                    <x-button.primary wire:click="quickbooksCleanup" :disabled="$taskInProgress">Sync Customers</x-button.primary>
+                    <x-button.primary wire:click="customerSync" :disabled="$taskInProgress">Sync Customers</x-button.primary>
+                    <x-button.primary wire:click="clearLog">Clear Log</x-button.primary>
                 </div>
                 <div class="bg-white rounded border border-gray-300 p-2 text-gray-700 overflow-y-scroll h-120">
                     @foreach($messages as $message)
