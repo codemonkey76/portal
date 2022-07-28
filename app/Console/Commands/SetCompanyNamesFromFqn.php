@@ -28,6 +28,8 @@ class SetCompanyNamesFromFqn extends Command
      */
     public function handle()
     {
+        $this->info("Setting company_name from fully_qualified_name");
+        $this->info("Stripping numeric prefix");
         Customer::setCompanyNamesFromFqn();
         return 0;
     }
