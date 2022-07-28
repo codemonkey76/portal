@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\LogMessage;
 use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -13,12 +14,12 @@ class LogMessageReceived implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(private readonly User $user, public string $message)
+    public function __construct(public LogMessage $message)
     { }
 
     public function broadcastOn()
     {
-        return new PrivateChannel('log.' . $this->user->id);
+        return new PrivateChannel('log.' . $this->message->user_id);
     }
 
 }

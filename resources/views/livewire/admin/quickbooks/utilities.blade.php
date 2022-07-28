@@ -8,10 +8,21 @@
                 <h2 class="text-lg font-semibold text-gray-900">Functions</h2>
 
                 <div class="flex space-y-2 flex-col">
-                    <x-button.primary wire:click="quickbooksSetup" :disabled="$setupInProgress">Setup Quickbooks</x-button.primary>
-                    <x-button.primary wire:click="quickbooksCleanup">Cleanup Quickbooks</x-button.primary>
+                    <x-button.primary wire:click="setup" :disabled="$taskInProgress">Setup Quickbooks</x-button.primary>
+                    <x-button.primary wire:click="cleanup" :disabled="$taskInProgress">Cleanup Quickbooks</x-button.primary>
                 </div>
-                <x-input.textarea rows="20" readonly wire:model="output"/>
+                <div class="flex space-y-2 flex-col">
+                    <x-button.primary wire:click="customerSync" :disabled="$taskInProgress">Sync Customers</x-button.primary>
+                    <x-button.primary wire:click="clearLog">Clear Log</x-button.primary>
+                </div>
+                <div class="bg-white rounded border border-gray-300 p-2 text-gray-700 overflow-y-scroll h-120">
+                    @foreach($messages as $message)
+                        <div class="flex mt-2 space-x-2">
+                            <div class="text-gray-500">[{{ $message->created_at }}]</div>
+                            <div>{!! Str::replace(PHP_EOL, '<br>', $message->message) !!}</div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
 
         </div>

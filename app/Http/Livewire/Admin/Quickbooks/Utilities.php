@@ -2,53 +2,73 @@
 
 namespace App\Http\Livewire\Admin\Quickbooks;
 
+use App\Jobs\CleanupQuickbooks;
 use App\Jobs\SetupQuickbooks;
+use App\Models\GlobalSetting;
 use Illuminate\Support\Facades\Artisan;
 use Livewire\Component;
 use Log;
 
 class Utilities extends Component
 {
-    public $output = '';
+    public $messages;
     public $userId;
-    public $setupInProgress = false;
+    public $taskInProgress = false;
 
     protected function getListeners()
     {
         return [
             "echo-private:log.{$this->userId},LogMessageReceived" => 'newLogMessage',
-            "echo-private:log.{$this->userId},QuickbooksSetupComplete" => 'setupComplete'
+            "echo-private:log.{$this->userId},TaskComplete" => 'taskComplete'
         ];
     }
 
     public function mount()
     {
         $this->userId = auth()->id();
+        $this->taskInProgress = GlobalSetting::whereKey('global_task_in_progress')->first()->value === 'true';
+        $this->getLogMessages();
     }
 
-    public function setupComplete()
+    public function getLogMessages()
     {
-        $this->setupInProgress = false;
-        $this->output .= "Done." . PHP_EOL;
+        $this->messages = auth()->user()->logMessages()->latest()->take(100)->get();
     }
 
-    public function quickbooksSetup()
+
+    public function clearLog()
     {
-        $this->setupInProgress = true;
-        $this->output = "Dispatching QuickbooksSetup Job, please wait..." . PHP_EOL;
+        auth()->user()->logMessages()->delete();
+        $this->getLogMessages();
+    }
+
+    public function taskComplete()
+    {
+        $this->taskInProgress = false;
+    }
+
+    public function setup()
+    {
+        $this->taskInProgress = true;
+        auth()->user()->logMessage("Dispatching QuickbooksSetup Job, please wait..." . PHP_EOL);
         SetupQuickbooks::dispatch(auth()->user())->onQueue('default_long');
     }
 
-    public function quickbooksCleanup()
+    public function cleanup()
     {
-        Artisan::call('qb:cleanup');
-
-        $this->output = Artisan::output();
+        $this->taskInProgress = true;
+        auth()->user()->logMessage("Dispatching QuickbooksCleanup Job, please wait..." . PHP_EOL);
+        CleanupQuickbooks::dispatch(auth()->user())->onQueue('default_long');
     }
 
-    public function newLogMessage($e)
+    public function customerSync()
     {
-        $this->output  .= $e['message'] . PHP_EOL;
+
+    }
+
+    public function newLogMessage()
+    {
+        $this->getLogMessages();
     }
 
     public function render()

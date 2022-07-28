@@ -3,7 +3,8 @@
 namespace App\Jobs;
 
 use App\Events\LogMessageReceived;
-use App\Events\QuickbooksSetupComplete;
+use App\Events\TaskComplete;
+use App\Models\GlobalSetting;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -27,7 +28,7 @@ class SetupQuickbooks implements ShouldQueue
     private function runCommand(string $command): int
     {
         $exitCode = Artisan::call($command);
-        LogMessageReceived::dispatch($this->user, Artisan::output());
+        $this->user->logMessage(Artisan::output());
         return $exitCode;
     }
 
@@ -59,7 +60,9 @@ class SetupQuickbooks implements ShouldQueue
     }
     public function handle()
     {
+        GlobalSetting::whereKey('global_task_in_progress')->first()->update(['value' => 'true']);
         $this->importData();
-        QuickbooksSetupComplete::dispatch($this->user);
+        GlobalSetting::whereKey('global_task_in_progress')->first()->update(['value' => 'false']);
+        TaskComplete::dispatch($this->user);
     }
 }

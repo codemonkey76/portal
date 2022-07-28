@@ -81,6 +81,11 @@ class Customer extends Model
         );
     }
 
+    public function isSynced(): bool
+    {
+        return !is_null($this->qb_customer_id);
+    }
+
     public function terms() : BelongsTo
     {
         return $this->belongsTo(Term::class);
@@ -95,5 +100,13 @@ class Customer extends Model
 
             $c->update(['company_name' => implode(' ', $words)]);
         });
+    }
+
+    // If updating company name, and no fqn or display name exists, set one
+    public function setCompanyNameAttribute($name)
+    {
+        $this->attributes['fully_qualified_name'] ??= $name;
+        $this->attributes['display_name'] ??= $name;
+        $this->attributes['company_name'] = $name;
     }
 }
