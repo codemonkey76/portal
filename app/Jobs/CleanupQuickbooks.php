@@ -7,6 +7,7 @@ use App\Events\TaskComplete;
 use App\Models\Account;
 use App\Models\Address;
 use App\Models\Customer;
+use App\Models\GlobalSetting;
 use App\Models\InvoiceLine;
 use App\Models\Item;
 use App\Models\PaymentLine;
@@ -30,38 +31,41 @@ class CleanupQuickbooks implements ShouldQueue
 
     public function handle()
     {
-        LogMessageReceived::dispatch($this->user, "Deleting transactions...");
+        GlobalSetting::whereKey('global_task_in_progress')->first()->update(['value' => 'true']);
+
+        $this->user->logMessage("Deleting transactions...");
         Transaction::all()->each->delete();
-        LogMessageReceived::dispatch($this->user, "Done.");
+        $this->user->logMessage("Done.");
 
-        LogMessageReceived::dispatch($this->user, "Deleting InvoiceLines...");
+        $this->user->logMessage("Deleting InvoiceLines...");
         InvoiceLine::all()->each->delete();
-        LogMessageReceived::dispatch($this->user, "Done.");
+        $this->user->logMessage("Done.");
 
-        LogMessageReceived::dispatch($this->user, "Deleting PaymentLines...");
+        $this->user->logMessage("Deleting PaymentLines...");
         PaymentLine::all()->each->delete();
-        LogMessageReceived::dispatch($this->user, "Done.");
+        $this->user->logMessage("Done.");
 
-        LogMessageReceived::dispatch($this->user, "Deleting Items...");
+        $this->user->logMessage("Deleting Items...");
         Item::all()->each->delete();
-        LogMessageReceived::dispatch($this->user, "Done.");
+        $this->user->logMessage("Done.");
 
-        LogMessageReceived::dispatch($this->user, "Deleting Addresses...");
+        $this->user->logMessage("Deleting Addresses...");
         Address::all()->each->delete();
-        LogMessageReceived::dispatch($this->user, "Done.");
+        $this->user->logMessage("Done.");
 
-        LogMessageReceived::dispatch($this->user, "Deleting Customers...");
+        $this->user->logMessage("Deleting Customers...");
         Customer::all()->each->delete();
-        LogMessageReceived::dispatch($this->user, "Done.");
+        $this->user->logMessage("Done.");
 
-        LogMessageReceived::dispatch($this->user, "Deleting Terms...");
+        $this->user->logMessage("Deleting Terms...");
         Term::all()->each->delete();
-        LogMessageReceived::dispatch($this->user, "Done.");
+        $this->user->logMessage("Done.");
 
-        LogMessageReceived::dispatch($this->user, "Deleting Accounts...");
+        $this->user->logMessage("Deleting Accounts...");
         Account::all()->each->delete();
-        LogMessageReceived::dispatch($this->user, "Done.");
+        $this->user->logMessage("Done.");
 
+        GlobalSetting::whereKey('global_task_in_progress')->first()->update(['value' => 'false']);
         TaskComplete::dispatch($this->user);
         return 0;
     }

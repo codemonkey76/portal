@@ -48,5 +48,10 @@ class GlobalSettingSeeder extends Seeder
             'key' => 'default_payment_terms',
             'value' => 'Net 30'
         ]);
+
+        GlobalSetting::create([
+            'key' => 'global_task_in_progress',
+            'value' => 'false'
+        ]);
     }
 }

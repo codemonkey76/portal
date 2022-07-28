@@ -5083,6 +5083,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var alpinejs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/module.esm.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_4__);
+/* provided dependency */ var process = __webpack_require__(/*! process/browser.js */ "./node_modules/process/browser.js");
 
 window.axios = (axios__WEBPACK_IMPORTED_MODULE_0___default());
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -5091,11 +5092,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = (pusher_js__WEBPACK_IMPORTED_MODULE_2___default());
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_1__["default"]({
   broadcaster: 'pusher',
-  key: "3yv0lpt64vthk3aslux6",
-  wsHost: "socket.asgcom.net",
-  wsPort: "443",
-  wssPort: "443",
-  cluster: "",
+  key: "",
+  wsHost: process.env.MIX_PUSHER_HOST,
+  wsPort: process.env.MIX_PUSHER_PORT,
+  wssPort: process.env.MIX_PUSHER_PORT,
+  cluster: "mt1",
   forceTLS: true,
   disabledStats: true,
   enabledTransports: ['ws', 'wss']
