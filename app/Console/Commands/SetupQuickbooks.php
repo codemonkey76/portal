@@ -38,15 +38,23 @@ class SetupQuickbooks extends Command
 
         $this->components->info("Importing Quickbooks Data");
 
+        $this->output->progressStart(8);
         $this->components->task("Importing accounts", fn() => $this->callSilent('qb:account:import') == 0);
+        $this->output->progressAdvance();
         $this->components->task("Importing payment terms", fn() => $this->callSilent('qb:term:import') == 0);
+        $this->output->progressAdvance();
         $this->components->task("Importing customers", fn() => $this->callSilent('qb:customer:import') == 0);
+        $this->output->progressAdvance();
         $this->components->task("Importing items", fn() => $this->callSilent('qb:item:import') == 0);
+        $this->output->progressAdvance();
         $this->components->task("Setting company names from FQN", fn() => $this->callSilent('qb:set-company-names-from-fqn') == 0);
+        $this->output->progressAdvance();
         $this->components->task("Importing invoices", fn() => $this->callSilent('qb:invoice:import') == 0);
+        $this->output->progressAdvance();
         $this->components->task("Importing adjustments", fn() => $this->callSilent('qb:adjustment:import') == 0);
+        $this->output->progressAdvance();
         $this->components->task("Importing payments", fn() => $this->callSilent('qb:payment:import') == 0);
-
+        $this->output->progressFinish();
         $this->newLine();
     }
 }
