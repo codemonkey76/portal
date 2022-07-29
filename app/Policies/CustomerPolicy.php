@@ -23,7 +23,7 @@ class CustomerPolicy
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Customer $customer)
+    public function show(User $user, Customer $customer)
     {
         return $user->can('customers.show');
     }
@@ -48,7 +48,12 @@ class CustomerPolicy
      */
     public function update(User $user, Customer $customer)
     {
-        //
+        return $user->can('customers.update');
+    }
+
+    public function edit(User $user, Customer $customer)
+    {
+        return $user->can('customers.update');
     }
 
     /**
@@ -60,7 +65,7 @@ class CustomerPolicy
      */
     public function delete(User $user, Customer $customer)
     {
-        //
+        return $user->can('customers.delete');
     }
 
     /**
