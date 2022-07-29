@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'term'          => [
+    'term'           => [
         'model'        => 'App\Models\Term',
         'attributeMap' => [
             'id'                    => 'id',
@@ -17,7 +17,7 @@ return [
             'due_days'              => 'due_days',
         ]
     ],
-    'account'       => [
+    'account'        => [
         'model'        => 'App\Models\Account',
         'attributeMap' => [
             'id'                   => 'id',
@@ -34,7 +34,7 @@ return [
             'sync_failed'          => 'sync_failed'
         ]
     ],
-    'adjustment'    => [
+    'adjustment'     => [
         'model'            => 'App\Models\Transaction',
         'lineRelationship' => 'invoiceLines',
         'attributeMap'     => [
@@ -74,7 +74,7 @@ return [
         ],
     ],
     'adjustmentLine' => [
-        'model' => 'App\Models\InvoiceLine',
+        'model'        => 'App\Models\InvoiceLine',
         'attributeMap' => [
             'invoice_ref' => 'transaction_id',
             'amount'      => 'amount',
@@ -86,7 +86,7 @@ return [
             'unit_price'  => 'unit_price'
         ]
     ],
-    'invoice'       => [
+    'invoice'        => [
         'model'            => 'App\Models\Transaction',
         'lineRelationship' => 'invoiceLines',
         'settings'         => [
@@ -133,7 +133,7 @@ return [
             'doc_number'               => 'doc_number'
         ],
     ],
-    'invoiceLine'   => [
+    'invoiceLine'    => [
         'model'        => 'App\Models\InvoiceLine',
         'attributeMap' => [
             'invoice_ref' => 'transaction_id',
@@ -146,7 +146,7 @@ return [
             'unit_price'  => 'unit_price'
         ]
     ],
-    'item'          => [
+    'item'           => [
         'model'        => 'App\Models\Item',
         'attributeMap' => [
             'id'                    => 'id',
@@ -173,7 +173,7 @@ return [
             'sync_failed'           => 'sync_failed'
         ]
     ],
-    'customer'      => [
+    'customer'       => [
         'model'        => 'App\Models\Customer',
         'attributeMap' => [
             'id'                                 => 'id',
@@ -227,12 +227,13 @@ return [
             'qb_customer_id'                     => 'qb_customer_id',
             'term_id'                            => 'term_id',
             'sync_failed'                        => 'sync_failed',
+            'synced_at'                          => 'synced_at'
         ],
         'address'      => [
             'model' => 'App\Models\Address',
         ]
     ],
-    'paymentMethod' => [
+    'paymentMethod'  => [
         'model'        => 'App\Models\PaymentMethod',
         'attributeMap' => [
             'name'                 => 'name',
@@ -241,7 +242,7 @@ return [
             'qb_payment_method_id' => 'qb_payment_method_id'
         ]
     ],
-    'taxCode'       => [
+    'taxCode'        => [
         'model'        => 'App\Models\TaxRate',
         'attributeMap' => [
             'name'           => 'name',
@@ -253,7 +254,7 @@ return [
             'qb_tax_code_id' => 'qb_tax_code_id'
         ]
     ],
-    'payment'       => [
+    'payment'        => [
         'model'            => 'App\Models\Transaction',
         'lineRelationship' => 'paymentLines',
         'attributeMap'     => [
@@ -275,7 +276,7 @@ return [
             'payment_method_id' => 'paymentMethod.qb_payment_method_id'
         ]
     ],
-    'paymentLine'   => [
+    'paymentLine'    => [
         'model'        => 'App\Models\PaymentLine',
         'attributeMap' => [
             'amount'      => 'amount',
@@ -283,19 +284,19 @@ return [
             'payment_ref' => 'transaction_id'
         ]
     ],
-    'data_service'  => [
+    'data_service'   => [
         'auth_mode'     => 'oauth2',
         'base_url'      => env('QUICKBOOKS_API_URL', config('app.env') === 'production' ? 'Production' : 'Development'),
         'client_id'     => env('QUICKBOOKS_CLIENT_ID'),
         'client_secret' => env('QUICKBOOKS_CLIENT_SECRET'),
         'scope'         => 'com.intuit.quickbooks.accounting'
     ],
-    'logging'       => [
+    'logging'        => [
         'enabled' => env('QUICKBOOKS_DEBUG', config('app.debug')),
 
         'location' => storage_path('logs')
     ],
-    'route'         => [
+    'route'          => [
         'middleware' => [
             'authenticated' => 'auth',
             'default'       => 'web'
@@ -310,7 +311,7 @@ return [
 
         'prefix' => 'quickbooks'
     ],
-    'user'          => [
+    'user'           => [
         'keys'  => [
             'foreign' => 'user_id',
             'owner'   => 'id'

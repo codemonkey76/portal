@@ -3552,16 +3552,16 @@
         },
         {
             "name": "popplestones/quickbooks-helper",
-            "version": "v1.1.10",
+            "version": "v1.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/popplestones/quickbooks-helper.git",
-                "reference": "1130c009de1b675a5dcb9a4b3a8b7226d1b06ac1"
+                "reference": "82736da7d2ec23ed639ec09a5ed16cf6132c41a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/popplestones/quickbooks-helper/zipball/1130c009de1b675a5dcb9a4b3a8b7226d1b06ac1",
-                "reference": "1130c009de1b675a5dcb9a4b3a8b7226d1b06ac1",
+                "url": "https://api.github.com/repos/popplestones/quickbooks-helper/zipball/82736da7d2ec23ed639ec09a5ed16cf6132c41a5",
+                "reference": "82736da7d2ec23ed639ec09a5ed16cf6132c41a5",
                 "shasum": ""
             },
             "require": {
@@ -3598,9 +3598,9 @@
             "description": "Everything you need to integrate Quickbooks with Laravel",
             "support": {
                 "issues": "https://github.com/popplestones/quickbooks-helper/issues",
-                "source": "https://github.com/popplestones/quickbooks-helper/tree/v1.1.10"
+                "source": "https://github.com/popplestones/quickbooks-helper/tree/v1.1.11"
             },
-            "time": "2022-07-22T01:51:57+00:00"
+            "time": "2022-07-28T23:28:06+00:00"
         },
         {
             "name": "pragmarx/google2fa",
@@ -4140,16 +4140,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.11.7",
+            "version": "v0.11.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "77fc7270031fbc28f9a7bea31385da5c4855cb7a"
+                "reference": "f455acf3645262ae389b10e9beba0c358aa6994e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/77fc7270031fbc28f9a7bea31385da5c4855cb7a",
-                "reference": "77fc7270031fbc28f9a7bea31385da5c4855cb7a",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/f455acf3645262ae389b10e9beba0c358aa6994e",
+                "reference": "f455acf3645262ae389b10e9beba0c358aa6994e",
                 "shasum": ""
             },
             "require": {
@@ -4210,9 +4210,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.11.7"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.11.8"
             },
-            "time": "2022-07-07T13:49:11+00:00"
+            "time": "2022-07-28T14:25:11+00:00"
         },
         {
             "name": "pusher/pusher-php-server",

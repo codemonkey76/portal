@@ -44,6 +44,7 @@ return new class extends Migration
             $table->decimal('credit_limit')->default(1000);
             $table->string('qb_customer_id')->nullable();
             $table->boolean('sync')->default(true);
+            $table->timestamp('synced_at')->nullable();
             $table->integer('sync_failed')->default(0);
             $table->timestamps();
         });
