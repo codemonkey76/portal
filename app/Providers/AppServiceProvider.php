@@ -99,7 +99,7 @@ class AppServiceProvider extends ServiceProvider
 
         CallbackManager::registerCustomers(
             fn() => Customer::query(),
-            fn ($q) => $q->whereNull('qb_customer_id')->whereSync(true)
+            fn ($q) => $q->whereRaw('updated_at > synced_at')->orWhereNull('synced_at')->whereSync(true)
         );
 
     }

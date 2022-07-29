@@ -81,6 +81,12 @@ class Customer extends Model
         );
     }
 
+
+    public function needsSync(): bool
+    {
+        return $this->sync && ($this->synced_at === null) || ($this->updated_at > $this->synced_at);
+    }
+
     public function isSynced(): bool
     {
         return !is_null($this->qb_customer_id);

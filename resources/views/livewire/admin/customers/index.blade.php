@@ -63,7 +63,7 @@
                     @forelse ($customers as $customer)
                         <x-table.row>
                             <x-table.cell class="pl-4 sm:pl-6 text-gray-900 flex items-center justify-center">
-                                @if($customer->isSynced())
+                                @if($customer->needsSync())
                                     <x-icon.sync/>
                                 @endif
                             </x-table.cell>
