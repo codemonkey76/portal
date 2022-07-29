@@ -30,8 +30,6 @@ class PermissionSeeder extends Seeder
         $user = Role::create(['name' => 'user']);
 
         $admin->givePermissionTo(Permission::create(['name' => 'customers.create']));
-        $admin->givePermissionTo(Permission::create(['name' => 'customers.update']));
-        $admin->givePermissionTo(Permission::create(['name' => 'customers.destroy']));
 
         $super = Role::create(['name' => 'super']);
 
@@ -74,6 +72,8 @@ class PermissionSeeder extends Seeder
         $accounts->givePermissionTo(Permission::create(['name' => 'view admin dashboard']));
         $accounts->givePermissionTo(Permission::create(['name' => 'customers.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'customers.show']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'customers.update']));
+        $accounts->givePermissionTo(Permission::create(['name' => 'customers.delete']));
 
         $accounts->givePermissionTo(Permission::create(['name' => 'rate-groups.index']));
         $accounts->givePermissionTo(Permission::create(['name' => 'plan-items.index']));
