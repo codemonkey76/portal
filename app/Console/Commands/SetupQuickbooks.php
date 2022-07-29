@@ -3,9 +3,12 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Console\ConfirmableTrait;
 
 class SetupQuickbooks extends Command
 {
+    use ConfirmableTrait;
+
     /**
      * The name and signature of the console command.
      *
@@ -27,36 +30,23 @@ class SetupQuickbooks extends Command
      */
     public function handle()
     {
-        $exitCode = 0;
+        if (! $this->confirmToProceed()) {
+            return 1;
+        }
 
-        $exitCode = $this->call('qb:account:import');
+        $this->newLine();
 
-        if ($exitCode !== 0) return $exitCode;
+        $this->components->info("Importing Quickbooks Data");
 
-        $exitCode = $this->call('qb:term:import');
+        $this->components->task("Importing accounts", fn() => $this->callSilent('qb:account:import') == 0);
+        $this->components->task("Importing payment terms", fn() => $this->callSilent('qb:term:import') == 0);
+        $this->components->task("Importing customers", fn() => $this->callSilent('qb:customer:import') == 0);
+        $this->components->task("Importing items", fn() => $this->callSilent('qb:item:import') == 0);
+        $this->components->task("Setting company names from FQN", fn() => $this->callSilent('qb:set-company-names-from-fqn') == 0);
+        $this->components->task("Importing invoices", fn() => $this->callSilent('qb:invoice:import') == 0);
+        $this->components->task("Importing adjustments", fn() => $this->callSilent('qb:adjustment:import') == 0);
+        $this->components->task("Importing payments", fn() => $this->callSilent('qb:payment:import') == 0);
 
-        if ($exitCode !== 0) return $exitCode;
-
-        $exitCode = $this->call('qb:customer:import');
-
-        if ($exitCode !== 0) return $exitCode;
-
-        $exitCode = $this->call('qb:item:import');
-
-        if ($exitCode !== 0) return $exitCode;
-
-        $exitCode = $this->call('qb:set-company-names-from-fqn');
-
-        if ($exitCode !== 0) return $exitCode;
-
-        $exitCode = $this->call('qb:invoice:import');
-
-        if ($exitCode !== 0) return $exitCode;
-
-        $exitCode = $this->call('qb:adjustment:import');
-
-        if ($exitCode !== 0) return $exitCode;
-
-        return $this->call('qb:payment:import');
+        $this->newLine();
     }
 }
