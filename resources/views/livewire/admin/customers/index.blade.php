@@ -25,7 +25,7 @@
             <x-table>
                 <x-slot name="head">
                     <x-table.heading align="middle">
-                        Synced
+                        <span class="sr-only">Sync required?</span>
                     </x-table.heading>
                     <x-table.heading sortable
                                      mult-column
@@ -57,15 +57,17 @@
                                      wire:click="sortBy('sync')">
                         Sync
                     </x-table.heading>
-                    <x-table.heading>Actions</x-table.heading>
+                    <x-table.heading align="center">Actions</x-table.heading>
                 </x-slot>
                 <x-slot name="body">
                     @forelse ($customers as $customer)
                         <x-table.row>
-                            <x-table.cell class="pl-4 sm:pl-6 text-gray-900 flex items-center justify-center">
-                                @if($customer->needsSync())
-                                    <x-icon.sync/>
-                                @endif
+                            <x-table.cell class="text-gray-900">
+                                <div class="flex justify-center">
+                                    @if($customer->needsSync())
+                                        <x-icon.sync/>
+                                    @endif
+                                </div>
                             </x-table.cell>
                             <x-table.cell>{{ $customer->company_name }}</x-table.cell>
                             <x-table.cell>{{ $customer->phone }}</x-table.cell>
@@ -77,18 +79,36 @@
                                 <x-active :value="$customer->sync"/>
                             </x-table.cell>
                             <x-table.cell>
-                                <x-small-button.primary wire:click="show({{$customer->id}})">View
-                                </x-small-button.primary>
-                                @can('customers.update')
-                                    <!-- EditCustomerButton -->
-                                    <x-small-button.warning wire:click="edit({{$customer->id}})">Edit
-                                    </x-small-button.warning>
-                                @endcan
-                                @can('customers.destroy')
-                                    <!-- DeleteCustomerButton -->
-                                    <x-small-button.danger wire:click="confirmDelete({{$customer->id}})">Delete
-                                    </x-small-button.danger>
-                                @endcan
+                                <div class="flex justify-center space-x-1">
+
+                                    @can('show', $customer)
+                                        <button
+                                            title="View"
+                                            class="hover:text-cyan-600"
+                                            wire:click="view({{ $customer->id }})">
+                                            <x-icon.view/>
+                                        </button>
+                                    @endcan
+
+                                    @can('edit', $customer)
+                                        <button
+                                            title="Edit"
+                                            class="hover:text-yellow-600"
+                                            wire:click="edit({{ $customer->id }})">
+                                            <x-icon.pencil/>
+                                        </button>
+                                    @endcan
+
+                                    @can('delete', $customer)
+                                        <button
+                                            title="Delete"
+                                            class="hover:text-red-600"
+                                            wire:click="confirmDelete({{ $customer->id }})">
+                                            <x-icon.trash/>
+                                        </button>
+                                    @endcan
+
+                                </div>
                             </x-table.cell>
                         </x-table.row>
                     @empty
