@@ -227,7 +227,8 @@ return [
             'qb_customer_id'                     => 'qb_customer_id',
             'term_id'                            => 'term_id',
             'sync_failed'                        => 'sync_failed',
-            'synced_at'                          => 'synced_at'
+            'synced_at'                          => 'synced_at',
+            'updated_at'                         => 'updated_at'
         ],
         'address'      => [
             'model' => 'App\Models\Address',
