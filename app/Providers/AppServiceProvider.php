@@ -101,5 +101,6 @@ class AppServiceProvider extends ServiceProvider
             fn() => Customer::query(),
             fn ($q) => $q->whereNull('qb_customer_id')->whereSync(true)
         );
+
     }
 }
